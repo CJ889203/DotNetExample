@@ -1,0 +1,15 @@
+E:\MyGitHub\DotNetExample\Sample\Sample_Linq\bin\Debug\net6.0\Sample_Linq.exe
+E:\MyGitHub\DotNetExample\Sample\Sample_Linq\bin\Debug\net6.0\Sample_Linq.deps.json
+E:\MyGitHub\DotNetExample\Sample\Sample_Linq\bin\Debug\net6.0\Sample_Linq.runtimeconfig.json
+E:\MyGitHub\DotNetExample\Sample\Sample_Linq\bin\Debug\net6.0\Sample_Linq.dll
+E:\MyGitHub\DotNetExample\Sample\Sample_Linq\bin\Debug\net6.0\Sample_Linq.pdb
+E:\MyGitHub\DotNetExample\Sample\Sample_Linq\obj\Debug\net6.0\Sample_Linq.csproj.AssemblyReference.cache
+E:\MyGitHub\DotNetExample\Sample\Sample_Linq\obj\Debug\net6.0\Sample_Linq.GeneratedMSBuildEditorConfig.editorconfig
+E:\MyGitHub\DotNetExample\Sample\Sample_Linq\obj\Debug\net6.0\Sample_Linq.AssemblyInfoInputs.cache
+E:\MyGitHub\DotNetExample\Sample\Sample_Linq\obj\Debug\net6.0\Sample_Linq.AssemblyInfo.cs
+E:\MyGitHub\DotNetExample\Sample\Sample_Linq\obj\Debug\net6.0\Sample_Linq.csproj.CoreCompileInputs.cache
+E:\MyGitHub\DotNetExample\Sample\Sample_Linq\obj\Debug\net6.0\Sample_Linq.dll
+E:\MyGitHub\DotNetExample\Sample\Sample_Linq\obj\Debug\net6.0\refint\Sample_Linq.dll
+E:\MyGitHub\DotNetExample\Sample\Sample_Linq\obj\Debug\net6.0\Sample_Linq.pdb
+E:\MyGitHub\DotNetExample\Sample\Sample_Linq\obj\Debug\net6.0\Sample_Linq.genruntimeconfig.cache
+E:\MyGitHub\DotNetExample\Sample\Sample_Linq\obj\Debug\net6.0\ref\Sample_Linq.dll
