@@ -1,0 +1,15 @@
+E:\MyGitHub\DotNetExample\Sample\Sample_Operator\bin\Debug\net6.0\Sample_Operator.exe
+E:\MyGitHub\DotNetExample\Sample\Sample_Operator\bin\Debug\net6.0\Sample_Operator.deps.json
+E:\MyGitHub\DotNetExample\Sample\Sample_Operator\bin\Debug\net6.0\Sample_Operator.runtimeconfig.json
+E:\MyGitHub\DotNetExample\Sample\Sample_Operator\bin\Debug\net6.0\Sample_Operator.dll
+E:\MyGitHub\DotNetExample\Sample\Sample_Operator\bin\Debug\net6.0\Sample_Operator.pdb
+E:\MyGitHub\DotNetExample\Sample\Sample_Operator\obj\Debug\net6.0\Sample_Operator.csproj.AssemblyReference.cache
+E:\MyGitHub\DotNetExample\Sample\Sample_Operator\obj\Debug\net6.0\Sample_Operator.GeneratedMSBuildEditorConfig.editorconfig
+E:\MyGitHub\DotNetExample\Sample\Sample_Operator\obj\Debug\net6.0\Sample_Operator.AssemblyInfoInputs.cache
+E:\MyGitHub\DotNetExample\Sample\Sample_Operator\obj\Debug\net6.0\Sample_Operator.AssemblyInfo.cs
+E:\MyGitHub\DotNetExample\Sample\Sample_Operator\obj\Debug\net6.0\Sample_Operator.csproj.CoreCompileInputs.cache
+E:\MyGitHub\DotNetExample\Sample\Sample_Operator\obj\Debug\net6.0\Sample_Operator.dll
+E:\MyGitHub\DotNetExample\Sample\Sample_Operator\obj\Debug\net6.0\refint\Sample_Operator.dll
+E:\MyGitHub\DotNetExample\Sample\Sample_Operator\obj\Debug\net6.0\Sample_Operator.pdb
+E:\MyGitHub\DotNetExample\Sample\Sample_Operator\obj\Debug\net6.0\Sample_Operator.genruntimeconfig.cache
+E:\MyGitHub\DotNetExample\Sample\Sample_Operator\obj\Debug\net6.0\ref\Sample_Operator.dll
