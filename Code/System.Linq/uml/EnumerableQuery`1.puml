@@ -1,0 +1,29 @@
+@startuml
+class "EnumerableQuery`1"<T> {
+    - expression : Expression
+    - enumerable : IEnumerable<T>
+    Provider : IQueryProvider <<get>>
+    + EnumerableQuery(enumerable:IEnumerable<T>)
+    + EnumerableQuery(expression:Expression)
+    <<internal>> <<override>> Expression : Expression <<get>>
+    <<internal>> <<override>> Enumerable : IEnumerable <<get>>
+    Expression : Expression <<get>>
+    ElementType : Type <<get>>
+    CreateQuery(expression:Expression) : IQueryable
+    CreateQuery(expression:Expression) : IQueryable<S>
+    Execute(expression:Expression) : object
+    Execute(expression:Expression) : S
+    GetEnumerator() : IEnumerator
+    GetEnumerator() : IEnumerator<T>
+    - GetEnumerator() : IEnumerator<T>
+    + <<override>> ToString() : string
+}
+EnumerableQuery <|-- "EnumerableQuery`1"
+"IOrderedQueryable`1" "<T>" <|-- "EnumerableQuery`1"
+"IQueryable`1" "<T>" <|-- "EnumerableQuery`1"
+"IEnumerable`1" "<T>" <|-- "EnumerableQuery`1"
+IEnumerable <|-- "EnumerableQuery`1"
+IQueryable <|-- "EnumerableQuery`1"
+IOrderedQueryable <|-- "EnumerableQuery`1"
+IQueryProvider <|-- "EnumerableQuery`1"
+@enduml

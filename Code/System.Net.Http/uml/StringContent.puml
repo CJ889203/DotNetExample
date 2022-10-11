@@ -1,0 +1,11 @@
+@startuml
+class StringContent {
+    + StringContent(content:string)
+    + StringContent(content:string, encoding:Encoding?)
+    + StringContent(content:string, encoding:Encoding?, mediaType:string?)
+    - {static} GetContentByteArray(content:string, encoding:Encoding) : byte[]
+    # <<override>> SerializeToStreamAsync(stream:Stream, context:TransportContext?, cancellationToken:CancellationToken) : Task
+    <<internal>> <<override>> TryCreateContentReadStream() : Stream
+}
+ByteArrayContent <|-- StringContent
+@enduml

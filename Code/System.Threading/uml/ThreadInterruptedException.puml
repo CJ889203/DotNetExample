@@ -1,0 +1,9 @@
+@startuml
+class ThreadInterruptedException {
+    + ThreadInterruptedException()
+    + ThreadInterruptedException(message:string?)
+    + ThreadInterruptedException(message:string?, innerException:Exception?)
+    # ThreadInterruptedException(info:SerializationInfo, context:StreamingContext)
+}
+SystemException <|-- ThreadInterruptedException
+@enduml

@@ -1,0 +1,17 @@
+@startuml
+class "EntityRef`1"<TEntity> <<struct>> {
+    - source : IEnumerable<TEntity>
+    - entity : TEntity
+    + EntityRef(entity:TEntity)
+    + EntityRef(source:IEnumerable<TEntity>)
+    + EntityRef(entityRef:EntityRef<TEntity>)
+    + Entity : TEntity <<get>> <<set>>
+    + HasLoadedOrAssignedValue : bool <<get>>
+    <<internal>> HasValue : bool <<get>>
+    <<internal>> HasLoadedValue : bool <<get>>
+    <<internal>> HasAssignedValue : bool <<get>>
+    <<internal>> HasSource : bool <<get>>
+    <<internal>> Source : IEnumerable<TEntity> <<get>>
+    <<internal>> UnderlyingValue : TEntity <<get>>
+}
+@enduml

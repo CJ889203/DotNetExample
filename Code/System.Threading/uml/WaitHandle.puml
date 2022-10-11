@@ -1,0 +1,51 @@
+@startuml
+abstract class WaitHandle {
+    <<internal>> <<const>> MaxWaitHandles : int = 64
+    # {static} <<readonly>> InvalidHandle : IntPtr
+    - _waitHandle : SafeWaitHandle
+    - {static} t_safeWaitHandlesForRent : SafeWaitHandle[]
+    <<internal>> <<const>> WaitSuccess : int = 0
+    <<internal>> <<const>> WaitAbandoned : int = 128
+    + <<const>> WaitTimeout : int = 258
+    - {static} <<extern>> WaitOneCore(waitHandle:IntPtr, millisecondsTimeout:int) : int
+    <<internal>> {static} <<unsafe>> WaitMultipleIgnoringSyncContext(waitHandles:Span<IntPtr>, waitAll:bool, millisecondsTimeout:int) : int
+    - {static} <<extern>> <<unsafe>> WaitMultipleIgnoringSyncContext(waitHandles:IntPtr*, numHandles:int, waitAll:bool, millisecondsTimeout:int) : int
+    - {static} SignalAndWaitCore(waitHandleToSignal:IntPtr, waitHandleToWaitOn:IntPtr, millisecondsTimeout:int) : int
+    - {static} <<extern>> SignalAndWaitNative(waitHandleToSignal:IntPtr, waitHandleToWaitOn:IntPtr, millisecondsTimeout:int) : int
+    + <<virtual>> Handle : IntPtr <<get>> <<set>>
+    + SafeWaitHandle : SafeWaitHandle <<get>> <<set>>
+    <<internal>> {static} ToTimeoutMilliseconds(timeout:TimeSpan) : int
+    + <<virtual>> Close() : void
+    # <<virtual>> Dispose(explicitDisposing:bool) : void
+    + Dispose() : void
+    + <<virtual>> WaitOne(millisecondsTimeout:int) : bool
+    - WaitOneNoCheck(millisecondsTimeout:int) : bool
+    - {static} RentSafeWaitHandleArray(capacity:int) : SafeWaitHandle[]
+    - {static} ReturnSafeWaitHandleArray(safeWaitHandles:SafeWaitHandle[]) : void
+    - {static} ObtainSafeWaitHandles(waitHandles:ReadOnlySpan<WaitHandle>, safeWaitHandles:Span<SafeWaitHandle>, unsafeWaitHandles:Span<IntPtr>) : void
+    - {static} WaitMultiple(waitHandles:WaitHandle[], waitAll:bool, millisecondsTimeout:int) : int
+    - {static} <<unsafe>> WaitMultiple(waitHandles:ReadOnlySpan<WaitHandle>, waitAll:bool, millisecondsTimeout:int) : int
+    - {static} <<unsafe>> WaitAnyMultiple(safeWaitHandles:ReadOnlySpan<SafeWaitHandle>, millisecondsTimeout:int) : int
+    - {static} SignalAndWait(toSignal:WaitHandle, toWaitOn:WaitHandle, millisecondsTimeout:int) : bool
+    + <<virtual>> WaitOne(timeout:TimeSpan) : bool
+    + <<virtual>> WaitOne() : bool
+    + <<virtual>> WaitOne(millisecondsTimeout:int, exitContext:bool) : bool
+    + <<virtual>> WaitOne(timeout:TimeSpan, exitContext:bool) : bool
+    + {static} WaitAll(waitHandles:WaitHandle[], millisecondsTimeout:int) : bool
+    + {static} WaitAll(waitHandles:WaitHandle[], timeout:TimeSpan) : bool
+    + {static} WaitAll(waitHandles:WaitHandle[]) : bool
+    + {static} WaitAll(waitHandles:WaitHandle[], millisecondsTimeout:int, exitContext:bool) : bool
+    + {static} WaitAll(waitHandles:WaitHandle[], timeout:TimeSpan, exitContext:bool) : bool
+    + {static} WaitAny(waitHandles:WaitHandle[], millisecondsTimeout:int) : int
+    <<internal>> {static} WaitAny(safeWaitHandles:ReadOnlySpan<SafeWaitHandle>, millisecondsTimeout:int) : int
+    + {static} WaitAny(waitHandles:WaitHandle[], timeout:TimeSpan) : int
+    + {static} WaitAny(waitHandles:WaitHandle[]) : int
+    + {static} WaitAny(waitHandles:WaitHandle[], millisecondsTimeout:int, exitContext:bool) : int
+    + {static} WaitAny(waitHandles:WaitHandle[], timeout:TimeSpan, exitContext:bool) : int
+    + {static} SignalAndWait(toSignal:WaitHandle, toWaitOn:WaitHandle) : bool
+    + {static} SignalAndWait(toSignal:WaitHandle, toWaitOn:WaitHandle, timeout:TimeSpan, exitContext:bool) : bool
+    + {static} SignalAndWait(toSignal:WaitHandle, toWaitOn:WaitHandle, millisecondsTimeout:int, exitContext:bool) : bool
+}
+MarshalByRefObject <|-- WaitHandle
+IDisposable <|-- WaitHandle
+@enduml

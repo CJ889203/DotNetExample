@@ -1,0 +1,8 @@
+@startuml
+interface IQueryProvider {
+    CreateQuery(expression:Expression) : IQueryable
+    CreateQuery(expression:Expression) : IQueryable<TElement>
+    Execute(expression:Expression) : object?
+    Execute(expression:Expression) : TResult
+}
+@enduml

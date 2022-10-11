@@ -1,0 +1,7 @@
+@startuml
+interface "IGrouping`2"<out TKey,out TElement> {
+    Key : TKey <<get>>
+}
+"IEnumerable`1" "<TElement>" <|-- "IGrouping`2"
+IEnumerable <|-- "IGrouping`2"
+@enduml

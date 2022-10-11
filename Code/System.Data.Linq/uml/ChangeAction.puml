@@ -1,0 +1,8 @@
+@startuml
+enum ChangeAction {
+    None,
+    Delete,
+    Insert,
+    Update,
+}
+@enduml

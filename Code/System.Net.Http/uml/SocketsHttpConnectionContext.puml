@@ -1,0 +1,9 @@
+@startuml
+class SocketsHttpConnectionContext <<sealed>> {
+    - <<readonly>> _dnsEndPoint : DnsEndPoint
+    - <<readonly>> _initialRequestMessage : HttpRequestMessage
+    <<internal>> SocketsHttpConnectionContext(dnsEndPoint:DnsEndPoint, initialRequestMessage:HttpRequestMessage)
+    + DnsEndPoint : DnsEndPoint <<get>>
+    + InitialRequestMessage : HttpRequestMessage <<get>>
+}
+@enduml

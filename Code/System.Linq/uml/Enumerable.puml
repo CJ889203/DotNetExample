@@ -1,0 +1,372 @@
+@startuml
+class Enumerable <<static>> {
+    + {static} Where(source:IEnumerable<TSource>, predicate:Func<TSource, bool>) : IEnumerable<TSource>
+    + {static} Where(source:IEnumerable<TSource>, predicate:Func<TSource, int, bool>) : IEnumerable<TSource>
+    - {static} WhereIterator(source:IEnumerable<TSource>, predicate:Func<TSource, int, bool>) : IEnumerable<TSource>
+    + {static} Select(source:IEnumerable<TSource>, selector:Func<TSource, TResult>) : IEnumerable<TResult>
+    + {static} Select(source:IEnumerable<TSource>, selector:Func<TSource, int, TResult>) : IEnumerable<TResult>
+    - {static} SelectIterator(source:IEnumerable<TSource>, selector:Func<TSource, int, TResult>) : IEnumerable<TResult>
+    - {static} CombinePredicates(predicate1:Func<TSource, bool>, predicate2:Func<TSource, bool>) : Func<TSource, bool>
+    - {static} CombineSelectors(selector1:Func<TSource, TMiddle>, selector2:Func<TMiddle, TResult>) : Func<TSource, TResult>
+    + {static} SelectMany(source:IEnumerable<TSource>, selector:Func<TSource, IEnumerable<TResult>>) : IEnumerable<TResult>
+    - {static} SelectManyIterator(source:IEnumerable<TSource>, selector:Func<TSource, IEnumerable<TResult>>) : IEnumerable<TResult>
+    + {static} SelectMany(source:IEnumerable<TSource>, selector:Func<TSource, int, IEnumerable<TResult>>) : IEnumerable<TResult>
+    - {static} SelectManyIterator(source:IEnumerable<TSource>, selector:Func<TSource, int, IEnumerable<TResult>>) : IEnumerable<TResult>
+    + {static} SelectMany(source:IEnumerable<TSource>, collectionSelector:Func<TSource, int, IEnumerable<TCollection>>, resultSelector:Func<TSource, TCollection, TResult>) : IEnumerable<TResult>
+    - {static} SelectManyIterator(source:IEnumerable<TSource>, collectionSelector:Func<TSource, int, IEnumerable<TCollection>>, resultSelector:Func<TSource, TCollection, TResult>) : IEnumerable<TResult>
+    + {static} SelectMany(source:IEnumerable<TSource>, collectionSelector:Func<TSource, IEnumerable<TCollection>>, resultSelector:Func<TSource, TCollection, TResult>) : IEnumerable<TResult>
+    - {static} SelectManyIterator(source:IEnumerable<TSource>, collectionSelector:Func<TSource, IEnumerable<TCollection>>, resultSelector:Func<TSource, TCollection, TResult>) : IEnumerable<TResult>
+    + {static} Take(source:IEnumerable<TSource>, count:int) : IEnumerable<TSource>
+    - {static} TakeIterator(source:IEnumerable<TSource>, count:int) : IEnumerable<TSource>
+    + {static} TakeWhile(source:IEnumerable<TSource>, predicate:Func<TSource, bool>) : IEnumerable<TSource>
+    - {static} TakeWhileIterator(source:IEnumerable<TSource>, predicate:Func<TSource, bool>) : IEnumerable<TSource>
+    + {static} TakeWhile(source:IEnumerable<TSource>, predicate:Func<TSource, int, bool>) : IEnumerable<TSource>
+    - {static} TakeWhileIterator(source:IEnumerable<TSource>, predicate:Func<TSource, int, bool>) : IEnumerable<TSource>
+    + {static} Skip(source:IEnumerable<TSource>, count:int) : IEnumerable<TSource>
+    - {static} SkipIterator(source:IEnumerable<TSource>, count:int) : IEnumerable<TSource>
+    + {static} SkipWhile(source:IEnumerable<TSource>, predicate:Func<TSource, bool>) : IEnumerable<TSource>
+    - {static} SkipWhileIterator(source:IEnumerable<TSource>, predicate:Func<TSource, bool>) : IEnumerable<TSource>
+    + {static} SkipWhile(source:IEnumerable<TSource>, predicate:Func<TSource, int, bool>) : IEnumerable<TSource>
+    - {static} SkipWhileIterator(source:IEnumerable<TSource>, predicate:Func<TSource, int, bool>) : IEnumerable<TSource>
+    + {static} Join(outer:IEnumerable<TOuter>, inner:IEnumerable<TInner>, outerKeySelector:Func<TOuter, TKey>, innerKeySelector:Func<TInner, TKey>, resultSelector:Func<TOuter, TInner, TResult>) : IEnumerable<TResult>
+    + {static} Join(outer:IEnumerable<TOuter>, inner:IEnumerable<TInner>, outerKeySelector:Func<TOuter, TKey>, innerKeySelector:Func<TInner, TKey>, resultSelector:Func<TOuter, TInner, TResult>, comparer:IEqualityComparer<TKey>) : IEnumerable<TResult>
+    - {static} JoinIterator(outer:IEnumerable<TOuter>, inner:IEnumerable<TInner>, outerKeySelector:Func<TOuter, TKey>, innerKeySelector:Func<TInner, TKey>, resultSelector:Func<TOuter, TInner, TResult>, comparer:IEqualityComparer<TKey>) : IEnumerable<TResult>
+    + {static} GroupJoin(outer:IEnumerable<TOuter>, inner:IEnumerable<TInner>, outerKeySelector:Func<TOuter, TKey>, innerKeySelector:Func<TInner, TKey>, resultSelector:Func<TOuter, IEnumerable<TInner>, TResult>) : IEnumerable<TResult>
+    + {static} GroupJoin(outer:IEnumerable<TOuter>, inner:IEnumerable<TInner>, outerKeySelector:Func<TOuter, TKey>, innerKeySelector:Func<TInner, TKey>, resultSelector:Func<TOuter, IEnumerable<TInner>, TResult>, comparer:IEqualityComparer<TKey>) : IEnumerable<TResult>
+    - {static} GroupJoinIterator(outer:IEnumerable<TOuter>, inner:IEnumerable<TInner>, outerKeySelector:Func<TOuter, TKey>, innerKeySelector:Func<TInner, TKey>, resultSelector:Func<TOuter, IEnumerable<TInner>, TResult>, comparer:IEqualityComparer<TKey>) : IEnumerable<TResult>
+    + {static} OrderBy(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>) : IOrderedEnumerable<TSource>
+    + {static} OrderBy(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>, comparer:IComparer<TKey>) : IOrderedEnumerable<TSource>
+    + {static} OrderByDescending(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>) : IOrderedEnumerable<TSource>
+    + {static} OrderByDescending(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>, comparer:IComparer<TKey>) : IOrderedEnumerable<TSource>
+    + {static} ThenBy(source:IOrderedEnumerable<TSource>, keySelector:Func<TSource, TKey>) : IOrderedEnumerable<TSource>
+    + {static} ThenBy(source:IOrderedEnumerable<TSource>, keySelector:Func<TSource, TKey>, comparer:IComparer<TKey>) : IOrderedEnumerable<TSource>
+    + {static} ThenByDescending(source:IOrderedEnumerable<TSource>, keySelector:Func<TSource, TKey>) : IOrderedEnumerable<TSource>
+    + {static} ThenByDescending(source:IOrderedEnumerable<TSource>, keySelector:Func<TSource, TKey>, comparer:IComparer<TKey>) : IOrderedEnumerable<TSource>
+    + {static} GroupBy(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>) : IEnumerable<IGrouping<TKey, TSource>>
+    + {static} GroupBy(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>, comparer:IEqualityComparer<TKey>) : IEnumerable<IGrouping<TKey, TSource>>
+    + {static} GroupBy(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>, elementSelector:Func<TSource, TElement>) : IEnumerable<IGrouping<TKey, TElement>>
+    + {static} GroupBy(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>, elementSelector:Func<TSource, TElement>, comparer:IEqualityComparer<TKey>) : IEnumerable<IGrouping<TKey, TElement>>
+    + {static} GroupBy(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>, resultSelector:Func<TKey, IEnumerable<TSource>, TResult>) : IEnumerable<TResult>
+    + {static} GroupBy(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>, elementSelector:Func<TSource, TElement>, resultSelector:Func<TKey, IEnumerable<TElement>, TResult>) : IEnumerable<TResult>
+    + {static} GroupBy(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>, resultSelector:Func<TKey, IEnumerable<TSource>, TResult>, comparer:IEqualityComparer<TKey>) : IEnumerable<TResult>
+    + {static} GroupBy(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>, elementSelector:Func<TSource, TElement>, resultSelector:Func<TKey, IEnumerable<TElement>, TResult>, comparer:IEqualityComparer<TKey>) : IEnumerable<TResult>
+    + {static} Concat(first:IEnumerable<TSource>, second:IEnumerable<TSource>) : IEnumerable<TSource>
+    - {static} ConcatIterator(first:IEnumerable<TSource>, second:IEnumerable<TSource>) : IEnumerable<TSource>
+    + {static} Zip(first:IEnumerable<TFirst>, second:IEnumerable<TSecond>, resultSelector:Func<TFirst, TSecond, TResult>) : IEnumerable<TResult>
+    - {static} ZipIterator(first:IEnumerable<TFirst>, second:IEnumerable<TSecond>, resultSelector:Func<TFirst, TSecond, TResult>) : IEnumerable<TResult>
+    + {static} Distinct(source:IEnumerable<TSource>) : IEnumerable<TSource>
+    + {static} Distinct(source:IEnumerable<TSource>, comparer:IEqualityComparer<TSource>) : IEnumerable<TSource>
+    - {static} DistinctIterator(source:IEnumerable<TSource>, comparer:IEqualityComparer<TSource>) : IEnumerable<TSource>
+    + {static} Union(first:IEnumerable<TSource>, second:IEnumerable<TSource>) : IEnumerable<TSource>
+    + {static} Union(first:IEnumerable<TSource>, second:IEnumerable<TSource>, comparer:IEqualityComparer<TSource>) : IEnumerable<TSource>
+    - {static} UnionIterator(first:IEnumerable<TSource>, second:IEnumerable<TSource>, comparer:IEqualityComparer<TSource>) : IEnumerable<TSource>
+    + {static} Intersect(first:IEnumerable<TSource>, second:IEnumerable<TSource>) : IEnumerable<TSource>
+    + {static} Intersect(first:IEnumerable<TSource>, second:IEnumerable<TSource>, comparer:IEqualityComparer<TSource>) : IEnumerable<TSource>
+    - {static} IntersectIterator(first:IEnumerable<TSource>, second:IEnumerable<TSource>, comparer:IEqualityComparer<TSource>) : IEnumerable<TSource>
+    + {static} Except(first:IEnumerable<TSource>, second:IEnumerable<TSource>) : IEnumerable<TSource>
+    + {static} Except(first:IEnumerable<TSource>, second:IEnumerable<TSource>, comparer:IEqualityComparer<TSource>) : IEnumerable<TSource>
+    - {static} ExceptIterator(first:IEnumerable<TSource>, second:IEnumerable<TSource>, comparer:IEqualityComparer<TSource>) : IEnumerable<TSource>
+    + {static} Reverse(source:IEnumerable<TSource>) : IEnumerable<TSource>
+    - {static} ReverseIterator(source:IEnumerable<TSource>) : IEnumerable<TSource>
+    + {static} SequenceEqual(first:IEnumerable<TSource>, second:IEnumerable<TSource>) : bool
+    + {static} SequenceEqual(first:IEnumerable<TSource>, second:IEnumerable<TSource>, comparer:IEqualityComparer<TSource>) : bool
+    + {static} AsEnumerable(source:IEnumerable<TSource>) : IEnumerable<TSource>
+    + {static} ToArray(source:IEnumerable<TSource>) : TSource[]
+    + {static} ToList(source:IEnumerable<TSource>) : List<TSource>
+    + {static} ToDictionary(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>) : Dictionary<TKey, TSource>
+    + {static} ToDictionary(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>, comparer:IEqualityComparer<TKey>) : Dictionary<TKey, TSource>
+    + {static} ToDictionary(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>, elementSelector:Func<TSource, TElement>) : Dictionary<TKey, TElement>
+    + {static} ToDictionary(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>, elementSelector:Func<TSource, TElement>, comparer:IEqualityComparer<TKey>) : Dictionary<TKey, TElement>
+    + {static} ToLookup(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>) : ILookup<TKey, TSource>
+    + {static} ToLookup(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>, comparer:IEqualityComparer<TKey>) : ILookup<TKey, TSource>
+    + {static} ToLookup(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>, elementSelector:Func<TSource, TElement>) : ILookup<TKey, TElement>
+    + {static} ToLookup(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>, elementSelector:Func<TSource, TElement>, comparer:IEqualityComparer<TKey>) : ILookup<TKey, TElement>
+    + {static} ToHashSet(source:IEnumerable<TSource>) : HashSet<TSource>
+    + {static} ToHashSet(source:IEnumerable<TSource>, comparer:IEqualityComparer<TSource>) : HashSet<TSource>
+    + {static} DefaultIfEmpty(source:IEnumerable<TSource>) : IEnumerable<TSource>
+    + {static} DefaultIfEmpty(source:IEnumerable<TSource>, defaultValue:TSource) : IEnumerable<TSource>
+    - {static} DefaultIfEmptyIterator(source:IEnumerable<TSource>, defaultValue:TSource) : IEnumerable<TSource>
+    + {static} OfType(source:IEnumerable) : IEnumerable<TResult>
+    - {static} OfTypeIterator(source:IEnumerable) : IEnumerable<TResult>
+    + {static} Cast(source:IEnumerable) : IEnumerable<TResult>
+    - {static} CastIterator(source:IEnumerable) : IEnumerable<TResult>
+    + {static} First(source:IEnumerable<TSource>) : TSource
+    + {static} First(source:IEnumerable<TSource>, predicate:Func<TSource, bool>) : TSource
+    + {static} FirstOrDefault(source:IEnumerable<TSource>) : TSource
+    + {static} FirstOrDefault(source:IEnumerable<TSource>, predicate:Func<TSource, bool>) : TSource
+    + {static} Last(source:IEnumerable<TSource>) : TSource
+    + {static} Last(source:IEnumerable<TSource>, predicate:Func<TSource, bool>) : TSource
+    + {static} LastOrDefault(source:IEnumerable<TSource>) : TSource
+    + {static} LastOrDefault(source:IEnumerable<TSource>, predicate:Func<TSource, bool>) : TSource
+    + {static} Single(source:IEnumerable<TSource>) : TSource
+    + {static} Single(source:IEnumerable<TSource>, predicate:Func<TSource, bool>) : TSource
+    + {static} SingleOrDefault(source:IEnumerable<TSource>) : TSource
+    + {static} SingleOrDefault(source:IEnumerable<TSource>, predicate:Func<TSource, bool>) : TSource
+    + {static} ElementAt(source:IEnumerable<TSource>, index:int) : TSource
+    + {static} ElementAtOrDefault(source:IEnumerable<TSource>, index:int) : TSource
+    + {static} Range(start:int, count:int) : IEnumerable<int>
+    - {static} RangeIterator(start:int, count:int) : IEnumerable<int>
+    + {static} Repeat(element:TResult, count:int) : IEnumerable<TResult>
+    - {static} RepeatIterator(element:TResult, count:int) : IEnumerable<TResult>
+    + {static} Empty() : IEnumerable<TResult>
+    + {static} Any(source:IEnumerable<TSource>) : bool
+    + {static} Any(source:IEnumerable<TSource>, predicate:Func<TSource, bool>) : bool
+    + {static} All(source:IEnumerable<TSource>, predicate:Func<TSource, bool>) : bool
+    + {static} Count(source:IEnumerable<TSource>) : int
+    + {static} Count(source:IEnumerable<TSource>, predicate:Func<TSource, bool>) : int
+    + {static} LongCount(source:IEnumerable<TSource>) : long
+    + {static} LongCount(source:IEnumerable<TSource>, predicate:Func<TSource, bool>) : long
+    + {static} Contains(source:IEnumerable<TSource>, value:TSource) : bool
+    + {static} Contains(source:IEnumerable<TSource>, value:TSource, comparer:IEqualityComparer<TSource>) : bool
+    + {static} Aggregate(source:IEnumerable<TSource>, func:Func<TSource, TSource, TSource>) : TSource
+    + {static} Aggregate(source:IEnumerable<TSource>, seed:TAccumulate, func:Func<TAccumulate, TSource, TAccumulate>) : TAccumulate
+    + {static} Aggregate(source:IEnumerable<TSource>, seed:TAccumulate, func:Func<TAccumulate, TSource, TAccumulate>, resultSelector:Func<TAccumulate, TResult>) : TResult
+    + {static} Sum(source:IEnumerable<int>) : int
+    + {static} Sum(source:IEnumerable<int?>) : int?
+    + {static} Sum(source:IEnumerable<long>) : long
+    + {static} Sum(source:IEnumerable<long?>) : long?
+    + {static} Sum(source:IEnumerable<float>) : float
+    + {static} Sum(source:IEnumerable<float?>) : float?
+    + {static} Sum(source:IEnumerable<double>) : double
+    + {static} Sum(source:IEnumerable<double?>) : double?
+    + {static} Sum(source:IEnumerable<Decimal>) : Decimal
+    + {static} Sum(source:IEnumerable<Decimal?>) : Decimal?
+    + {static} Sum(source:IEnumerable<TSource>, selector:Func<TSource, int>) : int
+    + {static} Sum(source:IEnumerable<TSource>, selector:Func<TSource, int?>) : int?
+    + {static} Sum(source:IEnumerable<TSource>, selector:Func<TSource, long>) : long
+    + {static} Sum(source:IEnumerable<TSource>, selector:Func<TSource, long?>) : long?
+    + {static} Sum(source:IEnumerable<TSource>, selector:Func<TSource, float>) : float
+    + {static} Sum(source:IEnumerable<TSource>, selector:Func<TSource, float?>) : float?
+    + {static} Sum(source:IEnumerable<TSource>, selector:Func<TSource, double>) : double
+    + {static} Sum(source:IEnumerable<TSource>, selector:Func<TSource, double?>) : double?
+    + {static} Sum(source:IEnumerable<TSource>, selector:Func<TSource, Decimal>) : Decimal
+    + {static} Sum(source:IEnumerable<TSource>, selector:Func<TSource, Decimal?>) : Decimal?
+    + {static} Min(source:IEnumerable<int>) : int
+    + {static} Min(source:IEnumerable<int?>) : int?
+    + {static} Min(source:IEnumerable<long>) : long
+    + {static} Min(source:IEnumerable<long?>) : long?
+    + {static} Min(source:IEnumerable<float>) : float
+    + {static} Min(source:IEnumerable<float?>) : float?
+    + {static} Min(source:IEnumerable<double>) : double
+    + {static} Min(source:IEnumerable<double?>) : double?
+    + {static} Min(source:IEnumerable<Decimal>) : Decimal
+    + {static} Min(source:IEnumerable<Decimal?>) : Decimal?
+    + {static} Min(source:IEnumerable<TSource>) : TSource
+    + {static} Min(source:IEnumerable<TSource>, selector:Func<TSource, int>) : int
+    + {static} Min(source:IEnumerable<TSource>, selector:Func<TSource, int?>) : int?
+    + {static} Min(source:IEnumerable<TSource>, selector:Func<TSource, long>) : long
+    + {static} Min(source:IEnumerable<TSource>, selector:Func<TSource, long?>) : long?
+    + {static} Min(source:IEnumerable<TSource>, selector:Func<TSource, float>) : float
+    + {static} Min(source:IEnumerable<TSource>, selector:Func<TSource, float?>) : float?
+    + {static} Min(source:IEnumerable<TSource>, selector:Func<TSource, double>) : double
+    + {static} Min(source:IEnumerable<TSource>, selector:Func<TSource, double?>) : double?
+    + {static} Min(source:IEnumerable<TSource>, selector:Func<TSource, Decimal>) : Decimal
+    + {static} Min(source:IEnumerable<TSource>, selector:Func<TSource, Decimal?>) : Decimal?
+    + {static} Min(source:IEnumerable<TSource>, selector:Func<TSource, TResult>) : TResult
+    + {static} Max(source:IEnumerable<int>) : int
+    + {static} Max(source:IEnumerable<int?>) : int?
+    + {static} Max(source:IEnumerable<long>) : long
+    + {static} Max(source:IEnumerable<long?>) : long?
+    + {static} Max(source:IEnumerable<double>) : double
+    + {static} Max(source:IEnumerable<double?>) : double?
+    + {static} Max(source:IEnumerable<float>) : float
+    + {static} Max(source:IEnumerable<float?>) : float?
+    + {static} Max(source:IEnumerable<Decimal>) : Decimal
+    + {static} Max(source:IEnumerable<Decimal?>) : Decimal?
+    + {static} Max(source:IEnumerable<TSource>) : TSource
+    + {static} Max(source:IEnumerable<TSource>, selector:Func<TSource, int>) : int
+    + {static} Max(source:IEnumerable<TSource>, selector:Func<TSource, int?>) : int?
+    + {static} Max(source:IEnumerable<TSource>, selector:Func<TSource, long>) : long
+    + {static} Max(source:IEnumerable<TSource>, selector:Func<TSource, long?>) : long?
+    + {static} Max(source:IEnumerable<TSource>, selector:Func<TSource, float>) : float
+    + {static} Max(source:IEnumerable<TSource>, selector:Func<TSource, float?>) : float?
+    + {static} Max(source:IEnumerable<TSource>, selector:Func<TSource, double>) : double
+    + {static} Max(source:IEnumerable<TSource>, selector:Func<TSource, double?>) : double?
+    + {static} Max(source:IEnumerable<TSource>, selector:Func<TSource, Decimal>) : Decimal
+    + {static} Max(source:IEnumerable<TSource>, selector:Func<TSource, Decimal?>) : Decimal?
+    + {static} Max(source:IEnumerable<TSource>, selector:Func<TSource, TResult>) : TResult
+    + {static} Average(source:IEnumerable<int>) : double
+    + {static} Average(source:IEnumerable<int?>) : double?
+    + {static} Average(source:IEnumerable<long>) : double
+    + {static} Average(source:IEnumerable<long?>) : double?
+    + {static} Average(source:IEnumerable<float>) : float
+    + {static} Average(source:IEnumerable<float?>) : float?
+    + {static} Average(source:IEnumerable<double>) : double
+    + {static} Average(source:IEnumerable<double?>) : double?
+    + {static} Average(source:IEnumerable<Decimal>) : Decimal
+    + {static} Average(source:IEnumerable<Decimal?>) : Decimal?
+    + {static} Average(source:IEnumerable<TSource>, selector:Func<TSource, int>) : double
+    + {static} Average(source:IEnumerable<TSource>, selector:Func<TSource, int?>) : double?
+    + {static} Average(source:IEnumerable<TSource>, selector:Func<TSource, long>) : double
+    + {static} Average(source:IEnumerable<TSource>, selector:Func<TSource, long?>) : double?
+    + {static} Average(source:IEnumerable<TSource>, selector:Func<TSource, float>) : float
+    + {static} Average(source:IEnumerable<TSource>, selector:Func<TSource, float?>) : float?
+    + {static} Average(source:IEnumerable<TSource>, selector:Func<TSource, double>) : double
+    + {static} Average(source:IEnumerable<TSource>, selector:Func<TSource, double?>) : double?
+    + {static} Average(source:IEnumerable<TSource>, selector:Func<TSource, Decimal>) : Decimal
+    + {static} Average(source:IEnumerable<TSource>, selector:Func<TSource, Decimal?>) : Decimal?
+    + {static} Append(source:IEnumerable<TSource>, element:TSource) : IEnumerable<TSource>
+    + {static} Prepend(source:IEnumerable<TSource>, element:TSource) : IEnumerable<TSource>
+}
+abstract class "Iterator`1"<TSource> {
+    - threadId : int
+    <<internal>> state : int
+    <<internal>> current : TSource
+    + Iterator()
+    + Current : TSource <<get>>
+    + {abstract} Clone() : Enumerable.Iterator<TSource>
+    + <<virtual>> Dispose() : void
+    + GetEnumerator() : IEnumerator<TSource>
+    + {abstract} MoveNext() : bool
+    + {abstract} Select(selector:Func<TSource, TResult>) : IEnumerable<TResult>
+    + {abstract} Where(predicate:Func<TSource, bool>) : IEnumerable<TSource>
+    Current : object <<get>>
+    GetEnumerator() : IEnumerator
+    Reset() : void
+}
+class "WhereEnumerableIterator`1"<TSource> {
+    - source : IEnumerable<TSource>
+    - predicate : Func<TSource, bool>
+    - enumerator : IEnumerator<TSource>
+    + WhereEnumerableIterator(source:IEnumerable<TSource>, predicate:Func<TSource, bool>)
+    + <<override>> Clone() : Enumerable.Iterator<TSource>
+    + <<override>> Dispose() : void
+    + <<override>> MoveNext() : bool
+    + <<override>> Select(selector:Func<TSource, TResult>) : IEnumerable<TResult>
+    + <<override>> Where(predicate:Func<TSource, bool>) : IEnumerable<TSource>
+}
+class "WhereArrayIterator`1"<TSource> {
+    - source : TSource[]
+    - predicate : Func<TSource, bool>
+    - index : int
+    + WhereArrayIterator(source:TSource[], predicate:Func<TSource, bool>)
+    + <<override>> Clone() : Enumerable.Iterator<TSource>
+    + <<override>> MoveNext() : bool
+    + <<override>> Select(selector:Func<TSource, TResult>) : IEnumerable<TResult>
+    + <<override>> Where(predicate:Func<TSource, bool>) : IEnumerable<TSource>
+}
+class "WhereListIterator`1"<TSource> {
+    - source : List<TSource>
+    - predicate : Func<TSource, bool>
+    - enumerator : List<TSource>.Enumerator
+    + WhereListIterator(source:List<TSource>, predicate:Func<TSource, bool>)
+    + <<override>> Clone() : Enumerable.Iterator<TSource>
+    + <<override>> MoveNext() : bool
+    + <<override>> Select(selector:Func<TSource, TResult>) : IEnumerable<TResult>
+    + <<override>> Where(predicate:Func<TSource, bool>) : IEnumerable<TSource>
+}
+class "SelectEnumerableIterator`2"<TSource,TResult> {
+    - <<readonly>> _source : IEnumerable<TSource>
+    - <<readonly>> _selector : Func<TSource, TResult>
+    - _enumerator : IEnumerator<TSource>
+    + SelectEnumerableIterator(source:IEnumerable<TSource>, selector:Func<TSource, TResult>)
+    + <<override>> Clone() : Enumerable.Iterator<TResult>
+    + <<override>> Dispose() : void
+    + <<override>> MoveNext() : bool
+    + <<override>> Select(selector:Func<TResult, TResult2>) : IEnumerable<TResult2>
+    + <<override>> Where(predicate:Func<TResult, bool>) : IEnumerable<TResult>
+    + ToArray() : TResult[]
+    + ToList() : List<TResult>
+    + GetCount(onlyIfCheap:bool) : int
+}
+class "WhereSelectEnumerableIterator`2"<TSource,TResult> {
+    - source : IEnumerable<TSource>
+    - predicate : Func<TSource, bool>
+    - selector : Func<TSource, TResult>
+    - enumerator : IEnumerator<TSource>
+    + WhereSelectEnumerableIterator(source:IEnumerable<TSource>, predicate:Func<TSource, bool>, selector:Func<TSource, TResult>)
+    + <<override>> Clone() : Enumerable.Iterator<TResult>
+    + <<override>> Dispose() : void
+    + <<override>> MoveNext() : bool
+    + <<override>> Select(selector:Func<TResult, TResult2>) : IEnumerable<TResult2>
+    + <<override>> Where(predicate:Func<TResult, bool>) : IEnumerable<TResult>
+}
+class "WhereSelectArrayIterator`2"<TSource,TResult> {
+    - source : TSource[]
+    - predicate : Func<TSource, bool>
+    - selector : Func<TSource, TResult>
+    - index : int
+    + WhereSelectArrayIterator(source:TSource[], predicate:Func<TSource, bool>, selector:Func<TSource, TResult>)
+    + <<override>> Clone() : Enumerable.Iterator<TResult>
+    + <<override>> MoveNext() : bool
+    + <<override>> Select(selector:Func<TResult, TResult2>) : IEnumerable<TResult2>
+    + <<override>> Where(predicate:Func<TResult, bool>) : IEnumerable<TResult>
+}
+class "WhereSelectListIterator`2"<TSource,TResult> {
+    - source : List<TSource>
+    - predicate : Func<TSource, bool>
+    - selector : Func<TSource, TResult>
+    - enumerator : List<TSource>.Enumerator
+    + WhereSelectListIterator(source:List<TSource>, predicate:Func<TSource, bool>, selector:Func<TSource, TResult>)
+    + <<override>> Clone() : Enumerable.Iterator<TResult>
+    + <<override>> MoveNext() : bool
+    + <<override>> Select(selector:Func<TResult, TResult2>) : IEnumerable<TResult2>
+    + <<override>> Where(predicate:Func<TResult, bool>) : IEnumerable<TResult>
+}
+abstract class "AppendPrependIterator`1"<TSource> {
+    # <<readonly>> _source : IEnumerable<TSource>
+    # enumerator : IEnumerator<TSource>
+    # AppendPrependIterator(source:IEnumerable<TSource>)
+    # GetSourceEnumerator() : void
+    + {abstract} Append(item:TSource) : Enumerable.AppendPrependIterator<TSource>
+    + {abstract} Prepend(item:TSource) : Enumerable.AppendPrependIterator<TSource>
+    # LoadFromEnumerator() : bool
+    + <<override>> Dispose() : void
+    + <<override>> Select(selector:Func<TSource, TResult>) : IEnumerable<TResult>
+    + <<override>> Where(predicate:Func<TSource, bool>) : IEnumerable<TSource>
+    + {abstract} ToArray() : TSource[]
+    + {abstract} ToList() : List<TSource>
+    + {abstract} GetCount(onlyIfCheap:bool) : int
+}
+class "AppendPrepend1Iterator`1"<TSource> {
+    - <<readonly>> _item : TSource
+    - <<readonly>> _appending : bool
+    + AppendPrepend1Iterator(source:IEnumerable<TSource>, item:TSource, appending:bool)
+    + <<override>> Clone() : Enumerable.Iterator<TSource>
+    + <<override>> MoveNext() : bool
+    + <<override>> Append(item:TSource) : Enumerable.AppendPrependIterator<TSource>
+    + <<override>> Prepend(item:TSource) : Enumerable.AppendPrependIterator<TSource>
+    - LazyToArray() : TSource[]
+    + <<override>> ToArray() : TSource[]
+    + <<override>> ToList() : List<TSource>
+    + <<override>> GetCount(onlyIfCheap:bool) : int
+}
+class "AppendPrependN`1"<TSource> {
+    - <<readonly>> _prepended : SingleLinkedNode<TSource>
+    - <<readonly>> _appended : SingleLinkedNode<TSource>
+    - <<readonly>> _prependCount : int
+    - <<readonly>> _appendCount : int
+    - _node : SingleLinkedNode<TSource>
+    + AppendPrependN(source:IEnumerable<TSource>, prepended:SingleLinkedNode<TSource>, appended:SingleLinkedNode<TSource>, prependCount:int, appendCount:int)
+    + <<override>> Clone() : Enumerable.Iterator<TSource>
+    + <<override>> MoveNext() : bool
+    + <<override>> Append(item:TSource) : Enumerable.AppendPrependIterator<TSource>
+    + <<override>> Prepend(item:TSource) : Enumerable.AppendPrependIterator<TSource>
+    - LazyToArray() : TSource[]
+    + <<override>> ToArray() : TSource[]
+    + <<override>> ToList() : List<TSource>
+    + <<override>> GetCount(onlyIfCheap:bool) : int
+}
+Enumerable +-- "Iterator`1"
+"IEnumerable`1" "<TSource>" <|-- "Iterator`1"
+IEnumerable <|-- "Iterator`1"
+"IEnumerator`1" "<TSource>" <|-- "Iterator`1"
+IDisposable <|-- "Iterator`1"
+IEnumerator <|-- "Iterator`1"
+Enumerable +-- "WhereEnumerableIterator`1"
+Enumerable +-- "WhereArrayIterator`1"
+Enumerable +-- "WhereListIterator`1"
+Enumerable +-- "SelectEnumerableIterator`2"
+"IIListProvider`1" "<TResult>" <|-- "SelectEnumerableIterator`2"
+"IEnumerable`1" "<TResult>" <|-- "SelectEnumerableIterator`2"
+IEnumerable <|-- "SelectEnumerableIterator`2"
+Enumerable +-- "WhereSelectEnumerableIterator`2"
+Enumerable +-- "WhereSelectArrayIterator`2"
+Enumerable +-- "WhereSelectListIterator`2"
+Enumerable +-- "AppendPrependIterator`1"
+"IIListProvider`1" "<TSource>" <|-- "AppendPrependIterator`1"
+"IEnumerable`1" "<TSource>" <|-- "AppendPrependIterator`1"
+IEnumerable <|-- "AppendPrependIterator`1"
+Enumerable +-- "AppendPrepend1Iterator`1"
+Enumerable +-- "AppendPrependN`1"
+@enduml

@@ -1,0 +1,17 @@
+@startuml
+class HttpMessageInvoker {
+    - <<volatile>> _disposed : bool
+    - <<readonly>> _disposeHandler : bool
+    - <<readonly>> _handler : HttpMessageHandler
+    + HttpMessageInvoker(handler:HttpMessageHandler)
+    + HttpMessageInvoker(handler:HttpMessageHandler, disposeHandler:bool)
+    + <<virtual>> Send(request:HttpRequestMessage, cancellationToken:CancellationToken) : HttpResponseMessage
+    + <<virtual>> SendAsync(request:HttpRequestMessage, cancellationToken:CancellationToken) : Task<HttpResponseMessage>
+    - {static} ShouldSendWithTelemetry(request:HttpRequestMessage) : bool
+    <<internal>> {static} LogRequestFailed(telemetryStarted:bool) : bool
+    + Dispose() : void
+    # <<virtual>> Dispose(disposing:bool) : void
+    - CheckDisposed() : void
+}
+IDisposable <|-- HttpMessageInvoker
+@enduml

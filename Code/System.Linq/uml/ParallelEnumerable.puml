@@ -1,0 +1,215 @@
+@startuml
+class ParallelEnumerable <<static>> {
+    - <<const>> RIGHT_SOURCE_NOT_PARALLEL_STR : string = "The second data source of a binary operator must be of type System.Linq.ParallelQuery<T> rather than System.Collections.Generic.IEnumerable<T>. To fix this problem, use the AsParallel() extension method to convert the right data source to System.Linq.ParallelQuery<T>."
+    + {static} AsParallel(source:IEnumerable<TSource>) : ParallelQuery<TSource>
+    + {static} AsParallel(source:Partitioner<TSource>) : ParallelQuery<TSource>
+    + {static} AsOrdered(source:ParallelQuery<TSource>) : ParallelQuery<TSource>
+    + {static} AsOrdered(source:ParallelQuery) : ParallelQuery
+    + {static} AsUnordered(source:ParallelQuery<TSource>) : ParallelQuery<TSource>
+    + {static} AsParallel(source:IEnumerable) : ParallelQuery
+    + {static} AsSequential(source:ParallelQuery<TSource>) : IEnumerable<TSource>
+    <<internal>> {static} WithTaskScheduler(source:ParallelQuery<TSource>, taskScheduler:TaskScheduler) : ParallelQuery<TSource>
+    + {static} WithDegreeOfParallelism(source:ParallelQuery<TSource>, degreeOfParallelism:int) : ParallelQuery<TSource>
+    + {static} WithCancellation(source:ParallelQuery<TSource>, cancellationToken:CancellationToken) : ParallelQuery<TSource>
+    + {static} WithExecutionMode(source:ParallelQuery<TSource>, executionMode:ParallelExecutionMode) : ParallelQuery<TSource>
+    + {static} WithMergeOptions(source:ParallelQuery<TSource>, mergeOptions:ParallelMergeOptions) : ParallelQuery<TSource>
+    + {static} Range(start:int, count:int) : ParallelQuery<int>
+    + {static} Repeat(element:TResult, count:int) : ParallelQuery<TResult>
+    + {static} Empty() : ParallelQuery<TResult>
+    + {static} ForAll(source:ParallelQuery<TSource>, action:Action<TSource>) : void
+    + {static} Where(source:ParallelQuery<TSource>, predicate:Func<TSource, bool>) : ParallelQuery<TSource>
+    + {static} Where(source:ParallelQuery<TSource>, predicate:Func<TSource, int, bool>) : ParallelQuery<TSource>
+    + {static} Select(source:ParallelQuery<TSource>, selector:Func<TSource, TResult>) : ParallelQuery<TResult>
+    + {static} Select(source:ParallelQuery<TSource>, selector:Func<TSource, int, TResult>) : ParallelQuery<TResult>
+    + {static} Zip(first:ParallelQuery<TFirst>, second:ParallelQuery<TSecond>, resultSelector:Func<TFirst, TSecond, TResult>) : ParallelQuery<TResult>
+    + {static} Zip(first:ParallelQuery<TFirst>, second:IEnumerable<TSecond>, resultSelector:Func<TFirst, TSecond, TResult>) : ParallelQuery<TResult>
+    + {static} Join(outer:ParallelQuery<TOuter>, inner:ParallelQuery<TInner>, outerKeySelector:Func<TOuter, TKey>, innerKeySelector:Func<TInner, TKey>, resultSelector:Func<TOuter, TInner, TResult>) : ParallelQuery<TResult>
+    + {static} Join(outer:ParallelQuery<TOuter>, inner:IEnumerable<TInner>, outerKeySelector:Func<TOuter, TKey>, innerKeySelector:Func<TInner, TKey>, resultSelector:Func<TOuter, TInner, TResult>) : ParallelQuery<TResult>
+    + {static} Join(outer:ParallelQuery<TOuter>, inner:ParallelQuery<TInner>, outerKeySelector:Func<TOuter, TKey>, innerKeySelector:Func<TInner, TKey>, resultSelector:Func<TOuter, TInner, TResult>, comparer:IEqualityComparer<TKey>) : ParallelQuery<TResult>
+    + {static} Join(outer:ParallelQuery<TOuter>, inner:IEnumerable<TInner>, outerKeySelector:Func<TOuter, TKey>, innerKeySelector:Func<TInner, TKey>, resultSelector:Func<TOuter, TInner, TResult>, comparer:IEqualityComparer<TKey>) : ParallelQuery<TResult>
+    + {static} GroupJoin(outer:ParallelQuery<TOuter>, inner:ParallelQuery<TInner>, outerKeySelector:Func<TOuter, TKey>, innerKeySelector:Func<TInner, TKey>, resultSelector:Func<TOuter, IEnumerable<TInner>, TResult>) : ParallelQuery<TResult>
+    + {static} GroupJoin(outer:ParallelQuery<TOuter>, inner:IEnumerable<TInner>, outerKeySelector:Func<TOuter, TKey>, innerKeySelector:Func<TInner, TKey>, resultSelector:Func<TOuter, IEnumerable<TInner>, TResult>) : ParallelQuery<TResult>
+    + {static} GroupJoin(outer:ParallelQuery<TOuter>, inner:ParallelQuery<TInner>, outerKeySelector:Func<TOuter, TKey>, innerKeySelector:Func<TInner, TKey>, resultSelector:Func<TOuter, IEnumerable<TInner>, TResult>, comparer:IEqualityComparer<TKey>) : ParallelQuery<TResult>
+    + {static} GroupJoin(outer:ParallelQuery<TOuter>, inner:IEnumerable<TInner>, outerKeySelector:Func<TOuter, TKey>, innerKeySelector:Func<TInner, TKey>, resultSelector:Func<TOuter, IEnumerable<TInner>, TResult>, comparer:IEqualityComparer<TKey>) : ParallelQuery<TResult>
+    + {static} SelectMany(source:ParallelQuery<TSource>, selector:Func<TSource, IEnumerable<TResult>>) : ParallelQuery<TResult>
+    + {static} SelectMany(source:ParallelQuery<TSource>, selector:Func<TSource, int, IEnumerable<TResult>>) : ParallelQuery<TResult>
+    + {static} SelectMany(source:ParallelQuery<TSource>, collectionSelector:Func<TSource, IEnumerable<TCollection>>, resultSelector:Func<TSource, TCollection, TResult>) : ParallelQuery<TResult>
+    + {static} SelectMany(source:ParallelQuery<TSource>, collectionSelector:Func<TSource, int, IEnumerable<TCollection>>, resultSelector:Func<TSource, TCollection, TResult>) : ParallelQuery<TResult>
+    + {static} OrderBy(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>) : OrderedParallelQuery<TSource>
+    + {static} OrderBy(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>, comparer:IComparer<TKey>) : OrderedParallelQuery<TSource>
+    + {static} OrderByDescending(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>) : OrderedParallelQuery<TSource>
+    + {static} OrderByDescending(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>, comparer:IComparer<TKey>) : OrderedParallelQuery<TSource>
+    + {static} ThenBy(source:OrderedParallelQuery<TSource>, keySelector:Func<TSource, TKey>) : OrderedParallelQuery<TSource>
+    + {static} ThenBy(source:OrderedParallelQuery<TSource>, keySelector:Func<TSource, TKey>, comparer:IComparer<TKey>) : OrderedParallelQuery<TSource>
+    + {static} ThenByDescending(source:OrderedParallelQuery<TSource>, keySelector:Func<TSource, TKey>) : OrderedParallelQuery<TSource>
+    + {static} ThenByDescending(source:OrderedParallelQuery<TSource>, keySelector:Func<TSource, TKey>, comparer:IComparer<TKey>) : OrderedParallelQuery<TSource>
+    + {static} GroupBy(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>) : ParallelQuery<IGrouping<TKey, TSource>>
+    + {static} GroupBy(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>, comparer:IEqualityComparer<TKey>) : ParallelQuery<IGrouping<TKey, TSource>>
+    + {static} GroupBy(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>, elementSelector:Func<TSource, TElement>) : ParallelQuery<IGrouping<TKey, TElement>>
+    + {static} GroupBy(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>, elementSelector:Func<TSource, TElement>, comparer:IEqualityComparer<TKey>) : ParallelQuery<IGrouping<TKey, TElement>>
+    + {static} GroupBy(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>, resultSelector:Func<TKey, IEnumerable<TSource>, TResult>) : ParallelQuery<TResult>
+    + {static} GroupBy(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>, resultSelector:Func<TKey, IEnumerable<TSource>, TResult>, comparer:IEqualityComparer<TKey>) : ParallelQuery<TResult>
+    + {static} GroupBy(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>, elementSelector:Func<TSource, TElement>, resultSelector:Func<TKey, IEnumerable<TElement>, TResult>) : ParallelQuery<TResult>
+    + {static} GroupBy(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>, elementSelector:Func<TSource, TElement>, resultSelector:Func<TKey, IEnumerable<TElement>, TResult>, comparer:IEqualityComparer<TKey>) : ParallelQuery<TResult>
+    - {static} PerformAggregation(source:ParallelQuery<T>, reduce:Func<T, T, T>, seed:T, seedIsSpecified:bool, throwIfEmpty:bool, options:QueryAggregationOptions) : T
+    - {static} PerformSequentialAggregation(source:ParallelQuery<TSource>, seed:TAccumulate, seedIsSpecified:bool, func:Func<TAccumulate, TSource, TAccumulate>) : TAccumulate
+    + {static} Aggregate(source:ParallelQuery<TSource>, func:Func<TSource, TSource, TSource>) : TSource
+    <<internal>> {static} Aggregate(source:ParallelQuery<TSource>, func:Func<TSource, TSource, TSource>, options:QueryAggregationOptions) : TSource
+    + {static} Aggregate(source:ParallelQuery<TSource>, seed:TAccumulate, func:Func<TAccumulate, TSource, TAccumulate>) : TAccumulate
+    <<internal>> {static} Aggregate(source:ParallelQuery<TSource>, seed:TAccumulate, func:Func<TAccumulate, TSource, TAccumulate>, options:QueryAggregationOptions) : TAccumulate
+    + {static} Aggregate(source:ParallelQuery<TSource>, seed:TAccumulate, func:Func<TAccumulate, TSource, TAccumulate>, resultSelector:Func<TAccumulate, TResult>) : TResult
+    + {static} Aggregate(source:ParallelQuery<TSource>, seed:TAccumulate, updateAccumulatorFunc:Func<TAccumulate, TSource, TAccumulate>, combineAccumulatorsFunc:Func<TAccumulate, TAccumulate, TAccumulate>, resultSelector:Func<TAccumulate, TResult>) : TResult
+    + {static} Aggregate(source:ParallelQuery<TSource>, seedFactory:Func<TAccumulate>, updateAccumulatorFunc:Func<TAccumulate, TSource, TAccumulate>, combineAccumulatorsFunc:Func<TAccumulate, TAccumulate, TAccumulate>, resultSelector:Func<TAccumulate, TResult>) : TResult
+    + {static} Count(source:ParallelQuery<TSource>) : int
+    + {static} Count(source:ParallelQuery<TSource>, predicate:Func<TSource, bool>) : int
+    + {static} LongCount(source:ParallelQuery<TSource>) : long
+    + {static} LongCount(source:ParallelQuery<TSource>, predicate:Func<TSource, bool>) : long
+    + {static} Sum(source:ParallelQuery<int>) : int
+    + {static} Sum(source:ParallelQuery<int?>) : int?
+    + {static} Sum(source:ParallelQuery<long>) : long
+    + {static} Sum(source:ParallelQuery<long?>) : long?
+    + {static} Sum(source:ParallelQuery<float>) : float
+    + {static} Sum(source:ParallelQuery<float?>) : float?
+    + {static} Sum(source:ParallelQuery<double>) : double
+    + {static} Sum(source:ParallelQuery<double?>) : double?
+    + {static} Sum(source:ParallelQuery<Decimal>) : Decimal
+    + {static} Sum(source:ParallelQuery<Decimal?>) : Decimal?
+    + {static} Sum(source:ParallelQuery<TSource>, selector:Func<TSource, int>) : int
+    + {static} Sum(source:ParallelQuery<TSource>, selector:Func<TSource, int?>) : int?
+    + {static} Sum(source:ParallelQuery<TSource>, selector:Func<TSource, long>) : long
+    + {static} Sum(source:ParallelQuery<TSource>, selector:Func<TSource, long?>) : long?
+    + {static} Sum(source:ParallelQuery<TSource>, selector:Func<TSource, float>) : float
+    + {static} Sum(source:ParallelQuery<TSource>, selector:Func<TSource, float?>) : float?
+    + {static} Sum(source:ParallelQuery<TSource>, selector:Func<TSource, double>) : double
+    + {static} Sum(source:ParallelQuery<TSource>, selector:Func<TSource, double?>) : double?
+    + {static} Sum(source:ParallelQuery<TSource>, selector:Func<TSource, Decimal>) : Decimal
+    + {static} Sum(source:ParallelQuery<TSource>, selector:Func<TSource, Decimal?>) : Decimal?
+    + {static} Min(source:ParallelQuery<int>) : int
+    + {static} Min(source:ParallelQuery<int?>) : int?
+    + {static} Min(source:ParallelQuery<long>) : long
+    + {static} Min(source:ParallelQuery<long?>) : long?
+    + {static} Min(source:ParallelQuery<float>) : float
+    + {static} Min(source:ParallelQuery<float?>) : float?
+    + {static} Min(source:ParallelQuery<double>) : double
+    + {static} Min(source:ParallelQuery<double?>) : double?
+    + {static} Min(source:ParallelQuery<Decimal>) : Decimal
+    + {static} Min(source:ParallelQuery<Decimal?>) : Decimal?
+    + {static} Min(source:ParallelQuery<TSource>) : TSource
+    + {static} Min(source:ParallelQuery<TSource>, selector:Func<TSource, int>) : int
+    + {static} Min(source:ParallelQuery<TSource>, selector:Func<TSource, int?>) : int?
+    + {static} Min(source:ParallelQuery<TSource>, selector:Func<TSource, long>) : long
+    + {static} Min(source:ParallelQuery<TSource>, selector:Func<TSource, long?>) : long?
+    + {static} Min(source:ParallelQuery<TSource>, selector:Func<TSource, float>) : float
+    + {static} Min(source:ParallelQuery<TSource>, selector:Func<TSource, float?>) : float?
+    + {static} Min(source:ParallelQuery<TSource>, selector:Func<TSource, double>) : double
+    + {static} Min(source:ParallelQuery<TSource>, selector:Func<TSource, double?>) : double?
+    + {static} Min(source:ParallelQuery<TSource>, selector:Func<TSource, Decimal>) : Decimal
+    + {static} Min(source:ParallelQuery<TSource>, selector:Func<TSource, Decimal?>) : Decimal?
+    + {static} Min(source:ParallelQuery<TSource>, selector:Func<TSource, TResult>) : TResult
+    + {static} Max(source:ParallelQuery<int>) : int
+    + {static} Max(source:ParallelQuery<int?>) : int?
+    + {static} Max(source:ParallelQuery<long>) : long
+    + {static} Max(source:ParallelQuery<long?>) : long?
+    + {static} Max(source:ParallelQuery<float>) : float
+    + {static} Max(source:ParallelQuery<float?>) : float?
+    + {static} Max(source:ParallelQuery<double>) : double
+    + {static} Max(source:ParallelQuery<double?>) : double?
+    + {static} Max(source:ParallelQuery<Decimal>) : Decimal
+    + {static} Max(source:ParallelQuery<Decimal?>) : Decimal?
+    + {static} Max(source:ParallelQuery<TSource>) : TSource
+    + {static} Max(source:ParallelQuery<TSource>, selector:Func<TSource, int>) : int
+    + {static} Max(source:ParallelQuery<TSource>, selector:Func<TSource, int?>) : int?
+    + {static} Max(source:ParallelQuery<TSource>, selector:Func<TSource, long>) : long
+    + {static} Max(source:ParallelQuery<TSource>, selector:Func<TSource, long?>) : long?
+    + {static} Max(source:ParallelQuery<TSource>, selector:Func<TSource, float>) : float
+    + {static} Max(source:ParallelQuery<TSource>, selector:Func<TSource, float?>) : float?
+    + {static} Max(source:ParallelQuery<TSource>, selector:Func<TSource, double>) : double
+    + {static} Max(source:ParallelQuery<TSource>, selector:Func<TSource, double?>) : double?
+    + {static} Max(source:ParallelQuery<TSource>, selector:Func<TSource, Decimal>) : Decimal
+    + {static} Max(source:ParallelQuery<TSource>, selector:Func<TSource, Decimal?>) : Decimal?
+    + {static} Max(source:ParallelQuery<TSource>, selector:Func<TSource, TResult>) : TResult
+    + {static} Average(source:ParallelQuery<int>) : double
+    + {static} Average(source:ParallelQuery<int?>) : double?
+    + {static} Average(source:ParallelQuery<long>) : double
+    + {static} Average(source:ParallelQuery<long?>) : double?
+    + {static} Average(source:ParallelQuery<float>) : float
+    + {static} Average(source:ParallelQuery<float?>) : float?
+    + {static} Average(source:ParallelQuery<double>) : double
+    + {static} Average(source:ParallelQuery<double?>) : double?
+    + {static} Average(source:ParallelQuery<Decimal>) : Decimal
+    + {static} Average(source:ParallelQuery<Decimal?>) : Decimal?
+    + {static} Average(source:ParallelQuery<TSource>, selector:Func<TSource, int>) : double
+    + {static} Average(source:ParallelQuery<TSource>, selector:Func<TSource, int?>) : double?
+    + {static} Average(source:ParallelQuery<TSource>, selector:Func<TSource, long>) : double
+    + {static} Average(source:ParallelQuery<TSource>, selector:Func<TSource, long?>) : double?
+    + {static} Average(source:ParallelQuery<TSource>, selector:Func<TSource, float>) : float
+    + {static} Average(source:ParallelQuery<TSource>, selector:Func<TSource, float?>) : float?
+    + {static} Average(source:ParallelQuery<TSource>, selector:Func<TSource, double>) : double
+    + {static} Average(source:ParallelQuery<TSource>, selector:Func<TSource, double?>) : double?
+    + {static} Average(source:ParallelQuery<TSource>, selector:Func<TSource, Decimal>) : Decimal
+    + {static} Average(source:ParallelQuery<TSource>, selector:Func<TSource, Decimal?>) : Decimal?
+    + {static} Any(source:ParallelQuery<TSource>, predicate:Func<TSource, bool>) : bool
+    + {static} Any(source:ParallelQuery<TSource>) : bool
+    + {static} All(source:ParallelQuery<TSource>, predicate:Func<TSource, bool>) : bool
+    + {static} Contains(source:ParallelQuery<TSource>, value:TSource) : bool
+    + {static} Contains(source:ParallelQuery<TSource>, value:TSource, comparer:IEqualityComparer<TSource>) : bool
+    + {static} Take(source:ParallelQuery<TSource>, count:int) : ParallelQuery<TSource>
+    + {static} TakeWhile(source:ParallelQuery<TSource>, predicate:Func<TSource, bool>) : ParallelQuery<TSource>
+    + {static} TakeWhile(source:ParallelQuery<TSource>, predicate:Func<TSource, int, bool>) : ParallelQuery<TSource>
+    + {static} Skip(source:ParallelQuery<TSource>, count:int) : ParallelQuery<TSource>
+    + {static} SkipWhile(source:ParallelQuery<TSource>, predicate:Func<TSource, bool>) : ParallelQuery<TSource>
+    + {static} SkipWhile(source:ParallelQuery<TSource>, predicate:Func<TSource, int, bool>) : ParallelQuery<TSource>
+    + {static} Concat(first:ParallelQuery<TSource>, second:ParallelQuery<TSource>) : ParallelQuery<TSource>
+    + {static} Concat(first:ParallelQuery<TSource>, second:IEnumerable<TSource>) : ParallelQuery<TSource>
+    + {static} SequenceEqual(first:ParallelQuery<TSource>, second:ParallelQuery<TSource>) : bool
+    + {static} SequenceEqual(first:ParallelQuery<TSource>, second:IEnumerable<TSource>) : bool
+    + {static} SequenceEqual(first:ParallelQuery<TSource>, second:ParallelQuery<TSource>, comparer:IEqualityComparer<TSource>) : bool
+    - {static} DisposeEnumerator(e:IEnumerator<TSource>, cancelState:CancellationState) : void
+    + {static} SequenceEqual(first:ParallelQuery<TSource>, second:IEnumerable<TSource>, comparer:IEqualityComparer<TSource>) : bool
+    + {static} Distinct(source:ParallelQuery<TSource>) : ParallelQuery<TSource>
+    + {static} Distinct(source:ParallelQuery<TSource>, comparer:IEqualityComparer<TSource>) : ParallelQuery<TSource>
+    + {static} Union(first:ParallelQuery<TSource>, second:ParallelQuery<TSource>) : ParallelQuery<TSource>
+    + {static} Union(first:ParallelQuery<TSource>, second:IEnumerable<TSource>) : ParallelQuery<TSource>
+    + {static} Union(first:ParallelQuery<TSource>, second:ParallelQuery<TSource>, comparer:IEqualityComparer<TSource>) : ParallelQuery<TSource>
+    + {static} Union(first:ParallelQuery<TSource>, second:IEnumerable<TSource>, comparer:IEqualityComparer<TSource>) : ParallelQuery<TSource>
+    + {static} Intersect(first:ParallelQuery<TSource>, second:ParallelQuery<TSource>) : ParallelQuery<TSource>
+    + {static} Intersect(first:ParallelQuery<TSource>, second:IEnumerable<TSource>) : ParallelQuery<TSource>
+    + {static} Intersect(first:ParallelQuery<TSource>, second:ParallelQuery<TSource>, comparer:IEqualityComparer<TSource>) : ParallelQuery<TSource>
+    + {static} Intersect(first:ParallelQuery<TSource>, second:IEnumerable<TSource>, comparer:IEqualityComparer<TSource>) : ParallelQuery<TSource>
+    + {static} Except(first:ParallelQuery<TSource>, second:ParallelQuery<TSource>) : ParallelQuery<TSource>
+    + {static} Except(first:ParallelQuery<TSource>, second:IEnumerable<TSource>) : ParallelQuery<TSource>
+    + {static} Except(first:ParallelQuery<TSource>, second:ParallelQuery<TSource>, comparer:IEqualityComparer<TSource>) : ParallelQuery<TSource>
+    + {static} Except(first:ParallelQuery<TSource>, second:IEnumerable<TSource>, comparer:IEqualityComparer<TSource>) : ParallelQuery<TSource>
+    + {static} AsEnumerable(source:ParallelQuery<TSource>) : IEnumerable<TSource>
+    + {static} ToArray(source:ParallelQuery<TSource>) : TSource[]
+    + {static} ToList(source:ParallelQuery<TSource>) : List<TSource>
+    + {static} ToDictionary(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>) : Dictionary<TKey, TSource>
+    + {static} ToDictionary(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>, comparer:IEqualityComparer<TKey>) : Dictionary<TKey, TSource>
+    + {static} ToDictionary(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>, elementSelector:Func<TSource, TElement>) : Dictionary<TKey, TElement>
+    + {static} ToDictionary(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>, elementSelector:Func<TSource, TElement>, comparer:IEqualityComparer<TKey>) : Dictionary<TKey, TElement>
+    + {static} ToLookup(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>) : ILookup<TKey, TSource>
+    + {static} ToLookup(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>, comparer:IEqualityComparer<TKey>) : ILookup<TKey, TSource>
+    + {static} ToLookup(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>, elementSelector:Func<TSource, TElement>) : ILookup<TKey, TElement>
+    + {static} ToLookup(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>, elementSelector:Func<TSource, TElement>, comparer:IEqualityComparer<TKey>) : ILookup<TKey, TElement>
+    + {static} Reverse(source:ParallelQuery<TSource>) : ParallelQuery<TSource>
+    + {static} OfType(source:ParallelQuery) : ParallelQuery<TResult>
+    + {static} Cast(source:ParallelQuery) : ParallelQuery<TResult>
+    - {static} GetOneWithPossibleDefault(queryOp:QueryOperator<TSource>, throwIfTwo:bool, defaultIfEmpty:bool) : TSource
+    + {static} First(source:ParallelQuery<TSource>) : TSource
+    + {static} First(source:ParallelQuery<TSource>, predicate:Func<TSource, bool>) : TSource
+    + {static} FirstOrDefault(source:ParallelQuery<TSource>) : TSource
+    + {static} FirstOrDefault(source:ParallelQuery<TSource>, predicate:Func<TSource, bool>) : TSource
+    + {static} Last(source:ParallelQuery<TSource>) : TSource
+    + {static} Last(source:ParallelQuery<TSource>, predicate:Func<TSource, bool>) : TSource
+    + {static} LastOrDefault(source:ParallelQuery<TSource>) : TSource
+    + {static} LastOrDefault(source:ParallelQuery<TSource>, predicate:Func<TSource, bool>) : TSource
+    + {static} Single(source:ParallelQuery<TSource>) : TSource
+    + {static} Single(source:ParallelQuery<TSource>, predicate:Func<TSource, bool>) : TSource
+    + {static} SingleOrDefault(source:ParallelQuery<TSource>) : TSource
+    + {static} SingleOrDefault(source:ParallelQuery<TSource>, predicate:Func<TSource, bool>) : TSource
+    + {static} DefaultIfEmpty(source:ParallelQuery<TSource>) : ParallelQuery<TSource>
+    + {static} DefaultIfEmpty(source:ParallelQuery<TSource>, defaultValue:TSource) : ParallelQuery<TSource>
+    + {static} ElementAt(source:ParallelQuery<TSource>, index:int) : TSource
+    + {static} ElementAtOrDefault(source:ParallelQuery<TSource>, index:int) : TSource
+}
+@enduml

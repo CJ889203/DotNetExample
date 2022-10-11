@@ -1,0 +1,19 @@
+@startuml
+interface ITable {
+    Context : DataContext <<get>>
+    InsertOnSubmit(entity:object) : void
+    InsertAllOnSubmit(entities:IEnumerable) : void
+    Attach(entity:object) : void
+    Attach(entity:object, asModified:bool) : void
+    Attach(entity:object, original:object) : void
+    AttachAll(entities:IEnumerable) : void
+    AttachAll(entities:IEnumerable, asModified:bool) : void
+    DeleteOnSubmit(entity:object) : void
+    DeleteAllOnSubmit(entities:IEnumerable) : void
+    GetOriginalEntityState(entity:object) : object
+    GetModifiedMembers(entity:object) : ModifiedMemberInfo[]
+    IsReadOnly : bool <<get>>
+}
+IQueryable <|-- ITable
+IEnumerable <|-- ITable
+@enduml

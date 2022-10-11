@@ -1,0 +1,31 @@
+@startuml
+class CountdownEvent {
+    - _initialCount : int
+    - <<volatile>> _currentCount : int
+    - <<readonly>> _event : ManualResetEventSlim
+    - <<volatile>> _disposed : bool
+    + CountdownEvent(initialCount:int)
+    + CurrentCount : int <<get>>
+    + InitialCount : int <<get>>
+    + IsSet : bool <<get>>
+    + WaitHandle : WaitHandle <<get>>
+    + Dispose() : void
+    # <<virtual>> Dispose(disposing:bool) : void
+    + Signal() : bool
+    + Signal(signalCount:int) : bool
+    + AddCount() : void
+    + TryAddCount() : bool
+    + AddCount(signalCount:int) : void
+    + TryAddCount(signalCount:int) : bool
+    + Reset() : void
+    + Reset(count:int) : void
+    + Wait() : void
+    + Wait(cancellationToken:CancellationToken) : void
+    + Wait(timeout:TimeSpan) : bool
+    + Wait(timeout:TimeSpan, cancellationToken:CancellationToken) : bool
+    + Wait(millisecondsTimeout:int) : bool
+    + Wait(millisecondsTimeout:int, cancellationToken:CancellationToken) : bool
+    - ThrowIfDisposed() : void
+}
+IDisposable <|-- CountdownEvent
+@enduml

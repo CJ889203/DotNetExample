@@ -1,0 +1,15 @@
+E:\MyGitHub\DotNetExample\Sample\Sample_IEnumerable\bin\Debug\net6.0\Sample_IEnumerable.exe
+E:\MyGitHub\DotNetExample\Sample\Sample_IEnumerable\bin\Debug\net6.0\Sample_IEnumerable.deps.json
+E:\MyGitHub\DotNetExample\Sample\Sample_IEnumerable\bin\Debug\net6.0\Sample_IEnumerable.runtimeconfig.json
+E:\MyGitHub\DotNetExample\Sample\Sample_IEnumerable\bin\Debug\net6.0\Sample_IEnumerable.dll
+E:\MyGitHub\DotNetExample\Sample\Sample_IEnumerable\bin\Debug\net6.0\Sample_IEnumerable.pdb
+E:\MyGitHub\DotNetExample\Sample\Sample_IEnumerable\obj\Debug\net6.0\Sample_IEnumerable.csproj.AssemblyReference.cache
+E:\MyGitHub\DotNetExample\Sample\Sample_IEnumerable\obj\Debug\net6.0\Sample_IEnumerable.GeneratedMSBuildEditorConfig.editorconfig
+E:\MyGitHub\DotNetExample\Sample\Sample_IEnumerable\obj\Debug\net6.0\Sample_IEnumerable.AssemblyInfoInputs.cache
+E:\MyGitHub\DotNetExample\Sample\Sample_IEnumerable\obj\Debug\net6.0\Sample_IEnumerable.AssemblyInfo.cs
+E:\MyGitHub\DotNetExample\Sample\Sample_IEnumerable\obj\Debug\net6.0\Sample_IEnumerable.csproj.CoreCompileInputs.cache
+E:\MyGitHub\DotNetExample\Sample\Sample_IEnumerable\obj\Debug\net6.0\Sample_IEnumerable.dll
+E:\MyGitHub\DotNetExample\Sample\Sample_IEnumerable\obj\Debug\net6.0\refint\Sample_IEnumerable.dll
+E:\MyGitHub\DotNetExample\Sample\Sample_IEnumerable\obj\Debug\net6.0\Sample_IEnumerable.pdb
+E:\MyGitHub\DotNetExample\Sample\Sample_IEnumerable\obj\Debug\net6.0\Sample_IEnumerable.genruntimeconfig.cache
+E:\MyGitHub\DotNetExample\Sample\Sample_IEnumerable\obj\Debug\net6.0\ref\Sample_IEnumerable.dll

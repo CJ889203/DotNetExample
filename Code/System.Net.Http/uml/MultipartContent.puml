@@ -1,0 +1,66 @@
+@startuml
+class MultipartContent {
+    - <<readonly>> _nestedContent : List<HttpContent>
+    - <<readonly>> _boundary : string
+    + MultipartContent()
+    + MultipartContent(subtype:string)
+    + MultipartContent(subtype:string, boundary:string)
+    - {static} ValidateBoundary(boundary:string) : void
+    - {static} GetDefaultBoundary() : string
+    + <<virtual>> Add(content:HttpContent) : void
+    # <<override>> Dispose(disposing:bool) : void
+    + GetEnumerator() : IEnumerator<HttpContent>
+    GetEnumerator() : IEnumerator
+    + HeaderEncodingSelector : System.Net.Http.HeaderEncodingSelector<HttpContent>? <<get>> <<set>>
+    # <<override>> SerializeToStream(stream:Stream, context:TransportContext?, cancellationToken:CancellationToken) : void
+    # <<override>> SerializeToStreamAsync(stream:Stream, context:TransportContext?) : Task
+    # <<override>> SerializeToStreamAsync(stream:Stream, context:TransportContext?, cancellationToken:CancellationToken) : Task
+    - # <<async>> SerializeToStreamAsyncCore(stream:Stream, context:TransportContext, cancellationToken:CancellationToken) : Task
+    # <<override>> CreateContentReadStream(cancellationToken:CancellationToken) : Stream
+    # <<override>> CreateContentReadStreamAsync() : Task<Stream>
+    # <<override>> CreateContentReadStreamAsync(cancellationToken:CancellationToken) : Task<Stream>
+    - <<async>> CreateContentReadStreamAsyncCore(async:bool, cancellationToken:CancellationToken) : ValueTask<Stream>
+    - SerializeHeadersToStream(stream:Stream, content:HttpContent, writeDivider:bool) : void
+    - {static} EncodeStringToStreamAsync(stream:Stream, input:string, cancellationToken:CancellationToken) : ValueTask
+    - {static} EncodeStringToNewStream(input:string) : Stream
+    - EncodeHeadersToNewStream(content:HttpContent, writeDivider:bool) : Stream
+    <<internal>> <<override>> AllowDuplex : bool <<get>>
+    # <<internal>> <<override>> TryComputeLength(length:long) : bool
+    - {static} WriteToStream(stream:Stream, content:string) : void
+    - {static} <<unsafe>> WriteToStream(stream:Stream, content:string, encoding:Encoding) : void
+}
+class ContentReadStream <<sealed>> {
+    - <<readonly>> _streams : Stream[]
+    - <<readonly>> _length : long
+    - _next : int
+    - _current : Stream
+    - _position : long
+    <<internal>> ContentReadStream(streams:Stream[])
+    # <<override>> Dispose(disposing:bool) : void
+    + <<override>> <<async>> DisposeAsync() : ValueTask
+    + <<override>> CanRead : bool <<get>>
+    + <<override>> CanSeek : bool <<get>>
+    + <<override>> CanWrite : bool <<get>>
+    + <<override>> Read(buffer:byte[], offset:int, count:int) : int
+    + <<override>> Read(buffer:Span<byte>) : int
+    + <<override>> ReadAsync(buffer:byte[], offset:int, count:int, cancellationToken:CancellationToken) : Task<int>
+    + <<override>> ReadAsync(buffer:Memory<byte>, cancellationToken:CancellationToken) : ValueTask<int>
+    + <<override>> BeginRead(array:byte[], offset:int, count:int, asyncCallback:AsyncCallback, asyncState:object) : IAsyncResult
+    + <<override>> EndRead(asyncResult:IAsyncResult) : int
+    + <<async>> ReadAsyncPrivate(buffer:Memory<byte>, cancellationToken:CancellationToken) : ValueTask<int>
+    + <<override>> Position : long <<get>> <<set>>
+    + <<override>> Seek(offset:long, origin:SeekOrigin) : long
+    + <<override>> Length : long <<get>>
+    + <<override>> Flush() : void
+    + <<override>> SetLength(value:long) : void
+    + <<override>> Write(buffer:byte[], offset:int, count:int) : void
+    + <<override>> Write(buffer:ReadOnlySpan<byte>) : void
+    + <<override>> WriteAsync(buffer:byte[], offset:int, count:int, cancellationToken:CancellationToken) : Task
+    + <<override>> WriteAsync(buffer:ReadOnlyMemory<byte>, cancellationToken:CancellationToken) : ValueTask
+}
+HttpContent <|-- MultipartContent
+"IEnumerable`1" "<HttpContent>" <|-- MultipartContent
+IEnumerable <|-- MultipartContent
+MultipartContent +-- ContentReadStream
+Stream <|-- ContentReadStream
+@enduml

@@ -1,0 +1,105 @@
+@startuml
+class "EntitySet`1"<TEntity> <<sealed>> {
+    - source : IEnumerable<TEntity>
+    - entities : ItemList<TEntity>
+    - removedEntities : ItemList<TEntity>
+    - onAdd : Action<TEntity>
+    - onRemove : Action<TEntity>
+    - onAddEntity : TEntity
+    - onRemoveEntity : TEntity
+    - version : int
+    - onListChanged : ListChangedEventHandler
+    - isModified : bool
+    - isLoaded : bool
+    - listChanged : bool
+    - cachedList : IBindingList
+    + EntitySet()
+    + EntitySet(onAdd:Action<TEntity>, onRemove:Action<TEntity>)
+    <<internal>> EntitySet(es:EntitySet<TEntity>, copyNotifications:bool)
+    + Count : int <<get>>
+    + Add(entity:TEntity) : void
+    + AddRange(collection:IEnumerable<TEntity>) : void
+    + Assign(entitySource:IEnumerable<TEntity>) : void
+    + Clear() : void
+    + Contains(entity:TEntity) : bool
+    + CopyTo(array:TEntity[], arrayIndex:int) : void
+    + GetEnumerator() : IEnumerator<TEntity>
+    <<internal>> GetUnderlyingValues() : IEnumerable<TEntity>
+    + IndexOf(entity:TEntity) : int
+    + Insert(index:int, entity:TEntity) : void
+    + IsDeferred : bool <<get>>
+    <<internal>> HasValues : bool <<get>>
+    + HasLoadedOrAssignedValues : bool <<get>>
+    <<internal>> HasAssignedValues : bool <<get>>
+    <<internal>> HasLoadedValues : bool <<get>>
+    <<internal>> HasSource : bool <<get>>
+    <<internal>> IsLoaded : bool <<get>>
+    <<internal>> Source : IEnumerable<TEntity> <<get>>
+    + Load() : void
+    - OnModified() : void
+    + Remove(entity:TEntity) : bool
+    + RemoveAt(index:int) : void
+    + SetSource(entitySource:IEnumerable<TEntity>) : void
+    - CheckModify() : void
+    - OnAdd(entity:TEntity) : void
+    - OnRemove(entity:TEntity) : void
+    Add(value:object) : int
+    Contains(value:object) : bool
+    IndexOf(value:object) : int
+    Insert(index:int, value:object) : void
+    IsFixedSize : bool <<get>>
+    IsReadOnly : bool <<get>>
+    Remove(value:object) : void
+    CopyTo(array:Array, index:int) : void
+    IsSynchronized : bool <<get>>
+    SyncRoot : object <<get>>
+    IsReadOnly : bool <<get>>
+    GetEnumerator() : IEnumerator
+    - OnListChanged(type:ListChangedType, index:int) : void
+    ContainsListCollection : bool <<get>>
+    GetList() : IList
+    + GetNewBindingList() : IBindingList
+}
+class UnderlyingValues {
+    - entitySet : EntitySet<TEntity>
+    <<internal>> UnderlyingValues(entitySet:EntitySet<TEntity>)
+    + GetEnumerator() : IEnumerator<TEntity>
+    GetEnumerator() : IEnumerator
+}
+class Enumerable {
+    - entitySet : EntitySet<TEntity>
+    + Enumerable(entitySet:EntitySet<TEntity>)
+    GetEnumerator() : IEnumerator
+    + GetEnumerator() : IEnumerator<TEntity>
+}
+class Enumerator {
+    - entitySet : EntitySet<TEntity>
+    - items : TEntity[]
+    - index : int
+    - endIndex : int
+    - version : int
+    + Enumerator(entitySet:EntitySet<TEntity>)
+    + Dispose() : void
+    + MoveNext() : bool
+    + Current : TEntity <<get>>
+    Current : object <<get>>
+    Reset() : void
+}
+IList <|-- "EntitySet`1"
+ICollection <|-- "EntitySet`1"
+IEnumerable <|-- "EntitySet`1"
+"IList`1" "<TEntity>" <|-- "EntitySet`1"
+"ICollection`1" "<TEntity>" <|-- "EntitySet`1"
+"IEnumerable`1" "<TEntity>" <|-- "EntitySet`1"
+IListSource <|-- "EntitySet`1"
+"EntitySet`1" +-- UnderlyingValues
+"IEnumerable`1" "<TEntity>" <|-- UnderlyingValues
+IEnumerable <|-- UnderlyingValues
+"EntitySet`1" +-- Enumerable
+"IEnumerable`1" "<TEntity>" <|-- Enumerable
+IEnumerable <|-- Enumerable
+"EntitySet`1" +-- Enumerator
+"IEnumerator`1" "<TEntity>" <|-- Enumerator
+IDisposable <|-- Enumerator
+IEnumerator <|-- Enumerator
+@enduml

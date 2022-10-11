@@ -1,0 +1,40 @@
+@startuml
+'!include .\\ByteArrayContent.puml
+'!include .\\ClientCertificateOption.puml
+'!include .\\DelegatingHandler.puml
+'!include .\\FormUrlEncodedContent.puml
+'!include .\\HeaderEncodingSelector`1.puml
+!include .\\HttpClient.puml
+'!include .\\HttpClientHandler.puml
+'!include .\\HttpCompletionOption.puml
+'!include .\\HttpContent.puml
+'!include .\\HttpKeepAlivePingPolicy.puml
+'!include .\\HttpMessageHandler.puml
+!include .\\HttpMessageInvoker.puml
+'!include .\\HttpMethod.puml
+'!include .\\HttpRequestException.puml
+'!include .\\HttpRequestMessage.puml
+'!include .\\HttpRequestOptions.puml
+'!include .\\HttpRequestOptionsKey`1.puml
+!include .\\HttpResponseMessage.puml
+'!include .\\HttpVersionPolicy.puml
+'!include .\\MessageProcessingHandler.puml
+'!include .\\MultipartContent.puml
+'!include .\\MultipartFormDataContent.puml
+'!include .\\ReadOnlyMemoryContent.puml
+'!include .\\SocketsHttpConnectionContext.puml
+'!include .\\SocketsHttpHandler.puml
+'!include .\\SocketsHttpPlaintextStreamFilterContext.puml
+'!include .\\StreamContent.puml
+'!include .\\StringContent.puml
+'===============================================
+!include ..\..\System.Threading\uml\CancellationToken.puml
+!include ..\..\System.Threading\uml\CancellationTokenSource.puml
+hide private members
+remove @unlinked
+
+HttpClient ..> CancellationToken
+HttpClient ..> HttpResponseMessage : GetAsync()\nPostAsync()\nPutAsync()\nPatchAsync()\nDeleteAsync()\SendAsync()
+CancellationTokenSource ..> CancellationToken
+
+@enduml

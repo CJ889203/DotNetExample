@@ -1,0 +1,8 @@
+@startuml
+class ChangeConflictException {
+    + ChangeConflictException()
+    + ChangeConflictException(message:string)
+    + ChangeConflictException(message:string, innerException:Exception)
+}
+Exception <|-- ChangeConflictException
+@enduml

@@ -1,0 +1,9 @@
+@startuml
+class ThreadStateException {
+    + ThreadStateException()
+    + ThreadStateException(message:string?)
+    + ThreadStateException(message:string?, innerException:Exception?)
+    # ThreadStateException(info:SerializationInfo, context:StreamingContext)
+}
+SystemException <|-- ThreadStateException
+@enduml

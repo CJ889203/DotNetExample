@@ -1,0 +1,15 @@
+@startuml
+class ReadOnlyMemoryContent <<sealed>> {
+    - <<readonly>> _content : ReadOnlyMemory<byte>
+    + ReadOnlyMemoryContent(content:ReadOnlyMemory<byte>)
+    # <<override>> SerializeToStream(stream:Stream, context:TransportContext?, cancellationToken:CancellationToken) : void
+    # <<override>> SerializeToStreamAsync(stream:Stream, context:TransportContext?) : Task
+    # <<override>> SerializeToStreamAsync(stream:Stream, context:TransportContext?, cancellationToken:CancellationToken) : Task
+    # <<internal>> <<override>> TryComputeLength(length:long) : bool
+    # <<override>> CreateContentReadStream(cancellationToken:CancellationToken) : Stream
+    # <<override>> CreateContentReadStreamAsync() : Task<Stream>
+    <<internal>> <<override>> TryCreateContentReadStream() : Stream
+    <<internal>> <<override>> AllowDuplex : bool <<get>>
+}
+HttpContent <|-- ReadOnlyMemoryContent
+@enduml

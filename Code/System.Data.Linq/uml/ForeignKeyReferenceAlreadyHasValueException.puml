@@ -1,0 +1,8 @@
+@startuml
+class ForeignKeyReferenceAlreadyHasValueException {
+    + ForeignKeyReferenceAlreadyHasValueException()
+    + ForeignKeyReferenceAlreadyHasValueException(message:string)
+    + ForeignKeyReferenceAlreadyHasValueException(message:string, innerException:Exception)
+}
+InvalidOperationException <|-- ForeignKeyReferenceAlreadyHasValueException
+@enduml

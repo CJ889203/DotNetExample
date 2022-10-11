@@ -1,0 +1,12 @@
+@startuml
+class ParallelQuery {
+    - m_specifiedSettings : QuerySettings
+    <<internal>> ParallelQuery(specifiedSettings:QuerySettings)
+    <<internal>> SpecifiedQuerySettings : QuerySettings <<get>>
+    <<internal>> <<virtual>> Cast() : ParallelQuery<TCastTo>
+    <<internal>> <<virtual>> OfType() : ParallelQuery<TCastTo>
+    <<internal>> <<virtual>> GetEnumeratorUntyped() : IEnumerator
+    GetEnumerator() : IEnumerator
+}
+IEnumerable <|-- ParallelQuery
+@enduml

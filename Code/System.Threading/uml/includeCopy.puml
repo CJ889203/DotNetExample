@@ -1,0 +1,76 @@
+@startuml
+'!include .\\AbandonedMutexException.puml
+'!include .\\ApartmentState.puml
+'!include .\\AsyncFlowControl.puml
+'!include .\\AsyncLocalValueChangedArgs`1.puml
+'!include .\\AsyncLocal`1.puml
+'!include .\\AutoResetEvent.puml
+'!include .\\Barrier.puml
+'!include .\\BarrierPostPhaseException.puml
+!include .\\CancellationToken.puml
+!include .\\CancellationTokenRegistration.puml
+!include .\\CancellationTokenSource.puml
+'!include .\\CompressedStack.puml
+'!include .\\ContextCallback.puml
+'!include .\\CountdownEvent.puml
+'!include .\\EventResetMode.puml
+'!include .\\EventWaitHandle.puml
+'!include .\\ExecutionContext.puml
+'!include .\\HostExecutionContext.puml
+'!include .\\HostExecutionContextManager.puml
+'!include .\\Interlocked.puml
+'!include .\\IOCompletionCallback.puml
+'!include .\\IThreadPoolWorkItem.puml
+'!include .\\LazyInitializer.puml
+'!include .\\LazyThreadSafetyMode.puml
+'!include .\\LockCookie.puml
+'!include .\\LockRecursionException.puml
+'!include .\\LockRecursionPolicy.puml
+'!include .\\ManualResetEvent.puml
+'!include .\\ManualResetEventSlim.puml
+'!include .\\Monitor.puml
+'!include .\\Mutex.puml
+'!include .\\NativeOverlapped.puml
+'!include .\\Overlapped.puml
+'!include .\\ParameterizedThreadStart.puml
+'!include .\\PeriodicTimer.puml
+'!include .\\PreAllocatedOverlapped.puml
+'!include .\\ReaderWriterLock.puml
+'!include .\\ReaderWriterLockSlim.puml
+'!include .\\RegisteredWaitHandle.puml
+'!include .\\Semaphore.puml
+'!include .\\SemaphoreFullException.puml
+'!include .\\SemaphoreSlim.puml
+'!include .\\SendOrPostCallback.puml
+'!include .\\SpinLock.puml
+'!include .\\SpinWait.puml
+'!include .\\SynchronizationContext.puml
+'!include .\\SynchronizationLockException.puml
+'!include .\\Thread.puml
+'!include .\\ThreadAbortException.puml
+'!include .\\ThreadExceptionEventArgs.puml
+'!include .\\ThreadExceptionEventHandler.puml
+'!include .\\ThreadInterruptedException.puml
+'!include .\\ThreadLocal`1.puml
+'!include .\\ThreadPool.puml
+'!include .\\ThreadPoolBoundHandle.puml
+'!include .\\ThreadPriority.puml
+'!include .\\ThreadStart.puml
+'!include .\\ThreadStartException.puml
+'!include .\\ThreadState.puml
+'!include .\\ThreadStateException.puml
+'!include .\\Timeout.puml
+'!include .\\Timer.puml
+'!include .\\TimerCallback.puml
+'!include .\\Volatile.puml
+'!include .\\WaitCallback.puml
+'!include .\\WaitHandle.puml
+'!include .\\WaitHandleCannotBeOpenedException.puml
+'!include .\\WaitHandleExtensions.puml
+'!include .\\WaitOrTimerCallback.puml
+hide private members
+
+CancellationTokenSource o--> CancellationToken : <<instance>>\nToken
+CancellationToken ..> CancellationTokenRegistration : Register
+CancellationToken "0.1"..>"0..0" CancellationTokenSource : ctor
+@enduml

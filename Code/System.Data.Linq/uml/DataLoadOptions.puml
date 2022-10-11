@@ -1,0 +1,39 @@
+@startuml
+class DataLoadOptions <<sealed>> {
+    - frozen : bool
+    - includes : Dictionary<MetaPosition, MemberInfo>
+    - subqueries : Dictionary<MetaPosition, LambdaExpression>
+    + LoadWith(expression:Expression<Func<T, object>>) : void
+    + LoadWith(expression:LambdaExpression) : void
+    + AssociateWith(expression:Expression<Func<T, object>>) : void
+    + AssociateWith(expression:LambdaExpression) : void
+    - AssociateWithInternal(expression:LambdaExpression) : void
+    <<internal>> IsPreloaded(member:MemberInfo) : bool
+    <<internal>> {static} ShapesAreEquivalent(ds1:DataLoadOptions, ds2:DataLoadOptions) : bool
+    <<internal>> GetAssociationSubquery(member:MemberInfo) : LambdaExpression
+    <<internal>> Freeze() : void
+    <<internal>> Preload(association:MemberInfo) : void
+    - Subquery(association:MemberInfo, subquery:LambdaExpression) : void
+    - {static} GetLoadWithMemberInfo(lambda:LambdaExpression) : MemberInfo
+    - ValidateTypeGraphAcyclic() : void
+    - {static} GetIncludeTarget(mi:MemberInfo) : Type
+    - {static} ValidateSubqueryMember(mi:MemberInfo) : void
+    - {static} ValidateSubqueryExpression(subquery:LambdaExpression) : void
+    <<internal>> IsEmpty : bool <<get>>
+}
+class Searcher <<static>> {
+    <<internal>> {static} MemberInfoOf(lambda:LambdaExpression) : MemberInfo
+}
+class SubqueryValidator {
+    - isTopLevel : bool = true
+    <<internal>> <<override>> VisitMethodCall(m:MethodCallExpression) : Expression
+}
+class Visitor {
+    <<internal>> MemberInfo : MemberInfo
+    <<internal>> <<override>> VisitMemberAccess(m:MemberExpression) : Expression
+    <<internal>> <<override>> VisitMethodCall(m:MethodCallExpression) : Expression
+}
+DataLoadOptions +-- Searcher
+DataLoadOptions +-- SubqueryValidator
+Searcher +-- Visitor
+@enduml

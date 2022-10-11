@@ -1,0 +1,19 @@
+@startuml
+class MemberChangeConflict <<sealed>> {
+    - conflict : ObjectChangeConflict
+    - metaMember : MetaDataMember
+    - originalValue : object
+    - databaseValue : object
+    - currentValue : object
+    - isResolved : bool
+    <<internal>> MemberChangeConflict(conflict:ObjectChangeConflict, metaMember:MetaDataMember)
+    + OriginalValue : object <<get>>
+    + DatabaseValue : object <<get>>
+    + CurrentValue : object <<get>>
+    + Member : MemberInfo <<get>>
+    + Resolve(value:object) : void
+    + Resolve(refreshMode:RefreshMode) : void
+    + IsModified : bool <<get>>
+    + IsResolved : bool <<get>>
+}
+@enduml

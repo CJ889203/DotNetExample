@@ -1,0 +1,11 @@
+@startuml
+class CompressedStack <<sealed>> {
+    - CompressedStack()
+    + GetObjectData(info:SerializationInfo, context:StreamingContext) : void
+    + {static} Capture() : CompressedStack
+    + CreateCopy() : CompressedStack
+    + {static} GetCompressedStack() : CompressedStack
+    + {static} Run(compressedStack:CompressedStack, callback:ContextCallback, state:object?) : void
+}
+ISerializable <|-- CompressedStack
+@enduml

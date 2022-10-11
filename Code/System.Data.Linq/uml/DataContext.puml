@@ -1,0 +1,74 @@
+@startuml
+class DataContext {
+    - services : CommonDataServices
+    - provider : IProvider
+    - tables : Dictionary<MetaTable, ITable>
+    - objectTrackingEnabled : bool = true
+    - deferredLoadingEnabled : bool = true
+    - disposed : bool
+    - isInSubmitChanges : bool
+    - loadOptions : DataLoadOptions
+    - conflicts : ChangeConflictCollection
+    - {static} _miExecuteQuery : MethodInfo
+    - DataContext()
+    + DataContext(fileOrServerOrConnection:string)
+    + DataContext(fileOrServerOrConnection:string, mapping:MappingSource)
+    + DataContext(connection:IDbConnection)
+    + DataContext(connection:IDbConnection, mapping:MappingSource)
+    <<internal>> DataContext(context:DataContext)
+    + Dispose() : void
+    # <<virtual>> Dispose(disposing:bool) : void
+    <<internal>> CheckDispose() : void
+    - InitWithDefaultMapping(connection:object) : void
+    <<internal>> Clone() : object
+    - Init(connection:object, mapping:MappingSource) : void
+    <<internal>> ClearCache() : void
+    <<internal>> Services : CommonDataServices <<get>>
+    + Connection : DbConnection <<get>>
+    + Transaction : DbTransaction <<get>> <<set>>
+    + CommandTimeout : int <<get>> <<set>>
+    + Log : TextWriter <<get>> <<set>>
+    + ObjectTrackingEnabled : bool <<get>> <<set>>
+    + DeferredLoadingEnabled : bool <<get>> <<set>>
+    + Mapping : MetaModel <<get>>
+    <<internal>> VerifyTrackingEnabled() : void
+    <<internal>> CheckNotInSubmitChanges() : void
+    <<internal>> CheckInSubmitChanges() : void
+    + GetTable() : Table<TEntity>
+    + GetTable(type:Type) : ITable
+    - GetTable(metaTable:MetaTable) : ITable
+    - {static} ValidateTable(metaTable:MetaTable) : void
+    - InitTables(schema:object) : void
+    <<internal>> Provider : IProvider <<get>>
+    + DatabaseExists() : bool
+    + CreateDatabase() : void
+    + DeleteDatabase() : void
+    + SubmitChanges() : void
+    + <<virtual>> SubmitChanges(failureMode:ConflictMode) : void
+    + Refresh(mode:RefreshMode, entity:object) : void
+    + Refresh(mode:RefreshMode, entities:object[]) : void
+    + Refresh(mode:RefreshMode, entities:IEnumerable) : void
+    <<internal>> CreateRefreshContext() : DataContext
+    - AcceptChanges() : void
+    <<internal>> GetQueryText(query:IQueryable) : string
+    + GetCommand(query:IQueryable) : DbCommand
+    <<internal>> GetChangeText() : string
+    + GetChangeSet() : ChangeSet
+    + ExecuteCommand(command:string, parameters:object[]) : int
+    + ExecuteQuery(query:string, parameters:object[]) : IEnumerable<TResult>
+    + ExecuteQuery(elementType:Type, query:string, parameters:object[]) : IEnumerable
+    # <<internal>> ExecuteMethodCall(instance:object, methodInfo:MethodInfo, parameters:object[]) : IExecuteResult
+    # <<internal>> CreateMethodCallQuery(instance:object, methodInfo:MethodInfo, parameters:object[]) : IQueryable<TResult>
+    - GetMethodCall(instance:object, methodInfo:MethodInfo, parameters:object[]) : Expression
+    # <<internal>> ExecuteDynamicInsert(entity:object) : void
+    # <<internal>> ExecuteDynamicUpdate(entity:object) : void
+    # <<internal>> ExecuteDynamicDelete(entity:object) : void
+    + Translate(reader:DbDataReader) : IEnumerable<TResult>
+    + Translate(elementType:Type, reader:DbDataReader) : IEnumerable
+    + Translate(reader:DbDataReader) : IMultipleResults
+    <<internal>> ResetLoadOptions() : void
+    + LoadOptions : DataLoadOptions <<get>> <<set>>
+    + ChangeConflicts : ChangeConflictCollection <<get>>
+}
+IDisposable <|-- DataContext
+@enduml

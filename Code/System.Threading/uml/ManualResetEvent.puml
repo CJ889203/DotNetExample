@@ -1,0 +1,6 @@
+@startuml
+class ManualResetEvent <<sealed>> {
+    + ManualResetEvent(initialState:bool)
+}
+EventWaitHandle <|-- ManualResetEvent
+@enduml

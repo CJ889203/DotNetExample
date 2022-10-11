@@ -1,0 +1,16 @@
+@startuml
+class PreAllocatedOverlapped <<sealed>> {
+    <<internal>> <<readonly>> _overlapped : ThreadPoolBoundHandleOverlapped
+    - _lifetime : DeferredDisposableLifetime<PreAllocatedOverlapped>
+    + PreAllocatedOverlapped(callback:IOCompletionCallback, state:object?, pinData:object?)
+    + {static} UnsafeCreate(callback:IOCompletionCallback, state:object?, pinData:object?) : PreAllocatedOverlapped
+    - PreAllocatedOverlapped(callback:IOCompletionCallback, state:object, pinData:object, flowExecutionContext:bool)
+    <<internal>> AddRef() : bool
+    <<internal>> Release() : void
+    + Dispose() : void
+    <<unsafe>> OnFinalRelease(disposed:bool) : void
+    <<internal>> IsUserObject(buffer:byte[]) : bool
+}
+IDisposable <|-- PreAllocatedOverlapped
+IDeferredDisposable <|-- PreAllocatedOverlapped
+@enduml

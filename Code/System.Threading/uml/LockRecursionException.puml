@@ -1,0 +1,9 @@
+@startuml
+class LockRecursionException {
+    + LockRecursionException()
+    + LockRecursionException(message:string?)
+    + LockRecursionException(message:string?, innerException:Exception?)
+    # LockRecursionException(info:SerializationInfo, context:StreamingContext)
+}
+Exception <|-- LockRecursionException
+@enduml

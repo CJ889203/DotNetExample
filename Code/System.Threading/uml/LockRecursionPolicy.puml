@@ -1,0 +1,6 @@
+@startuml
+enum LockRecursionPolicy {
+    NoRecursion,
+    SupportsRecursion,
+}
+@enduml

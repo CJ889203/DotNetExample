@@ -1,0 +1,56 @@
+@startuml
+class "Table`1"<TEntity> <<sealed>> {
+    - context : DataContext
+    - metaTable : MetaTable
+    - cachedList : IBindingList
+    <<internal>> Table(context:DataContext, metaTable:MetaTable)
+    + Context : DataContext <<get>>
+    + IsReadOnly : bool <<get>>
+    Expression : Expression <<get>>
+    ElementType : Type <<get>>
+    Provider : IQueryProvider <<get>>
+    CreateQuery(expression:Expression) : IQueryable
+    CreateQuery(expression:Expression) : IQueryable<TResult>
+    Execute(expression:Expression) : object
+    Execute(expression:Expression) : TResult
+    GetEnumerator() : IEnumerator
+    GetEnumerator() : IEnumerator<TEntity>
+    + GetEnumerator() : IEnumerator<TEntity>
+    ContainsListCollection : bool <<get>>
+    GetList() : IList
+    + GetNewBindingList() : IBindingList
+    + InsertOnSubmit(entity:TEntity) : void
+    InsertOnSubmit(entity:object) : void
+    + InsertAllOnSubmit(entities:IEnumerable<TSubEntity>) : void
+    InsertAllOnSubmit(entities:IEnumerable) : void
+    - {static} IsTrackableType(type:MetaType) : bool
+    + DeleteOnSubmit(entity:TEntity) : void
+    DeleteOnSubmit(entity:object) : void
+    + DeleteAllOnSubmit(entities:IEnumerable<TSubEntity>) : void
+    DeleteAllOnSubmit(entities:IEnumerable) : void
+    + Attach(entity:TEntity) : void
+    Attach(entity:object) : void
+    + Attach(entity:TEntity, asModified:bool) : void
+    Attach(entity:object, asModified:bool) : void
+    + Attach(entity:TEntity, original:TEntity) : void
+    Attach(entity:object, original:object) : void
+    + AttachAll(entities:IEnumerable<TSubEntity>) : void
+    AttachAll(entities:IEnumerable) : void
+    + AttachAll(entities:IEnumerable<TSubEntity>, asModified:bool) : void
+    AttachAll(entities:IEnumerable, asModified:bool) : void
+    + GetOriginalEntityState(entity:TEntity) : TEntity
+    GetOriginalEntityState(entity:object) : object
+    + GetModifiedMembers(entity:TEntity) : ModifiedMemberInfo[]
+    GetModifiedMembers(entity:object) : ModifiedMemberInfo[]
+    - CheckReadOnly() : void
+    + <<override>> ToString() : string
+}
+"IQueryable`1" "<TEntity>" <|-- "Table`1"
+"IEnumerable`1" "<TEntity>" <|-- "Table`1"
+IEnumerable <|-- "Table`1"
+IQueryable <|-- "Table`1"
+IQueryProvider <|-- "Table`1"
+ITable <|-- "Table`1"
+IListSource <|-- "Table`1"
+"ITable`1" "<TEntity>" <|-- "Table`1"
+@enduml

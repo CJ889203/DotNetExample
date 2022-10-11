@@ -1,0 +1,16 @@
+@startuml
+class EventWaitHandle {
+    + EventWaitHandle(initialState:bool, mode:EventResetMode)
+    + EventWaitHandle(initialState:bool, mode:EventResetMode, name:string?)
+    + EventWaitHandle(initialState:bool, mode:EventResetMode, name:string?, createdNew:bool)
+    + {static} OpenExisting(name:string) : EventWaitHandle
+    + {static} TryOpenExisting(name:string, result:EventWaitHandle?) : bool
+    - EventWaitHandle(handle:SafeWaitHandle)
+    - CreateEventCore(initialState:bool, mode:EventResetMode, name:string, createdNew:bool) : void
+    - {static} OpenExistingWorker(name:string, result:EventWaitHandle) : OpenExistingResult
+    + Reset() : bool
+    + Set() : bool
+    <<internal>> {static} Set(waitHandle:SafeWaitHandle) : bool
+}
+WaitHandle <|-- EventWaitHandle
+@enduml

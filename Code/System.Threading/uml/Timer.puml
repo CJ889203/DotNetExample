@@ -1,0 +1,25 @@
+@startuml
+class Timer <<sealed>> {
+    <<internal>> _timer : TimerHolder
+    + Timer(callback:TimerCallback, state:object?, dueTime:int, period:int)
+    <<internal>> Timer(callback:TimerCallback, state:object, dueTime:int, period:int, flowExecutionContext:bool)
+    + Timer(callback:TimerCallback, state:object?, dueTime:TimeSpan, period:TimeSpan)
+    + Timer(callback:TimerCallback, state:object?, dueTime:uint, period:uint)
+    + Timer(callback:TimerCallback, state:object?, dueTime:long, period:long)
+    + Timer(callback:TimerCallback)
+    - TimerSetup(callback:TimerCallback, state:object, dueTime:uint, period:uint, flowExecutionContext:bool) : void
+    + Change(dueTime:int, period:int) : bool
+    + Change(dueTime:TimeSpan, period:TimeSpan) : bool
+    + Change(dueTime:uint, period:uint) : bool
+    + Change(dueTime:long, period:long) : bool
+    + {static} ActiveCount : long <<get>>
+    + Dispose(notifyObject:WaitHandle) : bool
+    + Dispose() : void
+    + DisposeAsync() : ValueTask
+    - DisplayString : string <<get>>
+    - {static} AllTimers : IEnumerable<TimerQueueTimer> <<get>>
+}
+MarshalByRefObject <|-- Timer
+IDisposable <|-- Timer
+IAsyncDisposable <|-- Timer
+@enduml

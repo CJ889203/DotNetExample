@@ -1,0 +1,8 @@
+@startuml
+interface IQueryable {
+    Expression : Expression <<get>>
+    ElementType : Type <<get>>
+    Provider : IQueryProvider <<get>>
+}
+IEnumerable <|-- IQueryable
+@enduml

@@ -1,0 +1,30 @@
+@startuml
+class ObjectChangeConflict <<sealed>> {
+    - session : ChangeConflictSession
+    - trackedObject : TrackedObject
+    - isResolved : bool
+    - memberConflicts : ReadOnlyCollection<MemberChangeConflict>
+    - database : object
+    - original : object
+    - isDeleted : bool?
+    <<internal>> ObjectChangeConflict(session:ChangeConflictSession, trackedObject:TrackedObject)
+    <<internal>> ObjectChangeConflict(session:ChangeConflictSession, trackedObject:TrackedObject, isDeleted:bool)
+    <<internal>> Session : ChangeConflictSession <<get>>
+    <<internal>> TrackedObject : TrackedObject <<get>>
+    + Object : object <<get>>
+    <<internal>> Original : object <<get>>
+    + IsResolved : bool <<get>>
+    + IsDeleted : bool <<get>>
+    <<internal>> Database : object <<get>>
+    + Resolve() : void
+    + Resolve(refreshMode:RefreshMode) : void
+    + Resolve(refreshMode:RefreshMode, autoResolveDeletes:bool) : void
+    - ResolveDelete() : void
+    + MemberConflicts : ReadOnlyCollection<MemberChangeConflict> <<get>>
+    - HasMemberConflict(member:MetaDataMember) : bool
+    - AreEqual(member:MetaDataMember, v1:object, v2:object) : bool
+    - AreEqual(a1:char[], a2:char[]) : bool
+    - AreEqual(a1:byte[], a2:byte[]) : bool
+    <<internal>> OnMemberResolved() : void
+}
+@enduml

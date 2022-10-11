@@ -1,0 +1,10 @@
+@startuml
+class "AsyncLocal`1"<T> <<sealed>> {
+    - <<readonly>> m_valueChangedHandler : Action<AsyncLocalValueChangedArgs<T>>
+    + AsyncLocal()
+    + AsyncLocal(valueChangedHandler:Action<AsyncLocalValueChangedArgs<T>>?)
+    + Value : T <<get>> <<set>>
+    OnValueChanged(previousValueObj:object, currentValueObj:object, contextChanged:bool) : void
+}
+IAsyncLocal <|-- "AsyncLocal`1"
+@enduml

@@ -1,0 +1,20 @@
+@startuml
+class Overlapped {
+    - _overlappedData : OverlappedData
+    + Overlapped()
+    + Overlapped(offsetLo:int, offsetHi:int, hEvent:IntPtr, ar:IAsyncResult?)
+    + Overlapped(offsetLo:int, offsetHi:int, hEvent:int, ar:IAsyncResult?)
+    + AsyncResult : IAsyncResult? <<get>> <<set>>
+    + OffsetLow : int <<get>> <<set>>
+    + OffsetHigh : int <<get>> <<set>>
+    + EventHandle : int <<get>> <<set>>
+    + EventHandleIntPtr : IntPtr <<get>> <<set>>
+    + <<unsafe>> Pack(iocb:IOCompletionCallback?) : NativeOverlapped*
+    + <<unsafe>> Pack(iocb:IOCompletionCallback?, userData:object?) : NativeOverlapped*
+    + <<unsafe>> UnsafePack(iocb:IOCompletionCallback?) : NativeOverlapped*
+    + <<unsafe>> UnsafePack(iocb:IOCompletionCallback?, userData:object?) : NativeOverlapped*
+    + {static} <<unsafe>> Unpack(nativeOverlappedPtr:NativeOverlapped*) : Overlapped
+    + {static} <<unsafe>> Free(nativeOverlappedPtr:NativeOverlapped*) : void
+    <<internal>> IsUserObject(buffer:byte[]) : bool
+}
+@enduml

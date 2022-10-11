@@ -1,0 +1,8 @@
+@startuml
+interface "ILookup`2"<TKey,TElement> {
+    Count : int <<get>>
+    Contains(key:TKey) : bool
+}
+"IEnumerable`1" "<IGrouping<TKey, TElement>>" <|-- "ILookup`2"
+IEnumerable <|-- "ILookup`2"
+@enduml

@@ -1,0 +1,50 @@
+@startuml
+class Interlocked <<static>> {
+    + {static} Increment(location:int) : int
+    + {static} Increment(location:long) : long
+    + {static} Decrement(location:int) : int
+    + {static} Decrement(location:long) : long
+    + {static} <<extern>> Exchange(location1:int, value:int) : int
+    + {static} <<extern>> Exchange(location1:long, value:long) : long
+    + {static} <<extern>> Exchange(location1:float, value:float) : float
+    + {static} <<extern>> Exchange(location1:double, value:double) : double
+    + {static} <<extern>> Exchange(location1:object?, value:object?) : object?
+    + {static} Exchange(location1:T, value:T) : T
+    + {static} <<extern>> CompareExchange(location1:int, value:int, comparand:int) : int
+    + {static} <<extern>> CompareExchange(location1:long, value:long, comparand:long) : long
+    + {static} <<extern>> CompareExchange(location1:float, value:float, comparand:float) : float
+    + {static} <<extern>> CompareExchange(location1:double, value:double, comparand:double) : double
+    + {static} <<extern>> CompareExchange(location1:object?, value:object?, comparand:object?) : object?
+    + {static} CompareExchange(location1:T, value:T, comparand:T) : T
+    + {static} Add(location1:int, value:int) : int
+    + {static} Add(location1:long, value:long) : long
+    - {static} <<extern>> ExchangeAdd(location1:int, value:int) : int
+    - {static} <<extern>> ExchangeAdd(location1:long, value:long) : long
+    + {static} Read(location:long) : long
+    + {static} <<extern>> MemoryBarrier() : void
+    <<internal>> {static} <<extern>> ReadMemoryBarrier() : void
+    - {static} <<extern>> _MemoryBarrierProcessWide() : void
+    + {static} MemoryBarrierProcessWide() : void
+    + {static} Increment(location:uint) : uint
+    + {static} Increment(location:ulong) : ulong
+    + {static} Decrement(location:uint) : uint
+    + {static} Decrement(location:ulong) : ulong
+    + {static} Exchange(location1:uint, value:uint) : uint
+    + {static} Exchange(location1:ulong, value:ulong) : ulong
+    + {static} Exchange(location1:IntPtr, value:IntPtr) : IntPtr
+    + {static} CompareExchange(location1:uint, value:uint, comparand:uint) : uint
+    + {static} CompareExchange(location1:ulong, value:ulong, comparand:ulong) : ulong
+    + {static} CompareExchange(location1:IntPtr, value:IntPtr, comparand:IntPtr) : IntPtr
+    + {static} Add(location1:uint, value:uint) : uint
+    + {static} Add(location1:ulong, value:ulong) : ulong
+    + {static} Read(location:ulong) : ulong
+    + {static} And(location1:int, value:int) : int
+    + {static} And(location1:uint, value:uint) : uint
+    + {static} And(location1:long, value:long) : long
+    + {static} And(location1:ulong, value:ulong) : ulong
+    + {static} Or(location1:int, value:int) : int
+    + {static} Or(location1:uint, value:uint) : uint
+    + {static} Or(location1:long, value:long) : long
+    + {static} Or(location1:ulong, value:ulong) : ulong
+}
+@enduml

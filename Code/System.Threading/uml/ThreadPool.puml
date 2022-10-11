@@ -1,0 +1,83 @@
+@startuml
+class ThreadPool <<static>> {
+    <<internal>> {static} <<readonly>> UsePortableThreadPool : bool
+    - {static} <<readonly>> IsWorkerTrackingEnabledInConfig : bool
+    <<internal>> {static} <<readonly>> s_workQueue : ThreadPoolWorkQueue
+    <<internal>> {static} <<readonly>> s_invokeAsyncStateMachineBox : Action<object>
+    <<internal>> {static} SupportsTimeSensitiveWorkItems : bool <<get>>
+    - {static} <<unsafe>> InitializeConfigAndDetermineUsePortableThreadPool() : bool
+    - {static} <<extern>> GetNextConfigUInt32Value(configVariableIndex:int, configValue:uint, isBoolean:bool, appContextConfigName:char*) : int
+    - {static} GetEnableWorkerTracking() : bool
+    <<internal>> {static} <<extern>> CanSetMinIOCompletionThreads(ioCompletionThreads:int) : bool
+    <<internal>> {static} SetMinIOCompletionThreads(ioCompletionThreads:int) : void
+    <<internal>> {static} <<extern>> CanSetMaxIOCompletionThreads(ioCompletionThreads:int) : bool
+    <<internal>> {static} SetMaxIOCompletionThreads(ioCompletionThreads:int) : void
+    + {static} SetMaxThreads(workerThreads:int, completionPortThreads:int) : bool
+    + {static} GetMaxThreads(workerThreads:int, completionPortThreads:int) : void
+    + {static} SetMinThreads(workerThreads:int, completionPortThreads:int) : bool
+    + {static} GetMinThreads(workerThreads:int, completionPortThreads:int) : void
+    + {static} GetAvailableThreads(workerThreads:int, completionPortThreads:int) : void
+    + {static} ThreadCount : int <<get>>
+    - {static} <<extern>> GetThreadCount() : int
+    + {static} CompletedWorkItemCount : long <<get>>
+    - {static} <<extern>> GetCompletedWorkItemCount() : long
+    - {static} PendingUnmanagedWorkItemCount : long <<get>>
+    - {static} <<extern>> GetPendingUnmanagedWorkItemCount() : long
+    - {static} RegisterWaitForSingleObject(waitObject:WaitHandle, callBack:WaitOrTimerCallback, state:object, millisecondsTimeOutInterval:uint, executeOnlyOnce:bool, flowExecutionContext:bool) : RegisteredWaitHandle
+    <<internal>> {static} UnsafeQueueWaitCompletion(completeWaitWorkItem:CompleteWaitThreadPoolWorkItem) : void
+    - {static} <<extern>> QueueWaitCompletionNative(completeWaitWorkItem:CompleteWaitThreadPoolWorkItem) : void
+    <<internal>> {static} RequestWorkerThread() : void
+    - {static} <<extern>> RequestWorkerThreadNative() : Interop.BOOL
+    - {static} EnsureGateThreadRunning() : void
+    <<internal>> {static} PerformRuntimeSpecificGateActivities(cpuUtilization:int) : bool
+    - {static} <<extern>> PerformRuntimeSpecificGateActivitiesNative(cpuUtilization:int) : Interop.BOOL
+    - {static} <<extern>> <<unsafe>> PostQueuedCompletionStatus(overlapped:NativeOverlapped*) : bool
+    + {static} <<unsafe>> UnsafeQueueNativeOverlapped(overlapped:NativeOverlapped*) : bool
+    - {static} UnsafeQueueUnmanagedWorkItem(callback:IntPtr, state:IntPtr) : void
+    - {static} <<extern>> SetMinThreadsNative(workerThreads:int, completionPortThreads:int) : bool
+    - {static} <<extern>> SetMaxThreadsNative(workerThreads:int, completionPortThreads:int) : bool
+    - {static} <<extern>> GetMinThreadsNative(workerThreads:int, completionPortThreads:int) : void
+    - {static} <<extern>> GetMaxThreadsNative(workerThreads:int, completionPortThreads:int) : void
+    - {static} <<extern>> GetAvailableThreadsNative(workerThreads:int, completionPortThreads:int) : void
+    <<internal>> {static} NotifyWorkItemComplete(threadLocalCompletionCountObject:object, currentTimeMs:int) : bool
+    - {static} <<extern>> NotifyWorkItemCompleteNative() : bool
+    <<internal>> {static} ReportThreadStatus(isWorking:bool) : void
+    - {static} <<extern>> ReportThreadStatusNative(isWorking:bool) : void
+    <<internal>> {static} NotifyWorkItemProgress() : void
+    - {static} <<extern>> NotifyWorkItemProgressNative() : void
+    <<internal>> {static} NotifyThreadBlocked() : bool
+    <<internal>> {static} NotifyThreadUnblocked() : void
+    <<internal>> {static} GetOrCreateThreadLocalCompletionCountObject() : object
+    - {static} <<extern>> GetEnableWorkerTrackingNative() : bool
+    - {static} <<extern>> RegisterWaitForSingleObjectNative(waitHandle:WaitHandle, state:object, timeOutInterval:uint, executeOnlyOnce:bool, registeredWaitHandle:RegisteredWaitHandle) : IntPtr
+    + {static} BindHandle(osHandle:IntPtr) : bool
+    + {static} BindHandle(osHandle:SafeHandle) : bool
+    - {static} <<extern>> BindIOCompletionCallbackNative(fileHandle:IntPtr) : bool
+    <<internal>> {static} EnableWorkerTracking : bool <<get>>
+    + {static} RegisterWaitForSingleObject(waitObject:WaitHandle, callBack:WaitOrTimerCallback, state:object?, millisecondsTimeOutInterval:uint, executeOnlyOnce:bool) : RegisteredWaitHandle
+    + {static} UnsafeRegisterWaitForSingleObject(waitObject:WaitHandle, callBack:WaitOrTimerCallback, state:object?, millisecondsTimeOutInterval:uint, executeOnlyOnce:bool) : RegisteredWaitHandle
+    + {static} RegisterWaitForSingleObject(waitObject:WaitHandle, callBack:WaitOrTimerCallback, state:object?, millisecondsTimeOutInterval:int, executeOnlyOnce:bool) : RegisteredWaitHandle
+    + {static} UnsafeRegisterWaitForSingleObject(waitObject:WaitHandle, callBack:WaitOrTimerCallback, state:object?, millisecondsTimeOutInterval:int, executeOnlyOnce:bool) : RegisteredWaitHandle
+    + {static} RegisterWaitForSingleObject(waitObject:WaitHandle, callBack:WaitOrTimerCallback, state:object?, millisecondsTimeOutInterval:long, executeOnlyOnce:bool) : RegisteredWaitHandle
+    + {static} UnsafeRegisterWaitForSingleObject(waitObject:WaitHandle, callBack:WaitOrTimerCallback, state:object?, millisecondsTimeOutInterval:long, executeOnlyOnce:bool) : RegisteredWaitHandle
+    + {static} RegisterWaitForSingleObject(waitObject:WaitHandle, callBack:WaitOrTimerCallback, state:object?, timeout:TimeSpan, executeOnlyOnce:bool) : RegisteredWaitHandle
+    + {static} UnsafeRegisterWaitForSingleObject(waitObject:WaitHandle, callBack:WaitOrTimerCallback, state:object?, timeout:TimeSpan, executeOnlyOnce:bool) : RegisteredWaitHandle
+    + {static} QueueUserWorkItem(callBack:WaitCallback) : bool
+    + {static} QueueUserWorkItem(callBack:WaitCallback, state:object?) : bool
+    + {static} QueueUserWorkItem(callBack:Action<TState>, state:TState, preferLocal:bool) : bool
+    + {static} UnsafeQueueUserWorkItem(callBack:Action<TState>, state:TState, preferLocal:bool) : bool
+    + {static} UnsafeQueueUserWorkItem(callBack:WaitCallback, state:object?) : bool
+    + {static} UnsafeQueueUserWorkItem(callBack:IThreadPoolWorkItem, preferLocal:bool) : bool
+    <<internal>> {static} UnsafeQueueUserWorkItemInternal(callBack:object, preferLocal:bool) : void
+    <<internal>> {static} UnsafeQueueTimeSensitiveWorkItemInternal(timeSensitiveWorkItem:IThreadPoolWorkItem) : void
+    <<internal>> {static} TryPopCustomWorkItem(workItem:object) : bool
+    <<internal>> {static} GetQueuedWorkItems() : IEnumerable<object>
+    <<internal>> {static} GetLocallyQueuedWorkItems() : IEnumerable<object>
+    <<internal>> {static} GetGloballyQueuedWorkItems() : IEnumerable<object>
+    - {static} ToObjectArray(workitems:IEnumerable<object>) : object[]
+    <<internal>> {static} GetQueuedWorkItemsForDebugger() : object[]
+    <<internal>> {static} GetGloballyQueuedWorkItemsForDebugger() : object[]
+    <<internal>> {static} GetLocallyQueuedWorkItemsForDebugger() : object[]
+    + {static} PendingWorkItemCount : long <<get>>
+}
+@enduml

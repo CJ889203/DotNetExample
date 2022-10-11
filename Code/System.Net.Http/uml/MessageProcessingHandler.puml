@@ -1,0 +1,19 @@
+@startuml
+abstract class MessageProcessingHandler {
+    # MessageProcessingHandler()
+    # MessageProcessingHandler(innerHandler:HttpMessageHandler)
+    # {abstract} ProcessRequest(request:HttpRequestMessage, cancellationToken:CancellationToken) : HttpRequestMessage
+    # {abstract} ProcessResponse(response:HttpResponseMessage, cancellationToken:CancellationToken) : HttpResponseMessage
+    # <<internal>> <<override>> <<sealed>> Send(request:HttpRequestMessage, cancellationToken:CancellationToken) : HttpResponseMessage
+    # <<internal>> <<override>> <<sealed>> SendAsync(request:HttpRequestMessage, cancellationToken:CancellationToken) : Task<HttpResponseMessage>
+    - {static} HandleCanceledOperations(cancellationToken:CancellationToken, tcs:TaskCompletionSource<HttpResponseMessage>, e:OperationCanceledException) : void
+}
+class SendState <<sealed>> {
+    <<internal>> <<readonly>> _handler : MessageProcessingHandler
+    <<internal>> <<readonly>> _token : CancellationToken
+    + SendState(handler:MessageProcessingHandler, token:CancellationToken)
+}
+DelegatingHandler <|-- MessageProcessingHandler
+MessageProcessingHandler +-- SendState
+"TaskCompletionSource`1" "<HttpResponseMessage>" <|-- SendState
+@enduml

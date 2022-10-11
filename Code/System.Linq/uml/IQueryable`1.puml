@@ -1,0 +1,7 @@
+@startuml
+interface "IQueryable`1"<out T> {
+}
+"IEnumerable`1" "<T>" <|-- "IQueryable`1"
+IEnumerable <|-- "IQueryable`1"
+IQueryable <|-- "IQueryable`1"
+@enduml

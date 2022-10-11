@@ -1,0 +1,13 @@
+@startuml
+class AsyncFlowControl <<struct>> {
+    - _thread : Thread
+    <<internal>> Initialize(currentThread:Thread) : void
+    + Undo() : void
+    + Dispose() : void
+    + <<override>> Equals(obj:object?) : bool
+    + Equals(obj:AsyncFlowControl) : bool
+    + <<override>> GetHashCode() : int
+}
+"IEquatable`1" "<AsyncFlowControl>" <|-- AsyncFlowControl
+IDisposable <|-- AsyncFlowControl
+@enduml

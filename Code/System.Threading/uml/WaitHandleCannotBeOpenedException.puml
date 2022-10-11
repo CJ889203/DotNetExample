@@ -1,0 +1,9 @@
+@startuml
+class WaitHandleCannotBeOpenedException {
+    + WaitHandleCannotBeOpenedException()
+    + WaitHandleCannotBeOpenedException(message:string?)
+    + WaitHandleCannotBeOpenedException(message:string?, innerException:Exception?)
+    # WaitHandleCannotBeOpenedException(info:SerializationInfo, context:StreamingContext)
+}
+ApplicationException <|-- WaitHandleCannotBeOpenedException
+@enduml

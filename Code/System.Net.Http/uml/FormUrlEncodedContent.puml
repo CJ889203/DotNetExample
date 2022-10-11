@@ -1,0 +1,12 @@
+@startuml
+class FormUrlEncodedContent {
+    + FormUrlEncodedContent(nameValueCollection:IEnumerable<KeyValuePair<
+      #nullable disable
+      string, string>>)
+    - {static} GetContentByteArray(nameValueCollection:IEnumerable<KeyValuePair<string, string>>) : byte[]
+    - {static} Encode(data:string) : string
+    # <<override>> SerializeToStreamAsync(stream:Stream, context:TransportContext?, cancellationToken:CancellationToken) : Task
+    <<internal>> <<override>> TryCreateContentReadStream() : Stream
+}
+ByteArrayContent <|-- FormUrlEncodedContent
+@enduml

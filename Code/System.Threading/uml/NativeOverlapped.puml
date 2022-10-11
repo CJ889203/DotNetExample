@@ -1,0 +1,9 @@
+@startuml
+class NativeOverlapped <<struct>> {
+    + InternalLow : IntPtr
+    + InternalHigh : IntPtr
+    + OffsetLow : int
+    + OffsetHigh : int
+    + EventHandle : IntPtr
+}
+@enduml

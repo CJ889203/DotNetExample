@@ -1,0 +1,12 @@
+@startuml
+class MultipartFormDataContent {
+    + MultipartFormDataContent()
+    + MultipartFormDataContent(boundary:string)
+    + <<override>> Add(content:HttpContent) : void
+    + Add(content:HttpContent, name:string) : void
+    + Add(content:HttpContent, name:string, fileName:string) : void
+    - AddInternal(content:HttpContent, name:string, fileName:string) : void
+    # <<override>> SerializeToStreamAsync(stream:Stream, context:TransportContext?, cancellationToken:CancellationToken) : Task
+}
+MultipartContent <|-- MultipartFormDataContent
+@enduml

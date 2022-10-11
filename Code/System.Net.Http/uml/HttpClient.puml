@@ -1,0 +1,91 @@
+@startuml
+class HttpClient {
+    - {static} s_defaultProxy : IWebProxy
+    - {static} <<readonly>> s_defaultTimeout : TimeSpan
+    - {static} <<readonly>> s_maxTimeout : TimeSpan
+    - {static} <<readonly>> s_infiniteTimeout : TimeSpan
+    - <<volatile>> _operationStarted : bool
+    - <<volatile>> _disposed : bool
+    - _pendingRequestsCts : CancellationTokenSource
+    - _defaultRequestHeaders : HttpRequestHeaders
+    - _defaultRequestVersion : Version
+    - _defaultVersionPolicy : HttpVersionPolicy
+    - _baseAddress : Uri
+    - _timeout : TimeSpan
+    - _maxResponseContentBufferSize : int
+    + {static} DefaultProxy : IWebProxy <<get>> <<set>>
+    + DefaultRequestHeaders : HttpRequestHeaders <<get>>
+    + DefaultRequestVersion : Version <<get>> <<set>>
+    + DefaultVersionPolicy : HttpVersionPolicy <<get>> <<set>>
+    + BaseAddress : Uri? <<get>> <<set>>
+    + Timeout : TimeSpan <<get>> <<set>>
+    + MaxResponseContentBufferSize : long <<get>> <<set>>
+    + HttpClient()
+    + HttpClient(handler:HttpMessageHandler)
+    + HttpClient(handler:HttpMessageHandler, disposeHandler:bool)
+    + GetStringAsync(requestUri:string?) : Task<string>
+    + GetStringAsync(requestUri:Uri?) : Task<string>
+    + GetStringAsync(requestUri:string?, cancellationToken:CancellationToken) : Task<string>
+    + GetStringAsync(requestUri:Uri?, cancellationToken:CancellationToken) : Task<string>
+    - <<async>> GetStringAsyncCore(request:HttpRequestMessage, cancellationToken:CancellationToken) : Task<string>
+    + GetByteArrayAsync(requestUri:string?) : Task<byte[]>
+    + GetByteArrayAsync(requestUri:Uri?) : Task<byte[]>
+    + GetByteArrayAsync(requestUri:string?, cancellationToken:CancellationToken) : Task<byte[]>
+    + GetByteArrayAsync(requestUri:Uri?, cancellationToken:CancellationToken) : Task<byte[]>
+    - <<async>> GetByteArrayAsyncCore(request:HttpRequestMessage, cancellationToken:CancellationToken) : Task<byte[]>
+    + GetStreamAsync(requestUri:string?) : Task<Stream>
+    + GetStreamAsync(requestUri:string?, cancellationToken:CancellationToken) : Task<Stream>
+    + GetStreamAsync(requestUri:Uri?) : Task<Stream>
+    + GetStreamAsync(requestUri:Uri?, cancellationToken:CancellationToken) : Task<Stream>
+    - <<async>> GetStreamAsyncCore(request:HttpRequestMessage, cancellationToken:CancellationToken) : Task<Stream>
+    + GetAsync(requestUri:string?) : Task<HttpResponseMessage>
+    + GetAsync(requestUri:Uri?) : Task<HttpResponseMessage>
+    + GetAsync(requestUri:string?, completionOption:HttpCompletionOption) : Task<HttpResponseMessage>
+    + GetAsync(requestUri:Uri?, completionOption:HttpCompletionOption) : Task<HttpResponseMessage>
+    + GetAsync(requestUri:string?, cancellationToken:CancellationToken) : Task<HttpResponseMessage>
+    + GetAsync(requestUri:Uri?, cancellationToken:CancellationToken) : Task<HttpResponseMessage>
+    + GetAsync(requestUri:string?, completionOption:HttpCompletionOption, cancellationToken:CancellationToken) : Task<HttpResponseMessage>
+    + GetAsync(requestUri:Uri?, completionOption:HttpCompletionOption, cancellationToken:CancellationToken) : Task<HttpResponseMessage>
+    + PostAsync(requestUri:string?, content:HttpContent?) : Task<HttpResponseMessage>
+    + PostAsync(requestUri:Uri?, content:HttpContent?) : Task<HttpResponseMessage>
+    + PostAsync(requestUri:string?, content:HttpContent?, cancellationToken:CancellationToken) : Task<HttpResponseMessage>
+    + PostAsync(requestUri:Uri?, content:HttpContent?, cancellationToken:CancellationToken) : Task<HttpResponseMessage>
+    + PutAsync(requestUri:string?, content:HttpContent?) : Task<HttpResponseMessage>
+    + PutAsync(requestUri:Uri?, content:HttpContent?) : Task<HttpResponseMessage>
+    + PutAsync(requestUri:string?, content:HttpContent?, cancellationToken:CancellationToken) : Task<HttpResponseMessage>
+    + PutAsync(requestUri:Uri?, content:HttpContent?, cancellationToken:CancellationToken) : Task<HttpResponseMessage>
+    + PatchAsync(requestUri:string?, content:HttpContent?) : Task<HttpResponseMessage>
+    + PatchAsync(requestUri:Uri?, content:HttpContent?) : Task<HttpResponseMessage>
+    + PatchAsync(requestUri:string?, content:HttpContent?, cancellationToken:CancellationToken) : Task<HttpResponseMessage>
+    + PatchAsync(requestUri:Uri?, content:HttpContent?, cancellationToken:CancellationToken) : Task<HttpResponseMessage>
+    + DeleteAsync(requestUri:string?) : Task<HttpResponseMessage>
+    + DeleteAsync(requestUri:Uri?) : Task<HttpResponseMessage>
+    + DeleteAsync(requestUri:string?, cancellationToken:CancellationToken) : Task<HttpResponseMessage>
+    + DeleteAsync(requestUri:Uri?, cancellationToken:CancellationToken) : Task<HttpResponseMessage>
+    + Send(request:HttpRequestMessage) : HttpResponseMessage
+    + Send(request:HttpRequestMessage, completionOption:HttpCompletionOption) : HttpResponseMessage
+    + <<override>> Send(request:HttpRequestMessage, cancellationToken:CancellationToken) : HttpResponseMessage
+    + Send(request:HttpRequestMessage, completionOption:HttpCompletionOption, cancellationToken:CancellationToken) : HttpResponseMessage
+    + SendAsync(request:HttpRequestMessage) : Task<HttpResponseMessage>
+    + <<override>> SendAsync(request:HttpRequestMessage, cancellationToken:CancellationToken) : Task<HttpResponseMessage>
+    + SendAsync(request:HttpRequestMessage, completionOption:HttpCompletionOption) : Task<HttpResponseMessage>
+    + SendAsync(request:HttpRequestMessage, completionOption:HttpCompletionOption, cancellationToken:CancellationToken) : Task<HttpResponseMessage>
+    - CheckRequestBeforeSend(request:HttpRequestMessage) : void
+    - {static} ThrowForNullResponse(response:HttpResponseMessage) : void
+    - {static} ShouldBufferResponse(completionOption:HttpCompletionOption, request:HttpRequestMessage) : bool
+    - HandleFailure(e:Exception, telemetryStarted:bool, response:HttpResponseMessage, cts:CancellationTokenSource, cancellationToken:CancellationToken, pendingRequestsCts:CancellationTokenSource) : void
+    - {static} StartSend(request:HttpRequestMessage) : bool
+    - {static} FinishSend(cts:CancellationTokenSource, disposeCts:bool, telemetryStarted:bool, responseContentTelemetryStarted:bool) : void
+    + CancelPendingRequests() : void
+    # <<override>> Dispose(disposing:bool) : void
+    - SetOperationStarted() : void
+    - CheckDisposedOrStarted() : void
+    - CheckDisposed() : void
+    - {static} CheckRequestMessage(request:HttpRequestMessage) : void
+    - PrepareRequestMessage(request:HttpRequestMessage) : void
+    - PrepareCancellationTokenSource(cancellationToken:CancellationToken) : (CancellationTokenSource TokenSource, bool DisposeTokenSource, CancellationTokenSource PendingRequestsCts)
+    - CreateUri(uri:string) : Uri
+    - CreateRequestMessage(method:HttpMethod, uri:Uri) : HttpRequestMessage
+}
+HttpMessageInvoker <|-- HttpClient
+@enduml

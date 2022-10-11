@@ -1,0 +1,60 @@
+@startuml
+class "ThreadLocal`1"<T> {
+    - _valueFactory : Func<T>
+    - {static} ts_slotArray : ThreadLocal<T>.LinkedSlotVolatile[]
+    - {static} ts_finalizationHelper : ThreadLocal<T>.FinalizationHelper
+    - _idComplement : int
+    - <<volatile>> _initialized : bool
+    - {static} <<readonly>> s_idManager : ThreadLocal<T>.IdManager
+    - _linkedSlot : ThreadLocal<T>.LinkedSlot
+    - _trackAllValues : bool
+    + ThreadLocal()
+    + ThreadLocal(trackAllValues:bool)
+    + ThreadLocal(valueFactory:Func<T>)
+    + ThreadLocal(valueFactory:Func<T>, trackAllValues:bool)
+    - Initialize(valueFactory:Func<T>, trackAllValues:bool) : void
+    + Dispose() : void
+    # <<virtual>> Dispose(disposing:bool) : void
+    + <<override>> ToString() : string?
+    + Value : T <<get>> <<set>>
+    - GetValueSlow() : T
+    - SetValueSlow(value:T, slotArray:ThreadLocal<T>.LinkedSlotVolatile[]) : void
+    - CreateLinkedSlot(slotArray:ThreadLocal<T>.LinkedSlotVolatile[], id:int, value:T) : void
+    + Values : IList<T> <<get>>
+    - GetValuesAsList() : List<T>
+    - ValuesCountForDebugDisplay : int <<get>>
+    + IsValueCreated : bool <<get>>
+    <<internal>> ValueForDebugDisplay : T? <<get>>
+    <<internal>> ValuesForDebugDisplay : List<T>? <<get>>
+    - {static} GrowTable(table:ThreadLocal<T>.LinkedSlotVolatile[], minLength:int) : void
+    - {static} GetNewTableSize(minSize:int) : int
+}
+class LinkedSlotVolatile <<struct>> {
+    <<internal>> <<volatile>> Value : ThreadLocal<T>.LinkedSlot
+}
+class LinkedSlot <<sealed>> {
+    <<internal>> <<volatile>> _next : ThreadLocal<T>.LinkedSlot
+    <<internal>> <<volatile>> _previous : ThreadLocal<T>.LinkedSlot
+    <<internal>> <<volatile>> _slotArray : ThreadLocal<T>.LinkedSlotVolatile[]
+    <<internal>> _value : T
+    <<internal>> LinkedSlot(slotArray:ThreadLocal<T>.LinkedSlotVolatile[])
+}
+class IdManager <<sealed>> {
+    - _nextIdToTry : int
+    - <<volatile>> _idsThatDoNotTrackAllValues : int
+    - <<readonly>> _ids : List<byte>
+    <<internal>> GetId(trackAllValues:bool) : int
+    <<internal>> IdTracksAllValues(id:int) : bool
+    <<internal>> IdsThatDoNotTrackValuesCount : int <<get>>
+    <<internal>> ReturnId(id:int, idTracksAllValues:bool) : void
+}
+class FinalizationHelper <<sealed>> {
+    <<internal>> SlotArray : ThreadLocal<T>.LinkedSlotVolatile[]
+    <<internal>> FinalizationHelper(slotArray:ThreadLocal<T>.LinkedSlotVolatile[])
+}
+IDisposable <|-- "ThreadLocal`1"
+"ThreadLocal`1" +-- LinkedSlotVolatile
+"ThreadLocal`1" +-- LinkedSlot
+"ThreadLocal`1" +-- IdManager
+"ThreadLocal`1" +-- FinalizationHelper
+@enduml

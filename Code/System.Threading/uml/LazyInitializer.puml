@@ -1,0 +1,15 @@
+@startuml
+class LazyInitializer <<static>> {
+    + {static} EnsureInitialized(target:T?) : T
+    - {static} EnsureInitializedCore(target:T) : T
+    + {static} EnsureInitialized(target:T?, valueFactory:Func<T>) : T
+    - {static} EnsureInitializedCore(target:T, valueFactory:Func<T>) : T
+    + {static} EnsureInitialized(target:T, initialized:bool, syncLock:object?) : T
+    - {static} EnsureInitializedCore(target:T, initialized:bool, syncLock:object) : T
+    + {static} EnsureInitialized(target:T, initialized:bool, syncLock:object?, valueFactory:Func<T>) : T
+    - {static} EnsureInitializedCore(target:T, initialized:bool, syncLock:object, valueFactory:Func<T>) : T
+    + {static} EnsureInitialized(target:T?, syncLock:object?, valueFactory:Func<T>) : T
+    - {static} EnsureInitializedCore(target:T, syncLock:object, valueFactory:Func<T>) : T
+    - {static} EnsureLockInitialized(syncLock:object) : object
+}
+@enduml

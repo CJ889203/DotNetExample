@@ -1,0 +1,17 @@
+@startuml
+class "Link`1"<T> <<struct>> {
+    - underlyingValue : T
+    - source : IEnumerable<T>
+    + Link(value:T)
+    + Link(source:IEnumerable<T>)
+    + Link(link:Link<T>)
+    + HasValue : bool <<get>>
+    + HasLoadedOrAssignedValue : bool <<get>>
+    <<internal>> HasLoadedValue : bool <<get>>
+    <<internal>> HasAssignedValue : bool <<get>>
+    <<internal>> UnderlyingValue : T <<get>>
+    <<internal>> Source : IEnumerable<T> <<get>>
+    <<internal>> HasSource : bool <<get>>
+    + Value : T <<get>> <<set>>
+}
+@enduml

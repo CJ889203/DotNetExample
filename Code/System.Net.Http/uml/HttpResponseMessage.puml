@@ -1,0 +1,34 @@
+@startuml
+class HttpResponseMessage {
+    - _statusCode : HttpStatusCode
+    - _headers : HttpResponseHeaders
+    - _trailingHeaders : HttpResponseHeaders
+    - _reasonPhrase : string
+    - _requestMessage : HttpRequestMessage
+    - _version : Version
+    - _content : HttpContent
+    - _disposed : bool
+    - {static} DefaultResponseVersion : Version <<get>>
+    + Version : Version <<get>> <<set>>
+    <<internal>> SetVersionWithoutValidation(value:Version) : void
+    + Content : HttpContent <<get>> <<set>>
+    + StatusCode : HttpStatusCode <<get>> <<set>>
+    <<internal>> SetStatusCodeWithoutValidation(value:HttpStatusCode) : void
+    + ReasonPhrase : string? <<get>> <<set>>
+    <<internal>> SetReasonPhraseWithoutValidation(value:string) : void
+    + Headers : HttpResponseHeaders <<get>>
+    + TrailingHeaders : HttpResponseHeaders <<get>>
+    <<internal>> StoreReceivedTrailingHeaders(headers:HttpResponseHeaders) : void
+    + RequestMessage : HttpRequestMessage? <<get>> <<set>>
+    + IsSuccessStatusCode : bool <<get>>
+    + HttpResponseMessage()
+    + HttpResponseMessage(statusCode:HttpStatusCode)
+    + EnsureSuccessStatusCode() : HttpResponseMessage
+    + <<override>> ToString() : string
+    - ContainsNewLineCharacter(value:string) : bool
+    # <<virtual>> Dispose(disposing:bool) : void
+    + Dispose() : void
+    - CheckDisposed() : void
+}
+IDisposable <|-- HttpResponseMessage
+@enduml

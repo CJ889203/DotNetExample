@@ -1,0 +1,17 @@
+@startuml
+class AbandonedMutexException {
+    - _mutexIndex : int
+    - _mutex : Mutex
+    + AbandonedMutexException()
+    + AbandonedMutexException(message:string?)
+    + AbandonedMutexException(message:string?, inner:Exception?)
+    + AbandonedMutexException(location:int, handle:WaitHandle?)
+    + AbandonedMutexException(message:string?, location:int, handle:WaitHandle?)
+    + AbandonedMutexException(message:string?, inner:Exception?, location:int, handle:WaitHandle?)
+    # AbandonedMutexException(info:SerializationInfo, context:StreamingContext)
+    - SetupException(location:int, handle:WaitHandle) : void
+    + Mutex : Mutex? <<get>>
+    + MutexIndex : int <<get>>
+}
+SystemException <|-- AbandonedMutexException
+@enduml

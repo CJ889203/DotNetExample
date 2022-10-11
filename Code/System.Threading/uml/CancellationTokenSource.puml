@@ -1,0 +1,92 @@
+@startuml
+class CancellationTokenSource {
+    <<internal>> {static} <<readonly>> s_canceledSource : CancellationTokenSource
+    <<internal>> {static} <<readonly>> s_neverCanceledSource : CancellationTokenSource
+    - {static} <<readonly>> s_timerCallback : System.Threading.TimerCallback
+    - <<volatile>> _state : int
+    - _disposed : bool
+    - <<volatile>> _timer : TimerQueueTimer
+    - <<volatile>> _kernelEvent : ManualResetEvent
+    - _registrations : CancellationTokenSource.Registrations
+    - {static} TimerCallback(state:object) : void
+    + IsCancellationRequested : bool <<get>>
+    <<internal>> IsCancellationCompleted : bool <<get>>
+    + Token : CancellationToken <<get>>
+    <<internal>> WaitHandle : WaitHandle <<get>>
+    + CancellationTokenSource()
+    + CancellationTokenSource(delay:TimeSpan)
+    + CancellationTokenSource(millisecondsDelay:int)
+    - InitializeWithTimer(millisecondsDelay:uint) : void
+    + Cancel() : void
+    + Cancel(throwOnFirstException:bool) : void
+    + CancelAfter(delay:TimeSpan) : void
+    + CancelAfter(millisecondsDelay:int) : void
+    - CancelAfter(millisecondsDelay:uint) : void
+    + TryReset() : bool
+    + Dispose() : void
+    # <<virtual>> Dispose(disposing:bool) : void
+    - ThrowIfDisposed() : void
+    <<internal>> Register(callback:Delegate, stateForCallback:object, syncContext:SynchronizationContext, executionContext:ExecutionContext) : CancellationTokenRegistration
+    - NotifyCancellation(throwOnFirstException:bool) : void
+    - ExecuteCallbackHandlers(throwOnFirstException:bool) : void
+    + {static} CreateLinkedTokenSource(token1:CancellationToken, token2:CancellationToken) : CancellationTokenSource
+    + {static} CreateLinkedTokenSource(token:CancellationToken) : CancellationTokenSource
+    + {static} CreateLinkedTokenSource(tokens:CancellationToken[]) : CancellationTokenSource
+    - {static} Invoke(d:Delegate, state:object, source:CancellationTokenSource) : void
+}
+class Linked1CancellationTokenSource <<sealed>> {
+    - <<readonly>> _reg1 : CancellationTokenRegistration
+    <<internal>> Linked1CancellationTokenSource(token1:CancellationToken)
+    # <<override>> Dispose(disposing:bool) : void
+}
+class Linked2CancellationTokenSource <<sealed>> {
+    - <<readonly>> _reg1 : CancellationTokenRegistration
+    - <<readonly>> _reg2 : CancellationTokenRegistration
+    <<internal>> Linked2CancellationTokenSource(token1:CancellationToken, token2:CancellationToken)
+    # <<override>> Dispose(disposing:bool) : void
+}
+class LinkedNCancellationTokenSource <<sealed>> {
+    <<internal>> {static} <<readonly>> s_linkedTokenCancelDelegate : Action<object>
+    - _linkingRegistrations : CancellationTokenRegistration[]
+    <<internal>> LinkedNCancellationTokenSource(tokens:CancellationToken[])
+    # <<override>> Dispose(disposing:bool) : void
+}
+class Registrations <<sealed>> {
+    + <<readonly>> Source : CancellationTokenSource
+    + Callbacks : CancellationTokenSource.CallbackNode
+    + FreeNodeList : CancellationTokenSource.CallbackNode
+    + NextAvailableId : long = 1
+    + ExecutingCallbackId : long
+    + <<volatile>> ThreadIDExecutingCallbacks : int
+    - _lock : int
+    + Registrations(source:CancellationTokenSource)
+    - Recycle(node:CancellationTokenSource.CallbackNode) : void
+    + Unregister(id:long, node:CancellationTokenSource.CallbackNode) : bool
+    + UnregisterAll() : void
+    + WaitForCallbackToComplete(id:long) : void
+    + WaitForCallbackToCompleteAsync(id:long) : ValueTask
+    + EnterLock() : void
+    + ExitLock() : void
+}
+class CallbackNode <<sealed>> {
+    + <<readonly>> Registrations : CancellationTokenSource.Registrations
+    + Prev : CancellationTokenSource.CallbackNode
+    + Next : CancellationTokenSource.CallbackNode
+    + Id : long
+    + Callback : Delegate
+    + CallbackState : object
+    + ExecutionContext : ExecutionContext
+    + SynchronizationContext : SynchronizationContext
+    + CallbackNode(registrations:CancellationTokenSource.Registrations)
+    + ExecuteCallback() : void
+}
+IDisposable <|-- CancellationTokenSource
+CancellationTokenSource +-- Linked1CancellationTokenSource
+CancellationTokenSource <|-- Linked1CancellationTokenSource
+CancellationTokenSource +-- Linked2CancellationTokenSource
+CancellationTokenSource <|-- Linked2CancellationTokenSource
+CancellationTokenSource +-- LinkedNCancellationTokenSource
+CancellationTokenSource <|-- LinkedNCancellationTokenSource
+CancellationTokenSource +-- Registrations
+CancellationTokenSource +-- CallbackNode
+@enduml

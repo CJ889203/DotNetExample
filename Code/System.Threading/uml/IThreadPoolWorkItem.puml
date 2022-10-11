@@ -1,0 +1,5 @@
+@startuml
+interface IThreadPoolWorkItem {
+    Execute() : void
+}
+@enduml

@@ -1,0 +1,7 @@
+@startuml
+class DBConvert <<static>> {
+    - {static} StringArg : Type[]
+    + {static} ChangeType(value:object) : T
+    + {static} ChangeType(value:object, type:Type) : object
+}
+@enduml

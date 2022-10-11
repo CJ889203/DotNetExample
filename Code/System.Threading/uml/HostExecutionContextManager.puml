@@ -1,0 +1,14 @@
+@startuml
+class HostExecutionContextManager {
+    - {static} t_currentContext : HostExecutionContext
+    + <<virtual>> Capture() : HostExecutionContext?
+    + <<virtual>> SetHostExecutionContext(hostExecutionContext:HostExecutionContext) : object
+    + <<virtual>> Revert(previousState:object) : void
+}
+class HostExecutionContextSwitcher <<sealed>> {
+    + <<readonly>> _currentContext : HostExecutionContext
+    + _asyncLocal : AsyncLocal<bool>
+    + HostExecutionContextSwitcher(currentContext:HostExecutionContext)
+}
+HostExecutionContextManager +-- HostExecutionContextSwitcher
+@enduml

@@ -1,0 +1,30 @@
+@startuml
+class Monitor <<static>> {
+    + {static} <<extern>> Enter(obj:object) : void
+    + {static} Enter(obj:object, lockTaken:bool) : void
+    - {static} ThrowLockTakenException() : void
+    - {static} <<extern>> ReliableEnter(obj:object, lockTaken:bool) : void
+    + {static} <<extern>> Exit(obj:object) : void
+    + {static} TryEnter(obj:object) : bool
+    + {static} TryEnter(obj:object, lockTaken:bool) : void
+    + {static} TryEnter(obj:object, millisecondsTimeout:int) : bool
+    + {static} TryEnter(obj:object, millisecondsTimeout:int, lockTaken:bool) : void
+    - {static} <<extern>> ReliableEnterTimeout(obj:object, timeout:int, lockTaken:bool) : void
+    + {static} IsEntered(obj:object) : bool
+    - {static} <<extern>> IsEnteredNative(obj:object) : bool
+    - {static} <<extern>> ObjWait(millisecondsTimeout:int, obj:object) : bool
+    + {static} Wait(obj:object, millisecondsTimeout:int) : bool
+    - {static} <<extern>> ObjPulse(obj:object) : void
+    + {static} Pulse(obj:object) : void
+    - {static} <<extern>> ObjPulseAll(obj:object) : void
+    + {static} PulseAll(obj:object) : void
+    + {static} LockContentionCount : long <<get>>
+    - {static} <<extern>> GetLockContentionCount() : long
+    + {static} TryEnter(obj:object, timeout:TimeSpan) : bool
+    + {static} TryEnter(obj:object, timeout:TimeSpan, lockTaken:bool) : void
+    + {static} Wait(obj:object, timeout:TimeSpan) : bool
+    + {static} Wait(obj:object) : bool
+    + {static} Wait(obj:object, millisecondsTimeout:int, exitContext:bool) : bool
+    + {static} Wait(obj:object, timeout:TimeSpan, exitContext:bool) : bool
+}
+@enduml

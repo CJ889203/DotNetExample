@@ -1,0 +1,25 @@
+@startuml
+!include .\\Enumerable.puml
+'!include .\\EnumerableExecutor.puml
+'!include .\\EnumerableExecutor`1.puml
+'!include .\\EnumerableQuery.puml
+'!include .\\EnumerableQuery`1.puml
+'!include .\\IGrouping`2.puml
+'!include .\\ILookup`2.puml
+'!include .\\IOrderedEnumerable`1.puml
+'!include .\\IOrderedQueryable.puml
+'!include .\\IOrderedQueryable`1.puml
+'!include .\\IQueryable.puml
+'!include .\\IQueryable`1.puml
+'!include .\\IQueryProvider.puml
+'!include .\\Lookup`2.puml
+'!include .\\OrderedParallelQuery`1.puml
+'!include .\\ParallelEnumerable.puml
+'!include .\\ParallelExecutionMode.puml
+'!include .\\ParallelMergeOptions.puml
+'!include .\\ParallelQuery.puml
+'!include .\\ParallelQuery`1.puml
+'!include .\\Queryable.puml
+hide private members
+remove @umlinked
+@enduml

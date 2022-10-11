@@ -1,0 +1,16 @@
+@startuml
+class Binary <<sealed>> {
+    - bytes : byte[]
+    - hashCode : int?
+    + Binary(value:byte[])
+    + ToArray() : byte[]
+    + Length : int <<get>>
+    + Equals(other:Binary) : bool
+    + <<override>> Equals(obj:object) : bool
+    + <<override>> GetHashCode() : int
+    + <<override>> ToString() : string
+    - EqualsTo(binary:Binary) : bool
+    - ComputeHash() : void
+}
+"IEquatable`1" "<Binary>" <|-- Binary
+@enduml

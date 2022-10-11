@@ -1,0 +1,12 @@
+@startuml
+class "ParallelQuery`1"<TSource> {
+    <<internal>> ParallelQuery(settings:QuerySettings)
+    <<internal>> <<override>> <<sealed>> Cast() : ParallelQuery<TCastTo>
+    <<internal>> <<override>> <<sealed>> OfType() : ParallelQuery<TCastTo>
+    <<internal>> <<override>> GetEnumeratorUntyped() : IEnumerator
+    + <<virtual>> GetEnumerator() : IEnumerator<TSource>
+}
+ParallelQuery <|-- "ParallelQuery`1"
+"IEnumerable`1" "<TSource>" <|-- "ParallelQuery`1"
+IEnumerable <|-- "ParallelQuery`1"
+@enduml

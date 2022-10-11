@@ -1,0 +1,11 @@
+@startuml
+class LockCookie <<struct>> {
+    <<internal>> _flags : LockCookieFlags
+    <<internal>> _readerLevel : ushort
+    <<internal>> _writerLevel : ushort
+    <<internal>> _threadID : int
+    + <<override>> GetHashCode() : int
+    + <<override>> Equals(obj:object?) : bool
+    + Equals(obj:LockCookie) : bool
+}
+@enduml

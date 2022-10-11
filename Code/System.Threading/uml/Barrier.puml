@@ -1,0 +1,40 @@
+@startuml
+class Barrier {
+    - <<volatile>> _currentTotalCount : int
+    - _currentPhase : long
+    - _disposed : bool
+    - <<readonly>> _oddEvent : ManualResetEventSlim
+    - <<readonly>> _evenEvent : ManualResetEventSlim
+    - <<readonly>> _ownerThreadContext : ExecutionContext
+    - {static} s_invokePostPhaseAction : ContextCallback
+    - <<readonly>> _postPhaseAction : Action<Barrier>
+    - _exception : Exception
+    - _actionCallerID : int
+    + ParticipantsRemaining : int <<get>>
+    + ParticipantCount : int <<get>>
+    + CurrentPhaseNumber : long <<get>> <<internal set>>
+    + Barrier(participantCount:int)
+    + Barrier(participantCount:int, postPhaseAction:Action<Barrier>?)
+    - GetCurrentTotal(currentTotal:int, current:int, total:int, sense:bool) : void
+    - SetCurrentTotal(currentTotal:int, current:int, total:int, sense:bool) : bool
+    + AddParticipant() : long
+    + AddParticipants(participantCount:int) : long
+    + RemoveParticipant() : void
+    + RemoveParticipants(participantCount:int) : void
+    + SignalAndWait() : void
+    + SignalAndWait(cancellationToken:CancellationToken) : void
+    + SignalAndWait(timeout:TimeSpan) : bool
+    + SignalAndWait(timeout:TimeSpan, cancellationToken:CancellationToken) : bool
+    + SignalAndWait(millisecondsTimeout:int) : bool
+    + SignalAndWait(millisecondsTimeout:int, cancellationToken:CancellationToken) : bool
+    - FinishPhase(observedSense:bool) : void
+    - {static} InvokePostPhaseAction(obj:object) : void
+    - SetResetEvents(observedSense:bool) : void
+    - WaitCurrentPhase(currentPhaseEvent:ManualResetEventSlim, observedPhase:long) : void
+    - DiscontinuousWait(currentPhaseEvent:ManualResetEventSlim, totalTimeout:int, token:CancellationToken, observedPhase:long) : bool
+    + Dispose() : void
+    # <<virtual>> Dispose(disposing:bool) : void
+    - ThrowIfDisposed() : void
+}
+IDisposable <|-- Barrier
+@enduml

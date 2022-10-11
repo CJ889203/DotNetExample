@@ -1,0 +1,7 @@
+@startuml
+interface IMultipleResults {
+    GetResult() : IEnumerable<TElement>
+}
+IFunctionResult <|-- IMultipleResults
+IDisposable <|-- IMultipleResults
+@enduml

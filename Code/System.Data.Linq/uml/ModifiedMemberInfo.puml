@@ -1,0 +1,11 @@
+@startuml
+class ModifiedMemberInfo <<struct>> {
+    - member : MemberInfo
+    - current : object
+    - original : object
+    <<internal>> ModifiedMemberInfo(member:MemberInfo, current:object, original:object)
+    + Member : MemberInfo <<get>>
+    + CurrentValue : object <<get>>
+    + OriginalValue : object <<get>>
+}
+@enduml

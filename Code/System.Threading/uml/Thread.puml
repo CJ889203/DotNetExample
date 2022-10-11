@@ -1,0 +1,161 @@
+@startuml
+class Thread <<sealed>> {
+    <<internal>> _executionContext : ExecutionContext
+    <<internal>> _synchronizationContext : SynchronizationContext
+    - _name : string
+    - _startHelper : Thread.StartHelper
+    - _DONT_USE_InternalThread : IntPtr
+    - _priority : int
+    - _managedThreadId : int
+    - _mayNeedResetForThreadPool : bool
+    - {static} <<readonly>> s_isProcessorNumberReallyFast : bool
+    - {static} s_asyncLocalPrincipal : AsyncLocal<IPrincipal>
+    - {static} t_currentThread : Thread
+    - Thread()
+    + <<extern>> ManagedThreadId : int <<get>>
+    <<internal>> GetNativeHandle() : ThreadHandle
+    - <<unsafe>> StartCore() : void
+    - {static} <<extern>> <<unsafe>> StartInternal(t:ThreadHandle, stackSize:int, priority:int, pThreadName:char*) : void
+    - StartCallback() : void
+    - {static} <<extern>> InternalGetCurrentThread() : IntPtr
+    - {static} <<extern>> SleepInternal(millisecondsTimeout:int) : void
+    <<internal>> {static} <<extern>> UninterruptibleSleep0() : void
+    - {static} <<extern>> SpinWaitInternal(iterations:int) : void
+    + {static} SpinWait(iterations:int) : void
+    - {static} <<extern>> YieldInternal() : Interop.BOOL
+    + {static} Yield() : bool
+    - {static} InitializeCurrentThread() : Thread
+    - {static} <<extern>> GetCurrentThreadNative() : Thread
+    - <<extern>> Initialize() : void
+    - <<extern>> InternalFinalize() : void
+    - {static} <<extern>> InformThreadNameChange(t:ThreadHandle, name:string, len:int) : void
+    + <<extern>> IsAlive : bool <<get>>
+    + IsBackground : bool <<get>> <<set>>
+    - <<extern>> IsBackgroundNative() : bool
+    - <<extern>> SetBackgroundNative(isBackground:bool) : void
+    + <<extern>> IsThreadPoolThread : bool <<get>> <<internal set>>
+    + Priority : ThreadPriority <<get>> <<set>>
+    - <<extern>> GetPriorityNative() : int
+    - <<extern>> SetPriorityNative(priority:int) : void
+    - {static} <<extern>> GetCurrentOSThreadId() : ulong
+    + ThreadState : ThreadState <<get>>
+    - <<extern>> GetThreadStateNative() : int
+    + GetApartmentState() : ApartmentState
+    - SetApartmentStateUnchecked(state:ApartmentState, throwOnError:bool) : bool
+    <<internal>> <<extern>> GetApartmentStateNative() : int
+    <<internal>> <<extern>> SetApartmentStateNative(state:int) : int
+    + <<extern>> DisableComObjectEagerCleanup() : void
+    + <<extern>> Interrupt() : void
+    + <<extern>> Join(millisecondsTimeout:int) : bool
+    <<internal>> {static} <<extern>> OptimalMaxSpinWaitsPerSpinIteration : int <<get>>
+    <<internal>> {static} <<extern>> GetCurrentProcessorNumber() : int
+    + {static} GetCurrentProcessorId() : int
+    <<internal>> ResetThreadPoolThread() : void
+    + Thread(start:ThreadStart)
+    + Thread(start:ThreadStart, maxStackSize:int)
+    + Thread(start:ParameterizedThreadStart)
+    + Thread(start:ParameterizedThreadStart, maxStackSize:int)
+    <<internal>> {static} IsThreadStartSupported : bool <<get>>
+    + Start(parameter:object?) : void
+    + UnsafeStart(parameter:object?) : void
+    - Start(parameter:object, captureContext:bool) : void
+    + Start() : void
+    + UnsafeStart() : void
+    - Start(captureContext:bool) : void
+    - RequireCurrentThread() : void
+    - SetCultureOnUnstartedThread(value:CultureInfo, uiCulture:bool) : void
+    - ThreadNameChanged(value:string) : void
+    + CurrentCulture : CultureInfo <<get>> <<set>>
+    + CurrentUICulture : CultureInfo <<get>> <<set>>
+    + {static} CurrentPrincipal : IPrincipal? <<get>> <<set>>
+    + {static} CurrentThread : Thread <<get>>
+    + {static} Sleep(millisecondsTimeout:int) : void
+    <<internal>> {static} CurrentOSThreadId : ulong <<get>>
+    + ExecutionContext : ExecutionContext? <<get>>
+    + Name : string? <<get>> <<set>>
+    <<internal>> SetThreadPoolWorkerThreadName() : void
+    - ResetThreadPoolThreadSlow() : void
+    + Abort() : void
+    + Abort(stateInfo:object?) : void
+    + {static} ResetAbort() : void
+    + Suspend() : void
+    + Resume() : void
+    + {static} BeginCriticalRegion() : void
+    + {static} EndCriticalRegion() : void
+    + {static} BeginThreadAffinity() : void
+    + {static} EndThreadAffinity() : void
+    + {static} AllocateDataSlot() : LocalDataStoreSlot
+    + {static} AllocateNamedDataSlot(name:string) : LocalDataStoreSlot
+    + {static} GetNamedDataSlot(name:string) : LocalDataStoreSlot
+    + {static} FreeNamedDataSlot(name:string) : void
+    + {static} GetData(slot:LocalDataStoreSlot) : object?
+    + {static} SetData(slot:LocalDataStoreSlot, data:object?) : void
+    + ApartmentState : ApartmentState <<get>> <<set>>
+    + SetApartmentState(state:ApartmentState) : void
+    + TrySetApartmentState(state:ApartmentState) : bool
+    - SetApartmentState(state:ApartmentState, throwOnError:bool) : bool
+    + GetCompressedStack() : CompressedStack
+    + SetCompressedStack(stack:CompressedStack) : void
+    + {static} GetDomain() : AppDomain
+    + {static} GetDomainID() : int
+    + <<override>> GetHashCode() : int
+    + Join() : void
+    + Join(timeout:TimeSpan) : bool
+    + {static} MemoryBarrier() : void
+    + {static} Sleep(timeout:TimeSpan) : void
+    + {static} VolatileRead(address:byte) : byte
+    + {static} VolatileRead(address:double) : double
+    + {static} VolatileRead(address:short) : short
+    + {static} VolatileRead(address:int) : int
+    + {static} VolatileRead(address:long) : long
+    + {static} VolatileRead(address:IntPtr) : IntPtr
+    + {static} VolatileRead(address:object?) : object?
+    + {static} VolatileRead(address:sbyte) : sbyte
+    + {static} VolatileRead(address:float) : float
+    + {static} VolatileRead(address:ushort) : ushort
+    + {static} VolatileRead(address:uint) : uint
+    + {static} VolatileRead(address:ulong) : ulong
+    + {static} VolatileRead(address:UIntPtr) : UIntPtr
+    + {static} VolatileWrite(address:byte, value:byte) : void
+    + {static} VolatileWrite(address:double, value:double) : void
+    + {static} VolatileWrite(address:short, value:short) : void
+    + {static} VolatileWrite(address:int, value:int) : void
+    + {static} VolatileWrite(address:long, value:long) : void
+    + {static} VolatileWrite(address:IntPtr, value:IntPtr) : void
+    + {static} VolatileWrite(address:object?, value:object?) : void
+    + {static} VolatileWrite(address:sbyte, value:sbyte) : void
+    + {static} VolatileWrite(address:float, value:float) : void
+    + {static} VolatileWrite(address:ushort, value:ushort) : void
+    + {static} VolatileWrite(address:uint, value:uint) : void
+    + {static} VolatileWrite(address:ulong, value:ulong) : void
+    + {static} VolatileWrite(address:UIntPtr, value:UIntPtr) : void
+}
+class StartHelper <<sealed>> {
+    <<internal>> _maxStackSize : int
+    <<internal>> _start : Delegate
+    <<internal>> _startArg : object
+    <<internal>> _culture : CultureInfo
+    <<internal>> _uiCulture : CultureInfo
+    <<internal>> _executionContext : ExecutionContext
+    <<internal>> {static} <<readonly>> s_threadStartContextCallback : ContextCallback
+    <<internal>> StartHelper(start:Delegate)
+    - {static} Callback(state:object) : void
+    <<internal>> Run() : void
+    - RunWorker() : void
+    - InitializeCulture() : void
+}
+class LocalDataStore <<static>> {
+    - {static} s_nameToSlotMap : Dictionary<string, LocalDataStoreSlot>
+    + {static} AllocateSlot() : LocalDataStoreSlot
+    - {static} EnsureNameToSlotMap() : Dictionary<string, LocalDataStoreSlot>
+    + {static} AllocateNamedSlot(name:string) : LocalDataStoreSlot
+    + {static} GetNamedSlot(name:string) : LocalDataStoreSlot
+    + {static} FreeNamedSlot(name:string) : void
+    - {static} GetThreadLocal(slot:LocalDataStoreSlot) : ThreadLocal<object>
+    + {static} GetData(slot:LocalDataStoreSlot) : object
+    + {static} SetData(slot:LocalDataStoreSlot, value:object) : void
+}
+CriticalFinalizerObject <|-- Thread
+Thread +-- StartHelper
+Thread +-- LocalDataStore
+@enduml

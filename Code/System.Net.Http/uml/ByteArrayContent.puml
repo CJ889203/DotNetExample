@@ -1,0 +1,20 @@
+@startuml
+class ByteArrayContent {
+    - <<readonly>> _content : byte[]
+    - <<readonly>> _offset : int
+    - <<readonly>> _count : int
+    + ByteArrayContent(content:byte[])
+    + ByteArrayContent(content:byte[], offset:int, count:int)
+    # <<override>> SerializeToStream(stream:Stream, context:TransportContext?, cancellationToken:CancellationToken) : void
+    # <<override>> SerializeToStreamAsync(stream:Stream, context:TransportContext?) : Task
+    # <<override>> SerializeToStreamAsync(stream:Stream, context:TransportContext?, cancellationToken:CancellationToken) : Task
+    - # SerializeToStreamAsyncCore(stream:Stream, cancellationToken:CancellationToken) : Task
+    # <<internal>> <<override>> TryComputeLength(length:long) : bool
+    # <<override>> CreateContentReadStream(cancellationToken:CancellationToken) : Stream
+    # <<override>> CreateContentReadStreamAsync() : Task<Stream>
+    <<internal>> <<override>> TryCreateContentReadStream() : Stream
+    <<internal>> CreateMemoryStreamForByteArray() : MemoryStream
+    <<internal>> <<override>> AllowDuplex : bool <<get>>
+}
+HttpContent <|-- ByteArrayContent
+@enduml

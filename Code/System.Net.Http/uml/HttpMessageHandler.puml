@@ -1,0 +1,10 @@
+@startuml
+abstract class HttpMessageHandler {
+    # HttpMessageHandler()
+    # <<internal>> <<virtual>> Send(request:HttpRequestMessage, cancellationToken:CancellationToken) : HttpResponseMessage
+    # <<internal>> {abstract} SendAsync(request:HttpRequestMessage, cancellationToken:CancellationToken) : Task<HttpResponseMessage>
+    # <<virtual>> Dispose(disposing:bool) : void
+    + Dispose() : void
+}
+IDisposable <|-- HttpMessageHandler
+@enduml

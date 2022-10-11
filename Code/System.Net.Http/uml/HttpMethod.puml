@@ -1,0 +1,37 @@
+@startuml
+class HttpMethod {
+    - <<readonly>> _method : string
+    - <<readonly>> _http3Index : int?
+    - _hashcode : int
+    - {static} <<readonly>> s_getMethod : HttpMethod
+    - {static} <<readonly>> s_putMethod : HttpMethod
+    - {static} <<readonly>> s_postMethod : HttpMethod
+    - {static} <<readonly>> s_deleteMethod : HttpMethod
+    - {static} <<readonly>> s_headMethod : HttpMethod
+    - {static} <<readonly>> s_optionsMethod : HttpMethod
+    - {static} <<readonly>> s_traceMethod : HttpMethod
+    - {static} <<readonly>> s_patchMethod : HttpMethod
+    - {static} <<readonly>> s_connectMethod : HttpMethod
+    - _http3EncodedBytes : byte[]
+    + {static} Get : HttpMethod <<get>>
+    + {static} Put : HttpMethod <<get>>
+    + {static} Post : HttpMethod <<get>>
+    + {static} Delete : HttpMethod <<get>>
+    + {static} Head : HttpMethod <<get>>
+    + {static} Options : HttpMethod <<get>>
+    + {static} Trace : HttpMethod <<get>>
+    + {static} Patch : HttpMethod <<get>>
+    <<internal>> {static} Connect : HttpMethod <<get>>
+    + Method : string <<get>>
+    + HttpMethod(method:string)
+    - HttpMethod(method:string, http3StaticTableIndex:int)
+    + Equals(other:HttpMethod?) : bool
+    + <<override>> Equals(obj:object?) : bool
+    + <<override>> GetHashCode() : int
+    + <<override>> ToString() : string
+    <<internal>> {static} Normalize(method:HttpMethod) : HttpMethod
+    <<internal>> MustHaveRequestBody : bool <<get>>
+    <<internal>> Http3EncodedBytes : byte[] <<get>>
+}
+"IEquatable`1" "<HttpMethod>" <|-- HttpMethod
+@enduml

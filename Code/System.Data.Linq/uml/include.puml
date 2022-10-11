@@ -1,0 +1,28 @@
+@startuml
+!include .\\Binary.puml
+!include .\\ChangeAction.puml
+!include .\\ChangeConflictCollection.puml
+!include .\\ChangeConflictException.puml
+!include .\\ChangeSet.puml
+!include .\\CompiledQuery.puml
+!include .\\ConflictMode.puml
+!include .\\DataContext.puml
+!include .\\DataLoadOptions.puml
+!include .\\DBConvert.puml
+!include .\\DuplicateKeyException.puml
+!include .\\EntityRef`1.puml
+!include .\\EntitySet`1.puml
+!include .\\ForeignKeyReferenceAlreadyHasValueException.puml
+!include .\\IExecuteResult.puml
+!include .\\IFunctionResult.puml
+!include .\\IMultipleResults.puml
+!include .\\ISingleResult`1.puml
+!include .\\ITable.puml
+!include .\\ITable`1.puml
+!include .\\Link`1.puml
+!include .\\MemberChangeConflict.puml
+!include .\\ModifiedMemberInfo.puml
+!include .\\ObjectChangeConflict.puml
+!include .\\RefreshMode.puml
+!include .\\Table`1.puml
+@enduml

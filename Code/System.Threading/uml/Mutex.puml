@@ -1,0 +1,15 @@
+@startuml
+class Mutex <<sealed>> {
+    + Mutex(initiallyOwned:bool, name:string?, createdNew:bool)
+    + Mutex(initiallyOwned:bool, name:string?)
+    + Mutex(initiallyOwned:bool)
+    + Mutex()
+    - Mutex(handle:SafeWaitHandle)
+    + {static} OpenExisting(name:string) : Mutex
+    + {static} TryOpenExisting(name:string, result:Mutex?) : bool
+    - CreateMutexCore(initiallyOwned:bool, name:string, createdNew:bool) : void
+    - {static} OpenExistingWorker(name:string, result:Mutex) : OpenExistingResult
+    + ReleaseMutex() : void
+}
+WaitHandle <|-- Mutex
+@enduml

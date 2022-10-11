@@ -1,0 +1,7 @@
+@startuml
+enum ApartmentState {
+    STA,
+    MTA,
+    Unknown,
+}
+@enduml

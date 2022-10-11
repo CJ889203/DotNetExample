@@ -1,0 +1,25 @@
+@startuml
+class ChangeConflictCollection <<sealed>> {
+    - conflicts : List<ObjectChangeConflict>
+    <<internal>> ChangeConflictCollection()
+    + Count : int <<get>>
+    IsReadOnly : bool <<get>>
+    Add(item:ObjectChangeConflict) : void
+    + Remove(item:ObjectChangeConflict) : bool
+    + Clear() : void
+    + Contains(item:ObjectChangeConflict) : bool
+    + CopyTo(array:ObjectChangeConflict[], arrayIndex:int) : void
+    + GetEnumerator() : IEnumerator<ObjectChangeConflict>
+    GetEnumerator() : IEnumerator
+    IsSynchronized : bool <<get>>
+    SyncRoot : object <<get>>
+    CopyTo(array:Array, index:int) : void
+    + ResolveAll(mode:RefreshMode) : void
+    + ResolveAll(mode:RefreshMode, autoResolveDeletes:bool) : void
+    <<internal>> Fill(conflictList:List<ObjectChangeConflict>) : void
+}
+"ICollection`1" "<ObjectChangeConflict>" <|-- ChangeConflictCollection
+"IEnumerable`1" "<ObjectChangeConflict>" <|-- ChangeConflictCollection
+IEnumerable <|-- ChangeConflictCollection
+ICollection <|-- ChangeConflictCollection
+@enduml

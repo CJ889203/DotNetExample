@@ -1,0 +1,17 @@
+@startuml
+class SynchronizationContext {
+    - _requireWaitNotification : bool
+    - {static} InvokeWaitMethodHelper(syncContext:SynchronizationContext, waitHandles:IntPtr[], waitAll:bool, millisecondsTimeout:int) : int
+    + {static} Current : SynchronizationContext? <<get>>
+    # SetWaitNotificationRequired() : void
+    + IsWaitNotificationRequired() : bool
+    + <<virtual>> Send(d:SendOrPostCallback, state:object?) : void
+    + <<virtual>> Post(d:SendOrPostCallback, state:object?) : void
+    + <<virtual>> OperationStarted() : void
+    + <<virtual>> OperationCompleted() : void
+    + <<virtual>> Wait(waitHandles:IntPtr[], waitAll:bool, millisecondsTimeout:int) : int
+    # {static} WaitHelper(waitHandles:IntPtr[], waitAll:bool, millisecondsTimeout:int) : int
+    + {static} SetSynchronizationContext(syncContext:SynchronizationContext?) : void
+    + <<virtual>> CreateCopy() : SynchronizationContext
+}
+@enduml

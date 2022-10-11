@@ -1,0 +1,8 @@
+@startuml
+class ThreadExceptionEventArgs {
+    - <<readonly>> m_exception : Exception
+    + ThreadExceptionEventArgs(t:Exception)
+    + Exception : Exception <<get>>
+}
+EventArgs <|-- ThreadExceptionEventArgs
+@enduml

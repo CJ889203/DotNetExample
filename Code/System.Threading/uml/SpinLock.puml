@@ -1,0 +1,28 @@
+@startuml
+class SpinLock <<struct>> {
+    - <<volatile>> _owner : int
+    - {static} CompareExchange(location:int, value:int, comparand:int, success:bool) : int
+    + SpinLock(enableThreadOwnerTracking:bool)
+    + Enter(lockTaken:bool) : void
+    + TryEnter(lockTaken:bool) : void
+    + TryEnter(timeout:TimeSpan, lockTaken:bool) : void
+    + TryEnter(millisecondsTimeout:int, lockTaken:bool) : void
+    - ContinueTryEnter(millisecondsTimeout:int, lockTaken:bool) : void
+    - DecrementWaiters() : void
+    - ContinueTryEnterWithThreadTracking(millisecondsTimeout:int, startTime:uint, lockTaken:bool) : void
+    + Exit() : void
+    + Exit(useMemoryBarrier:bool) : void
+    - ExitSlowPath(useMemoryBarrier:bool) : void
+    + IsHeld : bool <<get>>
+    + IsHeldByCurrentThread : bool <<get>>
+    + IsThreadOwnerTrackingEnabled : bool <<get>>
+}
+class SystemThreading_SpinLockDebugView <<sealed>> {
+    - _spinLock : SpinLock
+    + SystemThreading_SpinLockDebugView(spinLock:SpinLock)
+    + IsHeldByCurrentThread : bool? <<get>>
+    + OwnerThreadID : int? <<get>>
+    + IsHeld : bool <<get>>
+}
+SpinLock +-- SystemThreading_SpinLockDebugView
+@enduml

@@ -1,0 +1,11 @@
+@startuml
+class HostExecutionContext {
+    + HostExecutionContext()
+    + HostExecutionContext(state:object?)
+    # <<internal>> State : object? <<get>> <<set>>
+    + <<virtual>> CreateCopy() : HostExecutionContext
+    + Dispose() : void
+    + <<virtual>> Dispose(disposing:bool) : void
+}
+IDisposable <|-- HostExecutionContext
+@enduml

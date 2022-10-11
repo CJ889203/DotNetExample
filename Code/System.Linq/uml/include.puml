@@ -1,0 +1,894 @@
+@startuml
+class Enumerable <<static>> {
+    + {static} Where(source:IEnumerable<TSource>, predicate:Func<TSource, bool>) : IEnumerable<TSource>
+    + {static} Where(source:IEnumerable<TSource>, predicate:Func<TSource, int, bool>) : IEnumerable<TSource>
+    - {static} WhereIterator(source:IEnumerable<TSource>, predicate:Func<TSource, int, bool>) : IEnumerable<TSource>
+    + {static} Select(source:IEnumerable<TSource>, selector:Func<TSource, TResult>) : IEnumerable<TResult>
+    + {static} Select(source:IEnumerable<TSource>, selector:Func<TSource, int, TResult>) : IEnumerable<TResult>
+    - {static} SelectIterator(source:IEnumerable<TSource>, selector:Func<TSource, int, TResult>) : IEnumerable<TResult>
+    - {static} CombinePredicates(predicate1:Func<TSource, bool>, predicate2:Func<TSource, bool>) : Func<TSource, bool>
+    - {static} CombineSelectors(selector1:Func<TSource, TMiddle>, selector2:Func<TMiddle, TResult>) : Func<TSource, TResult>
+    + {static} SelectMany(source:IEnumerable<TSource>, selector:Func<TSource, IEnumerable<TResult>>) : IEnumerable<TResult>
+    - {static} SelectManyIterator(source:IEnumerable<TSource>, selector:Func<TSource, IEnumerable<TResult>>) : IEnumerable<TResult>
+    + {static} SelectMany(source:IEnumerable<TSource>, selector:Func<TSource, int, IEnumerable<TResult>>) : IEnumerable<TResult>
+    - {static} SelectManyIterator(source:IEnumerable<TSource>, selector:Func<TSource, int, IEnumerable<TResult>>) : IEnumerable<TResult>
+    + {static} SelectMany(source:IEnumerable<TSource>, collectionSelector:Func<TSource, int, IEnumerable<TCollection>>, resultSelector:Func<TSource, TCollection, TResult>) : IEnumerable<TResult>
+    - {static} SelectManyIterator(source:IEnumerable<TSource>, collectionSelector:Func<TSource, int, IEnumerable<TCollection>>, resultSelector:Func<TSource, TCollection, TResult>) : IEnumerable<TResult>
+    + {static} SelectMany(source:IEnumerable<TSource>, collectionSelector:Func<TSource, IEnumerable<TCollection>>, resultSelector:Func<TSource, TCollection, TResult>) : IEnumerable<TResult>
+    - {static} SelectManyIterator(source:IEnumerable<TSource>, collectionSelector:Func<TSource, IEnumerable<TCollection>>, resultSelector:Func<TSource, TCollection, TResult>) : IEnumerable<TResult>
+    + {static} Take(source:IEnumerable<TSource>, count:int) : IEnumerable<TSource>
+    - {static} TakeIterator(source:IEnumerable<TSource>, count:int) : IEnumerable<TSource>
+    + {static} TakeWhile(source:IEnumerable<TSource>, predicate:Func<TSource, bool>) : IEnumerable<TSource>
+    - {static} TakeWhileIterator(source:IEnumerable<TSource>, predicate:Func<TSource, bool>) : IEnumerable<TSource>
+    + {static} TakeWhile(source:IEnumerable<TSource>, predicate:Func<TSource, int, bool>) : IEnumerable<TSource>
+    - {static} TakeWhileIterator(source:IEnumerable<TSource>, predicate:Func<TSource, int, bool>) : IEnumerable<TSource>
+    + {static} Skip(source:IEnumerable<TSource>, count:int) : IEnumerable<TSource>
+    - {static} SkipIterator(source:IEnumerable<TSource>, count:int) : IEnumerable<TSource>
+    + {static} SkipWhile(source:IEnumerable<TSource>, predicate:Func<TSource, bool>) : IEnumerable<TSource>
+    - {static} SkipWhileIterator(source:IEnumerable<TSource>, predicate:Func<TSource, bool>) : IEnumerable<TSource>
+    + {static} SkipWhile(source:IEnumerable<TSource>, predicate:Func<TSource, int, bool>) : IEnumerable<TSource>
+    - {static} SkipWhileIterator(source:IEnumerable<TSource>, predicate:Func<TSource, int, bool>) : IEnumerable<TSource>
+    + {static} Join(outer:IEnumerable<TOuter>, inner:IEnumerable<TInner>, outerKeySelector:Func<TOuter, TKey>, innerKeySelector:Func<TInner, TKey>, resultSelector:Func<TOuter, TInner, TResult>) : IEnumerable<TResult>
+    + {static} Join(outer:IEnumerable<TOuter>, inner:IEnumerable<TInner>, outerKeySelector:Func<TOuter, TKey>, innerKeySelector:Func<TInner, TKey>, resultSelector:Func<TOuter, TInner, TResult>, comparer:IEqualityComparer<TKey>) : IEnumerable<TResult>
+    - {static} JoinIterator(outer:IEnumerable<TOuter>, inner:IEnumerable<TInner>, outerKeySelector:Func<TOuter, TKey>, innerKeySelector:Func<TInner, TKey>, resultSelector:Func<TOuter, TInner, TResult>, comparer:IEqualityComparer<TKey>) : IEnumerable<TResult>
+    + {static} GroupJoin(outer:IEnumerable<TOuter>, inner:IEnumerable<TInner>, outerKeySelector:Func<TOuter, TKey>, innerKeySelector:Func<TInner, TKey>, resultSelector:Func<TOuter, IEnumerable<TInner>, TResult>) : IEnumerable<TResult>
+    + {static} GroupJoin(outer:IEnumerable<TOuter>, inner:IEnumerable<TInner>, outerKeySelector:Func<TOuter, TKey>, innerKeySelector:Func<TInner, TKey>, resultSelector:Func<TOuter, IEnumerable<TInner>, TResult>, comparer:IEqualityComparer<TKey>) : IEnumerable<TResult>
+    - {static} GroupJoinIterator(outer:IEnumerable<TOuter>, inner:IEnumerable<TInner>, outerKeySelector:Func<TOuter, TKey>, innerKeySelector:Func<TInner, TKey>, resultSelector:Func<TOuter, IEnumerable<TInner>, TResult>, comparer:IEqualityComparer<TKey>) : IEnumerable<TResult>
+    + {static} OrderBy(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>) : IOrderedEnumerable<TSource>
+    + {static} OrderBy(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>, comparer:IComparer<TKey>) : IOrderedEnumerable<TSource>
+    + {static} OrderByDescending(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>) : IOrderedEnumerable<TSource>
+    + {static} OrderByDescending(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>, comparer:IComparer<TKey>) : IOrderedEnumerable<TSource>
+    + {static} ThenBy(source:IOrderedEnumerable<TSource>, keySelector:Func<TSource, TKey>) : IOrderedEnumerable<TSource>
+    + {static} ThenBy(source:IOrderedEnumerable<TSource>, keySelector:Func<TSource, TKey>, comparer:IComparer<TKey>) : IOrderedEnumerable<TSource>
+    + {static} ThenByDescending(source:IOrderedEnumerable<TSource>, keySelector:Func<TSource, TKey>) : IOrderedEnumerable<TSource>
+    + {static} ThenByDescending(source:IOrderedEnumerable<TSource>, keySelector:Func<TSource, TKey>, comparer:IComparer<TKey>) : IOrderedEnumerable<TSource>
+    + {static} GroupBy(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>) : IEnumerable<IGrouping<TKey, TSource>>
+    + {static} GroupBy(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>, comparer:IEqualityComparer<TKey>) : IEnumerable<IGrouping<TKey, TSource>>
+    + {static} GroupBy(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>, elementSelector:Func<TSource, TElement>) : IEnumerable<IGrouping<TKey, TElement>>
+    + {static} GroupBy(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>, elementSelector:Func<TSource, TElement>, comparer:IEqualityComparer<TKey>) : IEnumerable<IGrouping<TKey, TElement>>
+    + {static} GroupBy(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>, resultSelector:Func<TKey, IEnumerable<TSource>, TResult>) : IEnumerable<TResult>
+    + {static} GroupBy(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>, elementSelector:Func<TSource, TElement>, resultSelector:Func<TKey, IEnumerable<TElement>, TResult>) : IEnumerable<TResult>
+    + {static} GroupBy(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>, resultSelector:Func<TKey, IEnumerable<TSource>, TResult>, comparer:IEqualityComparer<TKey>) : IEnumerable<TResult>
+    + {static} GroupBy(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>, elementSelector:Func<TSource, TElement>, resultSelector:Func<TKey, IEnumerable<TElement>, TResult>, comparer:IEqualityComparer<TKey>) : IEnumerable<TResult>
+    + {static} Concat(first:IEnumerable<TSource>, second:IEnumerable<TSource>) : IEnumerable<TSource>
+    - {static} ConcatIterator(first:IEnumerable<TSource>, second:IEnumerable<TSource>) : IEnumerable<TSource>
+    + {static} Zip(first:IEnumerable<TFirst>, second:IEnumerable<TSecond>, resultSelector:Func<TFirst, TSecond, TResult>) : IEnumerable<TResult>
+    - {static} ZipIterator(first:IEnumerable<TFirst>, second:IEnumerable<TSecond>, resultSelector:Func<TFirst, TSecond, TResult>) : IEnumerable<TResult>
+    + {static} Distinct(source:IEnumerable<TSource>) : IEnumerable<TSource>
+    + {static} Distinct(source:IEnumerable<TSource>, comparer:IEqualityComparer<TSource>) : IEnumerable<TSource>
+    - {static} DistinctIterator(source:IEnumerable<TSource>, comparer:IEqualityComparer<TSource>) : IEnumerable<TSource>
+    + {static} Union(first:IEnumerable<TSource>, second:IEnumerable<TSource>) : IEnumerable<TSource>
+    + {static} Union(first:IEnumerable<TSource>, second:IEnumerable<TSource>, comparer:IEqualityComparer<TSource>) : IEnumerable<TSource>
+    - {static} UnionIterator(first:IEnumerable<TSource>, second:IEnumerable<TSource>, comparer:IEqualityComparer<TSource>) : IEnumerable<TSource>
+    + {static} Intersect(first:IEnumerable<TSource>, second:IEnumerable<TSource>) : IEnumerable<TSource>
+    + {static} Intersect(first:IEnumerable<TSource>, second:IEnumerable<TSource>, comparer:IEqualityComparer<TSource>) : IEnumerable<TSource>
+    - {static} IntersectIterator(first:IEnumerable<TSource>, second:IEnumerable<TSource>, comparer:IEqualityComparer<TSource>) : IEnumerable<TSource>
+    + {static} Except(first:IEnumerable<TSource>, second:IEnumerable<TSource>) : IEnumerable<TSource>
+    + {static} Except(first:IEnumerable<TSource>, second:IEnumerable<TSource>, comparer:IEqualityComparer<TSource>) : IEnumerable<TSource>
+    - {static} ExceptIterator(first:IEnumerable<TSource>, second:IEnumerable<TSource>, comparer:IEqualityComparer<TSource>) : IEnumerable<TSource>
+    + {static} Reverse(source:IEnumerable<TSource>) : IEnumerable<TSource>
+    - {static} ReverseIterator(source:IEnumerable<TSource>) : IEnumerable<TSource>
+    + {static} SequenceEqual(first:IEnumerable<TSource>, second:IEnumerable<TSource>) : bool
+    + {static} SequenceEqual(first:IEnumerable<TSource>, second:IEnumerable<TSource>, comparer:IEqualityComparer<TSource>) : bool
+    + {static} AsEnumerable(source:IEnumerable<TSource>) : IEnumerable<TSource>
+    + {static} ToArray(source:IEnumerable<TSource>) : TSource[]
+    + {static} ToList(source:IEnumerable<TSource>) : List<TSource>
+    + {static} ToDictionary(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>) : Dictionary<TKey, TSource>
+    + {static} ToDictionary(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>, comparer:IEqualityComparer<TKey>) : Dictionary<TKey, TSource>
+    + {static} ToDictionary(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>, elementSelector:Func<TSource, TElement>) : Dictionary<TKey, TElement>
+    + {static} ToDictionary(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>, elementSelector:Func<TSource, TElement>, comparer:IEqualityComparer<TKey>) : Dictionary<TKey, TElement>
+    + {static} ToLookup(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>) : ILookup<TKey, TSource>
+    + {static} ToLookup(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>, comparer:IEqualityComparer<TKey>) : ILookup<TKey, TSource>
+    + {static} ToLookup(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>, elementSelector:Func<TSource, TElement>) : ILookup<TKey, TElement>
+    + {static} ToLookup(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>, elementSelector:Func<TSource, TElement>, comparer:IEqualityComparer<TKey>) : ILookup<TKey, TElement>
+    + {static} ToHashSet(source:IEnumerable<TSource>) : HashSet<TSource>
+    + {static} ToHashSet(source:IEnumerable<TSource>, comparer:IEqualityComparer<TSource>) : HashSet<TSource>
+    + {static} DefaultIfEmpty(source:IEnumerable<TSource>) : IEnumerable<TSource>
+    + {static} DefaultIfEmpty(source:IEnumerable<TSource>, defaultValue:TSource) : IEnumerable<TSource>
+    - {static} DefaultIfEmptyIterator(source:IEnumerable<TSource>, defaultValue:TSource) : IEnumerable<TSource>
+    + {static} OfType(source:IEnumerable) : IEnumerable<TResult>
+    - {static} OfTypeIterator(source:IEnumerable) : IEnumerable<TResult>
+    + {static} Cast(source:IEnumerable) : IEnumerable<TResult>
+    - {static} CastIterator(source:IEnumerable) : IEnumerable<TResult>
+    + {static} First(source:IEnumerable<TSource>) : TSource
+    + {static} First(source:IEnumerable<TSource>, predicate:Func<TSource, bool>) : TSource
+    + {static} FirstOrDefault(source:IEnumerable<TSource>) : TSource
+    + {static} FirstOrDefault(source:IEnumerable<TSource>, predicate:Func<TSource, bool>) : TSource
+    + {static} Last(source:IEnumerable<TSource>) : TSource
+    + {static} Last(source:IEnumerable<TSource>, predicate:Func<TSource, bool>) : TSource
+    + {static} LastOrDefault(source:IEnumerable<TSource>) : TSource
+    + {static} LastOrDefault(source:IEnumerable<TSource>, predicate:Func<TSource, bool>) : TSource
+    + {static} Single(source:IEnumerable<TSource>) : TSource
+    + {static} Single(source:IEnumerable<TSource>, predicate:Func<TSource, bool>) : TSource
+    + {static} SingleOrDefault(source:IEnumerable<TSource>) : TSource
+    + {static} SingleOrDefault(source:IEnumerable<TSource>, predicate:Func<TSource, bool>) : TSource
+    + {static} ElementAt(source:IEnumerable<TSource>, index:int) : TSource
+    + {static} ElementAtOrDefault(source:IEnumerable<TSource>, index:int) : TSource
+    + {static} Range(start:int, count:int) : IEnumerable<int>
+    - {static} RangeIterator(start:int, count:int) : IEnumerable<int>
+    + {static} Repeat(element:TResult, count:int) : IEnumerable<TResult>
+    - {static} RepeatIterator(element:TResult, count:int) : IEnumerable<TResult>
+    + {static} Empty() : IEnumerable<TResult>
+    + {static} Any(source:IEnumerable<TSource>) : bool
+    + {static} Any(source:IEnumerable<TSource>, predicate:Func<TSource, bool>) : bool
+    + {static} All(source:IEnumerable<TSource>, predicate:Func<TSource, bool>) : bool
+    + {static} Count(source:IEnumerable<TSource>) : int
+    + {static} Count(source:IEnumerable<TSource>, predicate:Func<TSource, bool>) : int
+    + {static} LongCount(source:IEnumerable<TSource>) : long
+    + {static} LongCount(source:IEnumerable<TSource>, predicate:Func<TSource, bool>) : long
+    + {static} Contains(source:IEnumerable<TSource>, value:TSource) : bool
+    + {static} Contains(source:IEnumerable<TSource>, value:TSource, comparer:IEqualityComparer<TSource>) : bool
+    + {static} Aggregate(source:IEnumerable<TSource>, func:Func<TSource, TSource, TSource>) : TSource
+    + {static} Aggregate(source:IEnumerable<TSource>, seed:TAccumulate, func:Func<TAccumulate, TSource, TAccumulate>) : TAccumulate
+    + {static} Aggregate(source:IEnumerable<TSource>, seed:TAccumulate, func:Func<TAccumulate, TSource, TAccumulate>, resultSelector:Func<TAccumulate, TResult>) : TResult
+    + {static} Sum(source:IEnumerable<int>) : int
+    + {static} Sum(source:IEnumerable<int?>) : int?
+    + {static} Sum(source:IEnumerable<long>) : long
+    + {static} Sum(source:IEnumerable<long?>) : long?
+    + {static} Sum(source:IEnumerable<float>) : float
+    + {static} Sum(source:IEnumerable<float?>) : float?
+    + {static} Sum(source:IEnumerable<double>) : double
+    + {static} Sum(source:IEnumerable<double?>) : double?
+    + {static} Sum(source:IEnumerable<Decimal>) : Decimal
+    + {static} Sum(source:IEnumerable<Decimal?>) : Decimal?
+    + {static} Sum(source:IEnumerable<TSource>, selector:Func<TSource, int>) : int
+    + {static} Sum(source:IEnumerable<TSource>, selector:Func<TSource, int?>) : int?
+    + {static} Sum(source:IEnumerable<TSource>, selector:Func<TSource, long>) : long
+    + {static} Sum(source:IEnumerable<TSource>, selector:Func<TSource, long?>) : long?
+    + {static} Sum(source:IEnumerable<TSource>, selector:Func<TSource, float>) : float
+    + {static} Sum(source:IEnumerable<TSource>, selector:Func<TSource, float?>) : float?
+    + {static} Sum(source:IEnumerable<TSource>, selector:Func<TSource, double>) : double
+    + {static} Sum(source:IEnumerable<TSource>, selector:Func<TSource, double?>) : double?
+    + {static} Sum(source:IEnumerable<TSource>, selector:Func<TSource, Decimal>) : Decimal
+    + {static} Sum(source:IEnumerable<TSource>, selector:Func<TSource, Decimal?>) : Decimal?
+    + {static} Min(source:IEnumerable<int>) : int
+    + {static} Min(source:IEnumerable<int?>) : int?
+    + {static} Min(source:IEnumerable<long>) : long
+    + {static} Min(source:IEnumerable<long?>) : long?
+    + {static} Min(source:IEnumerable<float>) : float
+    + {static} Min(source:IEnumerable<float?>) : float?
+    + {static} Min(source:IEnumerable<double>) : double
+    + {static} Min(source:IEnumerable<double?>) : double?
+    + {static} Min(source:IEnumerable<Decimal>) : Decimal
+    + {static} Min(source:IEnumerable<Decimal?>) : Decimal?
+    + {static} Min(source:IEnumerable<TSource>) : TSource
+    + {static} Min(source:IEnumerable<TSource>, selector:Func<TSource, int>) : int
+    + {static} Min(source:IEnumerable<TSource>, selector:Func<TSource, int?>) : int?
+    + {static} Min(source:IEnumerable<TSource>, selector:Func<TSource, long>) : long
+    + {static} Min(source:IEnumerable<TSource>, selector:Func<TSource, long?>) : long?
+    + {static} Min(source:IEnumerable<TSource>, selector:Func<TSource, float>) : float
+    + {static} Min(source:IEnumerable<TSource>, selector:Func<TSource, float?>) : float?
+    + {static} Min(source:IEnumerable<TSource>, selector:Func<TSource, double>) : double
+    + {static} Min(source:IEnumerable<TSource>, selector:Func<TSource, double?>) : double?
+    + {static} Min(source:IEnumerable<TSource>, selector:Func<TSource, Decimal>) : Decimal
+    + {static} Min(source:IEnumerable<TSource>, selector:Func<TSource, Decimal?>) : Decimal?
+    + {static} Min(source:IEnumerable<TSource>, selector:Func<TSource, TResult>) : TResult
+    + {static} Max(source:IEnumerable<int>) : int
+    + {static} Max(source:IEnumerable<int?>) : int?
+    + {static} Max(source:IEnumerable<long>) : long
+    + {static} Max(source:IEnumerable<long?>) : long?
+    + {static} Max(source:IEnumerable<double>) : double
+    + {static} Max(source:IEnumerable<double?>) : double?
+    + {static} Max(source:IEnumerable<float>) : float
+    + {static} Max(source:IEnumerable<float?>) : float?
+    + {static} Max(source:IEnumerable<Decimal>) : Decimal
+    + {static} Max(source:IEnumerable<Decimal?>) : Decimal?
+    + {static} Max(source:IEnumerable<TSource>) : TSource
+    + {static} Max(source:IEnumerable<TSource>, selector:Func<TSource, int>) : int
+    + {static} Max(source:IEnumerable<TSource>, selector:Func<TSource, int?>) : int?
+    + {static} Max(source:IEnumerable<TSource>, selector:Func<TSource, long>) : long
+    + {static} Max(source:IEnumerable<TSource>, selector:Func<TSource, long?>) : long?
+    + {static} Max(source:IEnumerable<TSource>, selector:Func<TSource, float>) : float
+    + {static} Max(source:IEnumerable<TSource>, selector:Func<TSource, float?>) : float?
+    + {static} Max(source:IEnumerable<TSource>, selector:Func<TSource, double>) : double
+    + {static} Max(source:IEnumerable<TSource>, selector:Func<TSource, double?>) : double?
+    + {static} Max(source:IEnumerable<TSource>, selector:Func<TSource, Decimal>) : Decimal
+    + {static} Max(source:IEnumerable<TSource>, selector:Func<TSource, Decimal?>) : Decimal?
+    + {static} Max(source:IEnumerable<TSource>, selector:Func<TSource, TResult>) : TResult
+    + {static} Average(source:IEnumerable<int>) : double
+    + {static} Average(source:IEnumerable<int?>) : double?
+    + {static} Average(source:IEnumerable<long>) : double
+    + {static} Average(source:IEnumerable<long?>) : double?
+    + {static} Average(source:IEnumerable<float>) : float
+    + {static} Average(source:IEnumerable<float?>) : float?
+    + {static} Average(source:IEnumerable<double>) : double
+    + {static} Average(source:IEnumerable<double?>) : double?
+    + {static} Average(source:IEnumerable<Decimal>) : Decimal
+    + {static} Average(source:IEnumerable<Decimal?>) : Decimal?
+    + {static} Average(source:IEnumerable<TSource>, selector:Func<TSource, int>) : double
+    + {static} Average(source:IEnumerable<TSource>, selector:Func<TSource, int?>) : double?
+    + {static} Average(source:IEnumerable<TSource>, selector:Func<TSource, long>) : double
+    + {static} Average(source:IEnumerable<TSource>, selector:Func<TSource, long?>) : double?
+    + {static} Average(source:IEnumerable<TSource>, selector:Func<TSource, float>) : float
+    + {static} Average(source:IEnumerable<TSource>, selector:Func<TSource, float?>) : float?
+    + {static} Average(source:IEnumerable<TSource>, selector:Func<TSource, double>) : double
+    + {static} Average(source:IEnumerable<TSource>, selector:Func<TSource, double?>) : double?
+    + {static} Average(source:IEnumerable<TSource>, selector:Func<TSource, Decimal>) : Decimal
+    + {static} Average(source:IEnumerable<TSource>, selector:Func<TSource, Decimal?>) : Decimal?
+    + {static} Append(source:IEnumerable<TSource>, element:TSource) : IEnumerable<TSource>
+    + {static} Prepend(source:IEnumerable<TSource>, element:TSource) : IEnumerable<TSource>
+}
+abstract class "Iterator`1"<TSource> {
+    - threadId : int
+    <<internal>> state : int
+    <<internal>> current : TSource
+    + Iterator()
+    + Current : TSource <<get>>
+    + {abstract} Clone() : Enumerable.Iterator<TSource>
+    + <<virtual>> Dispose() : void
+    + GetEnumerator() : IEnumerator<TSource>
+    + {abstract} MoveNext() : bool
+    + {abstract} Select(selector:Func<TSource, TResult>) : IEnumerable<TResult>
+    + {abstract} Where(predicate:Func<TSource, bool>) : IEnumerable<TSource>
+    Current : object <<get>>
+    GetEnumerator() : IEnumerator
+    Reset() : void
+}
+class "WhereEnumerableIterator`1"<TSource> {
+    - source : IEnumerable<TSource>
+    - predicate : Func<TSource, bool>
+    - enumerator : IEnumerator<TSource>
+    + WhereEnumerableIterator(source:IEnumerable<TSource>, predicate:Func<TSource, bool>)
+    + <<override>> Clone() : Enumerable.Iterator<TSource>
+    + <<override>> Dispose() : void
+    + <<override>> MoveNext() : bool
+    + <<override>> Select(selector:Func<TSource, TResult>) : IEnumerable<TResult>
+    + <<override>> Where(predicate:Func<TSource, bool>) : IEnumerable<TSource>
+}
+class "WhereArrayIterator`1"<TSource> {
+    - source : TSource[]
+    - predicate : Func<TSource, bool>
+    - index : int
+    + WhereArrayIterator(source:TSource[], predicate:Func<TSource, bool>)
+    + <<override>> Clone() : Enumerable.Iterator<TSource>
+    + <<override>> MoveNext() : bool
+    + <<override>> Select(selector:Func<TSource, TResult>) : IEnumerable<TResult>
+    + <<override>> Where(predicate:Func<TSource, bool>) : IEnumerable<TSource>
+}
+class "WhereListIterator`1"<TSource> {
+    - source : List<TSource>
+    - predicate : Func<TSource, bool>
+    - enumerator : List<TSource>.Enumerator
+    + WhereListIterator(source:List<TSource>, predicate:Func<TSource, bool>)
+    + <<override>> Clone() : Enumerable.Iterator<TSource>
+    + <<override>> MoveNext() : bool
+    + <<override>> Select(selector:Func<TSource, TResult>) : IEnumerable<TResult>
+    + <<override>> Where(predicate:Func<TSource, bool>) : IEnumerable<TSource>
+}
+class "SelectEnumerableIterator`2"<TSource,TResult> {
+    - <<readonly>> _source : IEnumerable<TSource>
+    - <<readonly>> _selector : Func<TSource, TResult>
+    - _enumerator : IEnumerator<TSource>
+    + SelectEnumerableIterator(source:IEnumerable<TSource>, selector:Func<TSource, TResult>)
+    + <<override>> Clone() : Enumerable.Iterator<TResult>
+    + <<override>> Dispose() : void
+    + <<override>> MoveNext() : bool
+    + <<override>> Select(selector:Func<TResult, TResult2>) : IEnumerable<TResult2>
+    + <<override>> Where(predicate:Func<TResult, bool>) : IEnumerable<TResult>
+    + ToArray() : TResult[]
+    + ToList() : List<TResult>
+    + GetCount(onlyIfCheap:bool) : int
+}
+class "WhereSelectEnumerableIterator`2"<TSource,TResult> {
+    - source : IEnumerable<TSource>
+    - predicate : Func<TSource, bool>
+    - selector : Func<TSource, TResult>
+    - enumerator : IEnumerator<TSource>
+    + WhereSelectEnumerableIterator(source:IEnumerable<TSource>, predicate:Func<TSource, bool>, selector:Func<TSource, TResult>)
+    + <<override>> Clone() : Enumerable.Iterator<TResult>
+    + <<override>> Dispose() : void
+    + <<override>> MoveNext() : bool
+    + <<override>> Select(selector:Func<TResult, TResult2>) : IEnumerable<TResult2>
+    + <<override>> Where(predicate:Func<TResult, bool>) : IEnumerable<TResult>
+}
+class "WhereSelectArrayIterator`2"<TSource,TResult> {
+    - source : TSource[]
+    - predicate : Func<TSource, bool>
+    - selector : Func<TSource, TResult>
+    - index : int
+    + WhereSelectArrayIterator(source:TSource[], predicate:Func<TSource, bool>, selector:Func<TSource, TResult>)
+    + <<override>> Clone() : Enumerable.Iterator<TResult>
+    + <<override>> MoveNext() : bool
+    + <<override>> Select(selector:Func<TResult, TResult2>) : IEnumerable<TResult2>
+    + <<override>> Where(predicate:Func<TResult, bool>) : IEnumerable<TResult>
+}
+class "WhereSelectListIterator`2"<TSource,TResult> {
+    - source : List<TSource>
+    - predicate : Func<TSource, bool>
+    - selector : Func<TSource, TResult>
+    - enumerator : List<TSource>.Enumerator
+    + WhereSelectListIterator(source:List<TSource>, predicate:Func<TSource, bool>, selector:Func<TSource, TResult>)
+    + <<override>> Clone() : Enumerable.Iterator<TResult>
+    + <<override>> MoveNext() : bool
+    + <<override>> Select(selector:Func<TResult, TResult2>) : IEnumerable<TResult2>
+    + <<override>> Where(predicate:Func<TResult, bool>) : IEnumerable<TResult>
+}
+abstract class "AppendPrependIterator`1"<TSource> {
+    # <<readonly>> _source : IEnumerable<TSource>
+    # enumerator : IEnumerator<TSource>
+    # AppendPrependIterator(source:IEnumerable<TSource>)
+    # GetSourceEnumerator() : void
+    + {abstract} Append(item:TSource) : Enumerable.AppendPrependIterator<TSource>
+    + {abstract} Prepend(item:TSource) : Enumerable.AppendPrependIterator<TSource>
+    # LoadFromEnumerator() : bool
+    + <<override>> Dispose() : void
+    + <<override>> Select(selector:Func<TSource, TResult>) : IEnumerable<TResult>
+    + <<override>> Where(predicate:Func<TSource, bool>) : IEnumerable<TSource>
+    + {abstract} ToArray() : TSource[]
+    + {abstract} ToList() : List<TSource>
+    + {abstract} GetCount(onlyIfCheap:bool) : int
+}
+class "AppendPrepend1Iterator`1"<TSource> {
+    - <<readonly>> _item : TSource
+    - <<readonly>> _appending : bool
+    + AppendPrepend1Iterator(source:IEnumerable<TSource>, item:TSource, appending:bool)
+    + <<override>> Clone() : Enumerable.Iterator<TSource>
+    + <<override>> MoveNext() : bool
+    + <<override>> Append(item:TSource) : Enumerable.AppendPrependIterator<TSource>
+    + <<override>> Prepend(item:TSource) : Enumerable.AppendPrependIterator<TSource>
+    - LazyToArray() : TSource[]
+    + <<override>> ToArray() : TSource[]
+    + <<override>> ToList() : List<TSource>
+    + <<override>> GetCount(onlyIfCheap:bool) : int
+}
+class "AppendPrependN`1"<TSource> {
+    - <<readonly>> _prepended : SingleLinkedNode<TSource>
+    - <<readonly>> _appended : SingleLinkedNode<TSource>
+    - <<readonly>> _prependCount : int
+    - <<readonly>> _appendCount : int
+    - _node : SingleLinkedNode<TSource>
+    + AppendPrependN(source:IEnumerable<TSource>, prepended:SingleLinkedNode<TSource>, appended:SingleLinkedNode<TSource>, prependCount:int, appendCount:int)
+    + <<override>> Clone() : Enumerable.Iterator<TSource>
+    + <<override>> MoveNext() : bool
+    + <<override>> Append(item:TSource) : Enumerable.AppendPrependIterator<TSource>
+    + <<override>> Prepend(item:TSource) : Enumerable.AppendPrependIterator<TSource>
+    - LazyToArray() : TSource[]
+    + <<override>> ToArray() : TSource[]
+    + <<override>> ToList() : List<TSource>
+    + <<override>> GetCount(onlyIfCheap:bool) : int
+}
+Enumerable +-- "Iterator`1"
+"IEnumerable`1" "<TSource>" <|-- "Iterator`1"
+IEnumerable <|-- "Iterator`1"
+"IEnumerator`1" "<TSource>" <|-- "Iterator`1"
+IDisposable <|-- "Iterator`1"
+IEnumerator <|-- "Iterator`1"
+Enumerable +-- "WhereEnumerableIterator`1"
+Enumerable +-- "WhereArrayIterator`1"
+Enumerable +-- "WhereListIterator`1"
+Enumerable +-- "SelectEnumerableIterator`2"
+"IIListProvider`1" "<TResult>" <|-- "SelectEnumerableIterator`2"
+"IEnumerable`1" "<TResult>" <|-- "SelectEnumerableIterator`2"
+IEnumerable <|-- "SelectEnumerableIterator`2"
+Enumerable +-- "WhereSelectEnumerableIterator`2"
+Enumerable +-- "WhereSelectArrayIterator`2"
+Enumerable +-- "WhereSelectListIterator`2"
+Enumerable +-- "AppendPrependIterator`1"
+"IIListProvider`1" "<TSource>" <|-- "AppendPrependIterator`1"
+"IEnumerable`1" "<TSource>" <|-- "AppendPrependIterator`1"
+IEnumerable <|-- "AppendPrependIterator`1"
+Enumerable +-- "AppendPrepend1Iterator`1"
+Enumerable +-- "AppendPrependN`1"
+abstract class EnumerableExecutor {
+    <<internal>> {abstract} ExecuteBoxed() : object
+    <<internal>> {static} Create(expression:Expression) : EnumerableExecutor
+    # EnumerableExecutor()
+}
+class "EnumerableExecutor`1"<T> {
+    - expression : Expression
+    - func : Func<T>
+    + EnumerableExecutor(expression:Expression)
+    <<internal>> <<override>> ExecuteBoxed() : object
+    <<internal>> Execute() : T
+}
+EnumerableExecutor <|-- "EnumerableExecutor`1"
+abstract class EnumerableQuery {
+    <<internal>> {abstract} Expression : Expression <<get>>
+    <<internal>> {abstract} Enumerable : IEnumerable <<get>>
+    <<internal>> {static} Create(elementType:Type, sequence:IEnumerable) : IQueryable
+    <<internal>> {static} Create(elementType:Type, expression:Expression) : IQueryable
+    # EnumerableQuery()
+}
+class "EnumerableQuery`1"<T> {
+    - expression : Expression
+    - enumerable : IEnumerable<T>
+    Provider : IQueryProvider <<get>>
+    + EnumerableQuery(enumerable:IEnumerable<T>)
+    + EnumerableQuery(expression:Expression)
+    <<internal>> <<override>> Expression : Expression <<get>>
+    <<internal>> <<override>> Enumerable : IEnumerable <<get>>
+    Expression : Expression <<get>>
+    ElementType : Type <<get>>
+    CreateQuery(expression:Expression) : IQueryable
+    CreateQuery(expression:Expression) : IQueryable<S>
+    Execute(expression:Expression) : object
+    Execute(expression:Expression) : S
+    GetEnumerator() : IEnumerator
+    GetEnumerator() : IEnumerator<T>
+    - GetEnumerator() : IEnumerator<T>
+    + <<override>> ToString() : string
+}
+EnumerableQuery <|-- "EnumerableQuery`1"
+"IOrderedQueryable`1" "<T>" <|-- "EnumerableQuery`1"
+"IQueryable`1" "<T>" <|-- "EnumerableQuery`1"
+"IEnumerable`1" "<T>" <|-- "EnumerableQuery`1"
+IEnumerable <|-- "EnumerableQuery`1"
+IQueryable <|-- "EnumerableQuery`1"
+IOrderedQueryable <|-- "EnumerableQuery`1"
+IQueryProvider <|-- "EnumerableQuery`1"
+interface "IGrouping`2"<out TKey,out TElement> {
+    Key : TKey <<get>>
+}
+"IEnumerable`1" "<TElement>" <|-- "IGrouping`2"
+IEnumerable <|-- "IGrouping`2"
+interface "ILookup`2"<TKey,TElement> {
+    Count : int <<get>>
+    Contains(key:TKey) : bool
+}
+"IEnumerable`1" "<IGrouping<TKey, TElement>>" <|-- "ILookup`2"
+IEnumerable <|-- "ILookup`2"
+interface "IOrderedEnumerable`1"<TElement> {
+    CreateOrderedEnumerable(keySelector:Func<TElement, TKey>, comparer:IComparer<TKey>, descending:bool) : IOrderedEnumerable<TElement>
+}
+"IEnumerable`1" "<TElement>" <|-- "IOrderedEnumerable`1"
+IEnumerable <|-- "IOrderedEnumerable`1"
+interface IOrderedQueryable {
+}
+IQueryable <|-- IOrderedQueryable
+IEnumerable <|-- IOrderedQueryable
+interface "IOrderedQueryable`1"<out T> {
+}
+"IQueryable`1" "<T>" <|-- "IOrderedQueryable`1"
+"IEnumerable`1" "<T>" <|-- "IOrderedQueryable`1"
+IEnumerable <|-- "IOrderedQueryable`1"
+IQueryable <|-- "IOrderedQueryable`1"
+IOrderedQueryable <|-- "IOrderedQueryable`1"
+interface IQueryable {
+    Expression : Expression <<get>>
+    ElementType : Type <<get>>
+    Provider : IQueryProvider <<get>>
+}
+IEnumerable <|-- IQueryable
+interface "IQueryable`1"<out T> {
+}
+"IEnumerable`1" "<T>" <|-- "IQueryable`1"
+IEnumerable <|-- "IQueryable`1"
+IQueryable <|-- "IQueryable`1"
+interface IQueryProvider {
+    CreateQuery(expression:Expression) : IQueryable
+    CreateQuery(expression:Expression) : IQueryable<TElement>
+    Execute(expression:Expression) : object?
+    Execute(expression:Expression) : TResult
+}
+class "Lookup`2"<TKey,TElement> {
+    - comparer : IEqualityComparer<TKey>
+    - groupings : Lookup<TKey, TElement>.Grouping[]
+    - lastGrouping : Lookup<TKey, TElement>.Grouping
+    - count : int
+    <<internal>> {static} Create(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>, elementSelector:Func<TSource, TElement>, comparer:IEqualityComparer<TKey>) : Lookup<TKey, TElement>
+    <<internal>> {static} CreateForJoin(source:IEnumerable<TElement>, keySelector:Func<TElement, TKey>, comparer:IEqualityComparer<TKey>) : Lookup<TKey, TElement>
+    - Lookup(comparer:IEqualityComparer<TKey>)
+    + Count : int <<get>>
+    + Contains(key:TKey) : bool
+    + GetEnumerator() : IEnumerator<IGrouping<TKey, TElement>>
+    + ApplyResultSelector(resultSelector:Func<TKey, IEnumerable<TElement>, TResult>) : IEnumerable<TResult>
+    GetEnumerator() : IEnumerator
+    <<internal>> InternalGetHashCode(key:TKey) : int
+    <<internal>> GetGrouping(key:TKey, create:bool) : Lookup<TKey, TElement>.Grouping
+    - Resize() : void
+}
+class Grouping {
+    <<internal>> key : TKey
+    <<internal>> hashCode : int
+    <<internal>> elements : TElement[]
+    <<internal>> count : int
+    <<internal>> hashNext : Lookup<TKey, TElement>.Grouping
+    <<internal>> next : Lookup<TKey, TElement>.Grouping
+    <<internal>> Add(element:TElement) : void
+    + GetEnumerator() : IEnumerator<TElement>
+    GetEnumerator() : IEnumerator
+    + Key : TKey <<get>>
+    Count : int <<get>>
+    IsReadOnly : bool <<get>>
+    Add(item:TElement) : void
+    Clear() : void
+    Contains(item:TElement) : bool
+    CopyTo(array:TElement[], arrayIndex:int) : void
+    Remove(item:TElement) : bool
+    IndexOf(item:TElement) : int
+    Insert(index:int, item:TElement) : void
+    RemoveAt(index:int) : void
+}
+"IEnumerable`1" "<IGrouping<TKey, TElement>>" <|-- "Lookup`2"
+IEnumerable <|-- "Lookup`2"
+"ILookup`2" "<TKey,TElement>" <|-- "Lookup`2"
+"Lookup`2" +-- Grouping
+"IGrouping`2" "<TKey,TElement>" <|-- Grouping
+"IEnumerable`1" "<TElement>" <|-- Grouping
+IEnumerable <|-- Grouping
+"IList`1" "<TElement>" <|-- Grouping
+"ICollection`1" "<TElement>" <|-- Grouping
+class "OrderedParallelQuery`1"<TSource> {
+    - m_sortOp : QueryOperator<TSource>
+    <<internal>> OrderedParallelQuery(sortOp:QueryOperator<TSource>)
+    <<internal>> SortOperator : QueryOperator<TSource> <<get>>
+    <<internal>> OrderedEnumerable : IOrderedEnumerable<TSource> <<get>>
+    + <<override>> GetEnumerator() : IEnumerator<TSource>
+}
+"ParallelQuery`1" "<TSource>" <|-- "OrderedParallelQuery`1"
+class ParallelEnumerable <<static>> {
+    - <<const>> RIGHT_SOURCE_NOT_PARALLEL_STR : string = "The second data source of a binary operator must be of type System.Linq.ParallelQuery<T> rather than System.Collections.Generic.IEnumerable<T>. To fix this problem, use the AsParallel() extension method to convert the right data source to System.Linq.ParallelQuery<T>."
+    + {static} AsParallel(source:IEnumerable<TSource>) : ParallelQuery<TSource>
+    + {static} AsParallel(source:Partitioner<TSource>) : ParallelQuery<TSource>
+    + {static} AsOrdered(source:ParallelQuery<TSource>) : ParallelQuery<TSource>
+    + {static} AsOrdered(source:ParallelQuery) : ParallelQuery
+    + {static} AsUnordered(source:ParallelQuery<TSource>) : ParallelQuery<TSource>
+    + {static} AsParallel(source:IEnumerable) : ParallelQuery
+    + {static} AsSequential(source:ParallelQuery<TSource>) : IEnumerable<TSource>
+    <<internal>> {static} WithTaskScheduler(source:ParallelQuery<TSource>, taskScheduler:TaskScheduler) : ParallelQuery<TSource>
+    + {static} WithDegreeOfParallelism(source:ParallelQuery<TSource>, degreeOfParallelism:int) : ParallelQuery<TSource>
+    + {static} WithCancellation(source:ParallelQuery<TSource>, cancellationToken:CancellationToken) : ParallelQuery<TSource>
+    + {static} WithExecutionMode(source:ParallelQuery<TSource>, executionMode:ParallelExecutionMode) : ParallelQuery<TSource>
+    + {static} WithMergeOptions(source:ParallelQuery<TSource>, mergeOptions:ParallelMergeOptions) : ParallelQuery<TSource>
+    + {static} Range(start:int, count:int) : ParallelQuery<int>
+    + {static} Repeat(element:TResult, count:int) : ParallelQuery<TResult>
+    + {static} Empty() : ParallelQuery<TResult>
+    + {static} ForAll(source:ParallelQuery<TSource>, action:Action<TSource>) : void
+    + {static} Where(source:ParallelQuery<TSource>, predicate:Func<TSource, bool>) : ParallelQuery<TSource>
+    + {static} Where(source:ParallelQuery<TSource>, predicate:Func<TSource, int, bool>) : ParallelQuery<TSource>
+    + {static} Select(source:ParallelQuery<TSource>, selector:Func<TSource, TResult>) : ParallelQuery<TResult>
+    + {static} Select(source:ParallelQuery<TSource>, selector:Func<TSource, int, TResult>) : ParallelQuery<TResult>
+    + {static} Zip(first:ParallelQuery<TFirst>, second:ParallelQuery<TSecond>, resultSelector:Func<TFirst, TSecond, TResult>) : ParallelQuery<TResult>
+    + {static} Zip(first:ParallelQuery<TFirst>, second:IEnumerable<TSecond>, resultSelector:Func<TFirst, TSecond, TResult>) : ParallelQuery<TResult>
+    + {static} Join(outer:ParallelQuery<TOuter>, inner:ParallelQuery<TInner>, outerKeySelector:Func<TOuter, TKey>, innerKeySelector:Func<TInner, TKey>, resultSelector:Func<TOuter, TInner, TResult>) : ParallelQuery<TResult>
+    + {static} Join(outer:ParallelQuery<TOuter>, inner:IEnumerable<TInner>, outerKeySelector:Func<TOuter, TKey>, innerKeySelector:Func<TInner, TKey>, resultSelector:Func<TOuter, TInner, TResult>) : ParallelQuery<TResult>
+    + {static} Join(outer:ParallelQuery<TOuter>, inner:ParallelQuery<TInner>, outerKeySelector:Func<TOuter, TKey>, innerKeySelector:Func<TInner, TKey>, resultSelector:Func<TOuter, TInner, TResult>, comparer:IEqualityComparer<TKey>) : ParallelQuery<TResult>
+    + {static} Join(outer:ParallelQuery<TOuter>, inner:IEnumerable<TInner>, outerKeySelector:Func<TOuter, TKey>, innerKeySelector:Func<TInner, TKey>, resultSelector:Func<TOuter, TInner, TResult>, comparer:IEqualityComparer<TKey>) : ParallelQuery<TResult>
+    + {static} GroupJoin(outer:ParallelQuery<TOuter>, inner:ParallelQuery<TInner>, outerKeySelector:Func<TOuter, TKey>, innerKeySelector:Func<TInner, TKey>, resultSelector:Func<TOuter, IEnumerable<TInner>, TResult>) : ParallelQuery<TResult>
+    + {static} GroupJoin(outer:ParallelQuery<TOuter>, inner:IEnumerable<TInner>, outerKeySelector:Func<TOuter, TKey>, innerKeySelector:Func<TInner, TKey>, resultSelector:Func<TOuter, IEnumerable<TInner>, TResult>) : ParallelQuery<TResult>
+    + {static} GroupJoin(outer:ParallelQuery<TOuter>, inner:ParallelQuery<TInner>, outerKeySelector:Func<TOuter, TKey>, innerKeySelector:Func<TInner, TKey>, resultSelector:Func<TOuter, IEnumerable<TInner>, TResult>, comparer:IEqualityComparer<TKey>) : ParallelQuery<TResult>
+    + {static} GroupJoin(outer:ParallelQuery<TOuter>, inner:IEnumerable<TInner>, outerKeySelector:Func<TOuter, TKey>, innerKeySelector:Func<TInner, TKey>, resultSelector:Func<TOuter, IEnumerable<TInner>, TResult>, comparer:IEqualityComparer<TKey>) : ParallelQuery<TResult>
+    + {static} SelectMany(source:ParallelQuery<TSource>, selector:Func<TSource, IEnumerable<TResult>>) : ParallelQuery<TResult>
+    + {static} SelectMany(source:ParallelQuery<TSource>, selector:Func<TSource, int, IEnumerable<TResult>>) : ParallelQuery<TResult>
+    + {static} SelectMany(source:ParallelQuery<TSource>, collectionSelector:Func<TSource, IEnumerable<TCollection>>, resultSelector:Func<TSource, TCollection, TResult>) : ParallelQuery<TResult>
+    + {static} SelectMany(source:ParallelQuery<TSource>, collectionSelector:Func<TSource, int, IEnumerable<TCollection>>, resultSelector:Func<TSource, TCollection, TResult>) : ParallelQuery<TResult>
+    + {static} OrderBy(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>) : OrderedParallelQuery<TSource>
+    + {static} OrderBy(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>, comparer:IComparer<TKey>) : OrderedParallelQuery<TSource>
+    + {static} OrderByDescending(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>) : OrderedParallelQuery<TSource>
+    + {static} OrderByDescending(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>, comparer:IComparer<TKey>) : OrderedParallelQuery<TSource>
+    + {static} ThenBy(source:OrderedParallelQuery<TSource>, keySelector:Func<TSource, TKey>) : OrderedParallelQuery<TSource>
+    + {static} ThenBy(source:OrderedParallelQuery<TSource>, keySelector:Func<TSource, TKey>, comparer:IComparer<TKey>) : OrderedParallelQuery<TSource>
+    + {static} ThenByDescending(source:OrderedParallelQuery<TSource>, keySelector:Func<TSource, TKey>) : OrderedParallelQuery<TSource>
+    + {static} ThenByDescending(source:OrderedParallelQuery<TSource>, keySelector:Func<TSource, TKey>, comparer:IComparer<TKey>) : OrderedParallelQuery<TSource>
+    + {static} GroupBy(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>) : ParallelQuery<IGrouping<TKey, TSource>>
+    + {static} GroupBy(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>, comparer:IEqualityComparer<TKey>) : ParallelQuery<IGrouping<TKey, TSource>>
+    + {static} GroupBy(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>, elementSelector:Func<TSource, TElement>) : ParallelQuery<IGrouping<TKey, TElement>>
+    + {static} GroupBy(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>, elementSelector:Func<TSource, TElement>, comparer:IEqualityComparer<TKey>) : ParallelQuery<IGrouping<TKey, TElement>>
+    + {static} GroupBy(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>, resultSelector:Func<TKey, IEnumerable<TSource>, TResult>) : ParallelQuery<TResult>
+    + {static} GroupBy(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>, resultSelector:Func<TKey, IEnumerable<TSource>, TResult>, comparer:IEqualityComparer<TKey>) : ParallelQuery<TResult>
+    + {static} GroupBy(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>, elementSelector:Func<TSource, TElement>, resultSelector:Func<TKey, IEnumerable<TElement>, TResult>) : ParallelQuery<TResult>
+    + {static} GroupBy(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>, elementSelector:Func<TSource, TElement>, resultSelector:Func<TKey, IEnumerable<TElement>, TResult>, comparer:IEqualityComparer<TKey>) : ParallelQuery<TResult>
+    - {static} PerformAggregation(source:ParallelQuery<T>, reduce:Func<T, T, T>, seed:T, seedIsSpecified:bool, throwIfEmpty:bool, options:QueryAggregationOptions) : T
+    - {static} PerformSequentialAggregation(source:ParallelQuery<TSource>, seed:TAccumulate, seedIsSpecified:bool, func:Func<TAccumulate, TSource, TAccumulate>) : TAccumulate
+    + {static} Aggregate(source:ParallelQuery<TSource>, func:Func<TSource, TSource, TSource>) : TSource
+    <<internal>> {static} Aggregate(source:ParallelQuery<TSource>, func:Func<TSource, TSource, TSource>, options:QueryAggregationOptions) : TSource
+    + {static} Aggregate(source:ParallelQuery<TSource>, seed:TAccumulate, func:Func<TAccumulate, TSource, TAccumulate>) : TAccumulate
+    <<internal>> {static} Aggregate(source:ParallelQuery<TSource>, seed:TAccumulate, func:Func<TAccumulate, TSource, TAccumulate>, options:QueryAggregationOptions) : TAccumulate
+    + {static} Aggregate(source:ParallelQuery<TSource>, seed:TAccumulate, func:Func<TAccumulate, TSource, TAccumulate>, resultSelector:Func<TAccumulate, TResult>) : TResult
+    + {static} Aggregate(source:ParallelQuery<TSource>, seed:TAccumulate, updateAccumulatorFunc:Func<TAccumulate, TSource, TAccumulate>, combineAccumulatorsFunc:Func<TAccumulate, TAccumulate, TAccumulate>, resultSelector:Func<TAccumulate, TResult>) : TResult
+    + {static} Aggregate(source:ParallelQuery<TSource>, seedFactory:Func<TAccumulate>, updateAccumulatorFunc:Func<TAccumulate, TSource, TAccumulate>, combineAccumulatorsFunc:Func<TAccumulate, TAccumulate, TAccumulate>, resultSelector:Func<TAccumulate, TResult>) : TResult
+    + {static} Count(source:ParallelQuery<TSource>) : int
+    + {static} Count(source:ParallelQuery<TSource>, predicate:Func<TSource, bool>) : int
+    + {static} LongCount(source:ParallelQuery<TSource>) : long
+    + {static} LongCount(source:ParallelQuery<TSource>, predicate:Func<TSource, bool>) : long
+    + {static} Sum(source:ParallelQuery<int>) : int
+    + {static} Sum(source:ParallelQuery<int?>) : int?
+    + {static} Sum(source:ParallelQuery<long>) : long
+    + {static} Sum(source:ParallelQuery<long?>) : long?
+    + {static} Sum(source:ParallelQuery<float>) : float
+    + {static} Sum(source:ParallelQuery<float?>) : float?
+    + {static} Sum(source:ParallelQuery<double>) : double
+    + {static} Sum(source:ParallelQuery<double?>) : double?
+    + {static} Sum(source:ParallelQuery<Decimal>) : Decimal
+    + {static} Sum(source:ParallelQuery<Decimal?>) : Decimal?
+    + {static} Sum(source:ParallelQuery<TSource>, selector:Func<TSource, int>) : int
+    + {static} Sum(source:ParallelQuery<TSource>, selector:Func<TSource, int?>) : int?
+    + {static} Sum(source:ParallelQuery<TSource>, selector:Func<TSource, long>) : long
+    + {static} Sum(source:ParallelQuery<TSource>, selector:Func<TSource, long?>) : long?
+    + {static} Sum(source:ParallelQuery<TSource>, selector:Func<TSource, float>) : float
+    + {static} Sum(source:ParallelQuery<TSource>, selector:Func<TSource, float?>) : float?
+    + {static} Sum(source:ParallelQuery<TSource>, selector:Func<TSource, double>) : double
+    + {static} Sum(source:ParallelQuery<TSource>, selector:Func<TSource, double?>) : double?
+    + {static} Sum(source:ParallelQuery<TSource>, selector:Func<TSource, Decimal>) : Decimal
+    + {static} Sum(source:ParallelQuery<TSource>, selector:Func<TSource, Decimal?>) : Decimal?
+    + {static} Min(source:ParallelQuery<int>) : int
+    + {static} Min(source:ParallelQuery<int?>) : int?
+    + {static} Min(source:ParallelQuery<long>) : long
+    + {static} Min(source:ParallelQuery<long?>) : long?
+    + {static} Min(source:ParallelQuery<float>) : float
+    + {static} Min(source:ParallelQuery<float?>) : float?
+    + {static} Min(source:ParallelQuery<double>) : double
+    + {static} Min(source:ParallelQuery<double?>) : double?
+    + {static} Min(source:ParallelQuery<Decimal>) : Decimal
+    + {static} Min(source:ParallelQuery<Decimal?>) : Decimal?
+    + {static} Min(source:ParallelQuery<TSource>) : TSource
+    + {static} Min(source:ParallelQuery<TSource>, selector:Func<TSource, int>) : int
+    + {static} Min(source:ParallelQuery<TSource>, selector:Func<TSource, int?>) : int?
+    + {static} Min(source:ParallelQuery<TSource>, selector:Func<TSource, long>) : long
+    + {static} Min(source:ParallelQuery<TSource>, selector:Func<TSource, long?>) : long?
+    + {static} Min(source:ParallelQuery<TSource>, selector:Func<TSource, float>) : float
+    + {static} Min(source:ParallelQuery<TSource>, selector:Func<TSource, float?>) : float?
+    + {static} Min(source:ParallelQuery<TSource>, selector:Func<TSource, double>) : double
+    + {static} Min(source:ParallelQuery<TSource>, selector:Func<TSource, double?>) : double?
+    + {static} Min(source:ParallelQuery<TSource>, selector:Func<TSource, Decimal>) : Decimal
+    + {static} Min(source:ParallelQuery<TSource>, selector:Func<TSource, Decimal?>) : Decimal?
+    + {static} Min(source:ParallelQuery<TSource>, selector:Func<TSource, TResult>) : TResult
+    + {static} Max(source:ParallelQuery<int>) : int
+    + {static} Max(source:ParallelQuery<int?>) : int?
+    + {static} Max(source:ParallelQuery<long>) : long
+    + {static} Max(source:ParallelQuery<long?>) : long?
+    + {static} Max(source:ParallelQuery<float>) : float
+    + {static} Max(source:ParallelQuery<float?>) : float?
+    + {static} Max(source:ParallelQuery<double>) : double
+    + {static} Max(source:ParallelQuery<double?>) : double?
+    + {static} Max(source:ParallelQuery<Decimal>) : Decimal
+    + {static} Max(source:ParallelQuery<Decimal?>) : Decimal?
+    + {static} Max(source:ParallelQuery<TSource>) : TSource
+    + {static} Max(source:ParallelQuery<TSource>, selector:Func<TSource, int>) : int
+    + {static} Max(source:ParallelQuery<TSource>, selector:Func<TSource, int?>) : int?
+    + {static} Max(source:ParallelQuery<TSource>, selector:Func<TSource, long>) : long
+    + {static} Max(source:ParallelQuery<TSource>, selector:Func<TSource, long?>) : long?
+    + {static} Max(source:ParallelQuery<TSource>, selector:Func<TSource, float>) : float
+    + {static} Max(source:ParallelQuery<TSource>, selector:Func<TSource, float?>) : float?
+    + {static} Max(source:ParallelQuery<TSource>, selector:Func<TSource, double>) : double
+    + {static} Max(source:ParallelQuery<TSource>, selector:Func<TSource, double?>) : double?
+    + {static} Max(source:ParallelQuery<TSource>, selector:Func<TSource, Decimal>) : Decimal
+    + {static} Max(source:ParallelQuery<TSource>, selector:Func<TSource, Decimal?>) : Decimal?
+    + {static} Max(source:ParallelQuery<TSource>, selector:Func<TSource, TResult>) : TResult
+    + {static} Average(source:ParallelQuery<int>) : double
+    + {static} Average(source:ParallelQuery<int?>) : double?
+    + {static} Average(source:ParallelQuery<long>) : double
+    + {static} Average(source:ParallelQuery<long?>) : double?
+    + {static} Average(source:ParallelQuery<float>) : float
+    + {static} Average(source:ParallelQuery<float?>) : float?
+    + {static} Average(source:ParallelQuery<double>) : double
+    + {static} Average(source:ParallelQuery<double?>) : double?
+    + {static} Average(source:ParallelQuery<Decimal>) : Decimal
+    + {static} Average(source:ParallelQuery<Decimal?>) : Decimal?
+    + {static} Average(source:ParallelQuery<TSource>, selector:Func<TSource, int>) : double
+    + {static} Average(source:ParallelQuery<TSource>, selector:Func<TSource, int?>) : double?
+    + {static} Average(source:ParallelQuery<TSource>, selector:Func<TSource, long>) : double
+    + {static} Average(source:ParallelQuery<TSource>, selector:Func<TSource, long?>) : double?
+    + {static} Average(source:ParallelQuery<TSource>, selector:Func<TSource, float>) : float
+    + {static} Average(source:ParallelQuery<TSource>, selector:Func<TSource, float?>) : float?
+    + {static} Average(source:ParallelQuery<TSource>, selector:Func<TSource, double>) : double
+    + {static} Average(source:ParallelQuery<TSource>, selector:Func<TSource, double?>) : double?
+    + {static} Average(source:ParallelQuery<TSource>, selector:Func<TSource, Decimal>) : Decimal
+    + {static} Average(source:ParallelQuery<TSource>, selector:Func<TSource, Decimal?>) : Decimal?
+    + {static} Any(source:ParallelQuery<TSource>, predicate:Func<TSource, bool>) : bool
+    + {static} Any(source:ParallelQuery<TSource>) : bool
+    + {static} All(source:ParallelQuery<TSource>, predicate:Func<TSource, bool>) : bool
+    + {static} Contains(source:ParallelQuery<TSource>, value:TSource) : bool
+    + {static} Contains(source:ParallelQuery<TSource>, value:TSource, comparer:IEqualityComparer<TSource>) : bool
+    + {static} Take(source:ParallelQuery<TSource>, count:int) : ParallelQuery<TSource>
+    + {static} TakeWhile(source:ParallelQuery<TSource>, predicate:Func<TSource, bool>) : ParallelQuery<TSource>
+    + {static} TakeWhile(source:ParallelQuery<TSource>, predicate:Func<TSource, int, bool>) : ParallelQuery<TSource>
+    + {static} Skip(source:ParallelQuery<TSource>, count:int) : ParallelQuery<TSource>
+    + {static} SkipWhile(source:ParallelQuery<TSource>, predicate:Func<TSource, bool>) : ParallelQuery<TSource>
+    + {static} SkipWhile(source:ParallelQuery<TSource>, predicate:Func<TSource, int, bool>) : ParallelQuery<TSource>
+    + {static} Concat(first:ParallelQuery<TSource>, second:ParallelQuery<TSource>) : ParallelQuery<TSource>
+    + {static} Concat(first:ParallelQuery<TSource>, second:IEnumerable<TSource>) : ParallelQuery<TSource>
+    + {static} SequenceEqual(first:ParallelQuery<TSource>, second:ParallelQuery<TSource>) : bool
+    + {static} SequenceEqual(first:ParallelQuery<TSource>, second:IEnumerable<TSource>) : bool
+    + {static} SequenceEqual(first:ParallelQuery<TSource>, second:ParallelQuery<TSource>, comparer:IEqualityComparer<TSource>) : bool
+    - {static} DisposeEnumerator(e:IEnumerator<TSource>, cancelState:CancellationState) : void
+    + {static} SequenceEqual(first:ParallelQuery<TSource>, second:IEnumerable<TSource>, comparer:IEqualityComparer<TSource>) : bool
+    + {static} Distinct(source:ParallelQuery<TSource>) : ParallelQuery<TSource>
+    + {static} Distinct(source:ParallelQuery<TSource>, comparer:IEqualityComparer<TSource>) : ParallelQuery<TSource>
+    + {static} Union(first:ParallelQuery<TSource>, second:ParallelQuery<TSource>) : ParallelQuery<TSource>
+    + {static} Union(first:ParallelQuery<TSource>, second:IEnumerable<TSource>) : ParallelQuery<TSource>
+    + {static} Union(first:ParallelQuery<TSource>, second:ParallelQuery<TSource>, comparer:IEqualityComparer<TSource>) : ParallelQuery<TSource>
+    + {static} Union(first:ParallelQuery<TSource>, second:IEnumerable<TSource>, comparer:IEqualityComparer<TSource>) : ParallelQuery<TSource>
+    + {static} Intersect(first:ParallelQuery<TSource>, second:ParallelQuery<TSource>) : ParallelQuery<TSource>
+    + {static} Intersect(first:ParallelQuery<TSource>, second:IEnumerable<TSource>) : ParallelQuery<TSource>
+    + {static} Intersect(first:ParallelQuery<TSource>, second:ParallelQuery<TSource>, comparer:IEqualityComparer<TSource>) : ParallelQuery<TSource>
+    + {static} Intersect(first:ParallelQuery<TSource>, second:IEnumerable<TSource>, comparer:IEqualityComparer<TSource>) : ParallelQuery<TSource>
+    + {static} Except(first:ParallelQuery<TSource>, second:ParallelQuery<TSource>) : ParallelQuery<TSource>
+    + {static} Except(first:ParallelQuery<TSource>, second:IEnumerable<TSource>) : ParallelQuery<TSource>
+    + {static} Except(first:ParallelQuery<TSource>, second:ParallelQuery<TSource>, comparer:IEqualityComparer<TSource>) : ParallelQuery<TSource>
+    + {static} Except(first:ParallelQuery<TSource>, second:IEnumerable<TSource>, comparer:IEqualityComparer<TSource>) : ParallelQuery<TSource>
+    + {static} AsEnumerable(source:ParallelQuery<TSource>) : IEnumerable<TSource>
+    + {static} ToArray(source:ParallelQuery<TSource>) : TSource[]
+    + {static} ToList(source:ParallelQuery<TSource>) : List<TSource>
+    + {static} ToDictionary(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>) : Dictionary<TKey, TSource>
+    + {static} ToDictionary(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>, comparer:IEqualityComparer<TKey>) : Dictionary<TKey, TSource>
+    + {static} ToDictionary(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>, elementSelector:Func<TSource, TElement>) : Dictionary<TKey, TElement>
+    + {static} ToDictionary(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>, elementSelector:Func<TSource, TElement>, comparer:IEqualityComparer<TKey>) : Dictionary<TKey, TElement>
+    + {static} ToLookup(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>) : ILookup<TKey, TSource>
+    + {static} ToLookup(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>, comparer:IEqualityComparer<TKey>) : ILookup<TKey, TSource>
+    + {static} ToLookup(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>, elementSelector:Func<TSource, TElement>) : ILookup<TKey, TElement>
+    + {static} ToLookup(source:ParallelQuery<TSource>, keySelector:Func<TSource, TKey>, elementSelector:Func<TSource, TElement>, comparer:IEqualityComparer<TKey>) : ILookup<TKey, TElement>
+    + {static} Reverse(source:ParallelQuery<TSource>) : ParallelQuery<TSource>
+    + {static} OfType(source:ParallelQuery) : ParallelQuery<TResult>
+    + {static} Cast(source:ParallelQuery) : ParallelQuery<TResult>
+    - {static} GetOneWithPossibleDefault(queryOp:QueryOperator<TSource>, throwIfTwo:bool, defaultIfEmpty:bool) : TSource
+    + {static} First(source:ParallelQuery<TSource>) : TSource
+    + {static} First(source:ParallelQuery<TSource>, predicate:Func<TSource, bool>) : TSource
+    + {static} FirstOrDefault(source:ParallelQuery<TSource>) : TSource
+    + {static} FirstOrDefault(source:ParallelQuery<TSource>, predicate:Func<TSource, bool>) : TSource
+    + {static} Last(source:ParallelQuery<TSource>) : TSource
+    + {static} Last(source:ParallelQuery<TSource>, predicate:Func<TSource, bool>) : TSource
+    + {static} LastOrDefault(source:ParallelQuery<TSource>) : TSource
+    + {static} LastOrDefault(source:ParallelQuery<TSource>, predicate:Func<TSource, bool>) : TSource
+    + {static} Single(source:ParallelQuery<TSource>) : TSource
+    + {static} Single(source:ParallelQuery<TSource>, predicate:Func<TSource, bool>) : TSource
+    + {static} SingleOrDefault(source:ParallelQuery<TSource>) : TSource
+    + {static} SingleOrDefault(source:ParallelQuery<TSource>, predicate:Func<TSource, bool>) : TSource
+    + {static} DefaultIfEmpty(source:ParallelQuery<TSource>) : ParallelQuery<TSource>
+    + {static} DefaultIfEmpty(source:ParallelQuery<TSource>, defaultValue:TSource) : ParallelQuery<TSource>
+    + {static} ElementAt(source:ParallelQuery<TSource>, index:int) : TSource
+    + {static} ElementAtOrDefault(source:ParallelQuery<TSource>, index:int) : TSource
+}
+enum ParallelExecutionMode {
+    Default,
+    ForceParallelism,
+}
+enum ParallelMergeOptions {
+    Default,
+    NotBuffered,
+    AutoBuffered,
+    FullyBuffered,
+}
+class ParallelQuery {
+    - m_specifiedSettings : QuerySettings
+    <<internal>> ParallelQuery(specifiedSettings:QuerySettings)
+    <<internal>> SpecifiedQuerySettings : QuerySettings <<get>>
+    <<internal>> <<virtual>> Cast() : ParallelQuery<TCastTo>
+    <<internal>> <<virtual>> OfType() : ParallelQuery<TCastTo>
+    <<internal>> <<virtual>> GetEnumeratorUntyped() : IEnumerator
+    GetEnumerator() : IEnumerator
+}
+IEnumerable <|-- ParallelQuery
+class "ParallelQuery`1"<TSource> {
+    <<internal>> ParallelQuery(settings:QuerySettings)
+    <<internal>> <<override>> <<sealed>> Cast() : ParallelQuery<TCastTo>
+    <<internal>> <<override>> <<sealed>> OfType() : ParallelQuery<TCastTo>
+    <<internal>> <<override>> GetEnumeratorUntyped() : IEnumerator
+    + <<virtual>> GetEnumerator() : IEnumerator<TSource>
+}
+ParallelQuery <|-- "ParallelQuery`1"
+"IEnumerable`1" "<TSource>" <|-- "ParallelQuery`1"
+IEnumerable <|-- "ParallelQuery`1"
+class Queryable <<static>> {
+    - {static} GetMethodInfo(f:Func<T1, T2>, unused1:T1) : MethodInfo
+    - {static} GetMethodInfo(f:Func<T1, T2, T3>, unused1:T1, unused2:T2) : MethodInfo
+    - {static} GetMethodInfo(f:Func<T1, T2, T3, T4>, unused1:T1, unused2:T2, unused3:T3) : MethodInfo
+    - {static} GetMethodInfo(f:Func<T1, T2, T3, T4, T5>, unused1:T1, unused2:T2, unused3:T3, unused4:T4) : MethodInfo
+    - {static} GetMethodInfo(f:Func<T1, T2, T3, T4, T5, T6>, unused1:T1, unused2:T2, unused3:T3, unused4:T4, unused5:T5) : MethodInfo
+    - {static} GetMethodInfo(f:Func<T1, T2, T3, T4, T5, T6, T7>, unused1:T1, unused2:T2, unused3:T3, unused4:T4, unused5:T5, unused6:T6) : MethodInfo
+    + {static} AsQueryable(source:IEnumerable<TElement>) : IQueryable<TElement>
+    + {static} AsQueryable(source:IEnumerable) : IQueryable
+    + {static} Where(source:IQueryable<TSource>, predicate:Expression<Func<TSource, bool>>) : IQueryable<TSource>
+    + {static} Where(source:IQueryable<TSource>, predicate:Expression<Func<TSource, int, bool>>) : IQueryable<TSource>
+    + {static} OfType(source:IQueryable) : IQueryable<TResult>
+    + {static} Cast(source:IQueryable) : IQueryable<TResult>
+    + {static} Select(source:IQueryable<TSource>, selector:Expression<Func<TSource, TResult>>) : IQueryable<TResult>
+    + {static} Select(source:IQueryable<TSource>, selector:Expression<Func<TSource, int, TResult>>) : IQueryable<TResult>
+    + {static} SelectMany(source:IQueryable<TSource>, selector:Expression<Func<TSource, IEnumerable<TResult>>>) : IQueryable<TResult>
+    + {static} SelectMany(source:IQueryable<TSource>, selector:Expression<Func<TSource, int, IEnumerable<TResult>>>) : IQueryable<TResult>
+    + {static} SelectMany(source:IQueryable<TSource>, collectionSelector:Expression<Func<TSource, int, IEnumerable<TCollection>>>, resultSelector:Expression<Func<TSource, TCollection, TResult>>) : IQueryable<TResult>
+    + {static} SelectMany(source:IQueryable<TSource>, collectionSelector:Expression<Func<TSource, IEnumerable<TCollection>>>, resultSelector:Expression<Func<TSource, TCollection, TResult>>) : IQueryable<TResult>
+    - {static} GetSourceExpression(source:IEnumerable<TSource>) : Expression
+    + {static} Join(outer:IQueryable<TOuter>, inner:IEnumerable<TInner>, outerKeySelector:Expression<Func<TOuter, TKey>>, innerKeySelector:Expression<Func<TInner, TKey>>, resultSelector:Expression<Func<TOuter, TInner, TResult>>) : IQueryable<TResult>
+    + {static} Join(outer:IQueryable<TOuter>, inner:IEnumerable<TInner>, outerKeySelector:Expression<Func<TOuter, TKey>>, innerKeySelector:Expression<Func<TInner, TKey>>, resultSelector:Expression<Func<TOuter, TInner, TResult>>, comparer:IEqualityComparer<TKey>) : IQueryable<TResult>
+    + {static} GroupJoin(outer:IQueryable<TOuter>, inner:IEnumerable<TInner>, outerKeySelector:Expression<Func<TOuter, TKey>>, innerKeySelector:Expression<Func<TInner, TKey>>, resultSelector:Expression<Func<TOuter, IEnumerable<TInner>, TResult>>) : IQueryable<TResult>
+    + {static} GroupJoin(outer:IQueryable<TOuter>, inner:IEnumerable<TInner>, outerKeySelector:Expression<Func<TOuter, TKey>>, innerKeySelector:Expression<Func<TInner, TKey>>, resultSelector:Expression<Func<TOuter, IEnumerable<TInner>, TResult>>, comparer:IEqualityComparer<TKey>) : IQueryable<TResult>
+    + {static} OrderBy(source:IQueryable<TSource>, keySelector:Expression<Func<TSource, TKey>>) : IOrderedQueryable<TSource>
+    + {static} OrderBy(source:IQueryable<TSource>, keySelector:Expression<Func<TSource, TKey>>, comparer:IComparer<TKey>) : IOrderedQueryable<TSource>
+    + {static} OrderByDescending(source:IQueryable<TSource>, keySelector:Expression<Func<TSource, TKey>>) : IOrderedQueryable<TSource>
+    + {static} OrderByDescending(source:IQueryable<TSource>, keySelector:Expression<Func<TSource, TKey>>, comparer:IComparer<TKey>) : IOrderedQueryable<TSource>
+    + {static} ThenBy(source:IOrderedQueryable<TSource>, keySelector:Expression<Func<TSource, TKey>>) : IOrderedQueryable<TSource>
+    + {static} ThenBy(source:IOrderedQueryable<TSource>, keySelector:Expression<Func<TSource, TKey>>, comparer:IComparer<TKey>) : IOrderedQueryable<TSource>
+    + {static} ThenByDescending(source:IOrderedQueryable<TSource>, keySelector:Expression<Func<TSource, TKey>>) : IOrderedQueryable<TSource>
+    + {static} ThenByDescending(source:IOrderedQueryable<TSource>, keySelector:Expression<Func<TSource, TKey>>, comparer:IComparer<TKey>) : IOrderedQueryable<TSource>
+    + {static} Take(source:IQueryable<TSource>, count:int) : IQueryable<TSource>
+    + {static} TakeWhile(source:IQueryable<TSource>, predicate:Expression<Func<TSource, bool>>) : IQueryable<TSource>
+    + {static} TakeWhile(source:IQueryable<TSource>, predicate:Expression<Func<TSource, int, bool>>) : IQueryable<TSource>
+    + {static} Skip(source:IQueryable<TSource>, count:int) : IQueryable<TSource>
+    + {static} SkipWhile(source:IQueryable<TSource>, predicate:Expression<Func<TSource, bool>>) : IQueryable<TSource>
+    + {static} SkipWhile(source:IQueryable<TSource>, predicate:Expression<Func<TSource, int, bool>>) : IQueryable<TSource>
+    + {static} GroupBy(source:IQueryable<TSource>, keySelector:Expression<Func<TSource, TKey>>) : IQueryable<IGrouping<TKey, TSource>>
+    + {static} GroupBy(source:IQueryable<TSource>, keySelector:Expression<Func<TSource, TKey>>, elementSelector:Expression<Func<TSource, TElement>>) : IQueryable<IGrouping<TKey, TElement>>
+    + {static} GroupBy(source:IQueryable<TSource>, keySelector:Expression<Func<TSource, TKey>>, comparer:IEqualityComparer<TKey>) : IQueryable<IGrouping<TKey, TSource>>
+    + {static} GroupBy(source:IQueryable<TSource>, keySelector:Expression<Func<TSource, TKey>>, elementSelector:Expression<Func<TSource, TElement>>, comparer:IEqualityComparer<TKey>) : IQueryable<IGrouping<TKey, TElement>>
+    + {static} GroupBy(source:IQueryable<TSource>, keySelector:Expression<Func<TSource, TKey>>, elementSelector:Expression<Func<TSource, TElement>>, resultSelector:Expression<Func<TKey, IEnumerable<TElement>, TResult>>) : IQueryable<TResult>
+    + {static} GroupBy(source:IQueryable<TSource>, keySelector:Expression<Func<TSource, TKey>>, resultSelector:Expression<Func<TKey, IEnumerable<TSource>, TResult>>) : IQueryable<TResult>
+    + {static} GroupBy(source:IQueryable<TSource>, keySelector:Expression<Func<TSource, TKey>>, resultSelector:Expression<Func<TKey, IEnumerable<TSource>, TResult>>, comparer:IEqualityComparer<TKey>) : IQueryable<TResult>
+    + {static} GroupBy(source:IQueryable<TSource>, keySelector:Expression<Func<TSource, TKey>>, elementSelector:Expression<Func<TSource, TElement>>, resultSelector:Expression<Func<TKey, IEnumerable<TElement>, TResult>>, comparer:IEqualityComparer<TKey>) : IQueryable<TResult>
+    + {static} Distinct(source:IQueryable<TSource>) : IQueryable<TSource>
+    + {static} Distinct(source:IQueryable<TSource>, comparer:IEqualityComparer<TSource>) : IQueryable<TSource>
+    + {static} Concat(source1:IQueryable<TSource>, source2:IEnumerable<TSource>) : IQueryable<TSource>
+    + {static} Zip(source1:IQueryable<TFirst>, source2:IEnumerable<TSecond>, resultSelector:Expression<Func<TFirst, TSecond, TResult>>) : IQueryable<TResult>
+    + {static} Union(source1:IQueryable<TSource>, source2:IEnumerable<TSource>) : IQueryable<TSource>
+    + {static} Union(source1:IQueryable<TSource>, source2:IEnumerable<TSource>, comparer:IEqualityComparer<TSource>) : IQueryable<TSource>
+    + {static} Intersect(source1:IQueryable<TSource>, source2:IEnumerable<TSource>) : IQueryable<TSource>
+    + {static} Intersect(source1:IQueryable<TSource>, source2:IEnumerable<TSource>, comparer:IEqualityComparer<TSource>) : IQueryable<TSource>
+    + {static} Except(source1:IQueryable<TSource>, source2:IEnumerable<TSource>) : IQueryable<TSource>
+    + {static} Except(source1:IQueryable<TSource>, source2:IEnumerable<TSource>, comparer:IEqualityComparer<TSource>) : IQueryable<TSource>
+    + {static} First(source:IQueryable<TSource>) : TSource
+    + {static} First(source:IQueryable<TSource>, predicate:Expression<Func<TSource, bool>>) : TSource
+    + {static} FirstOrDefault(source:IQueryable<TSource>) : TSource
+    + {static} FirstOrDefault(source:IQueryable<TSource>, predicate:Expression<Func<TSource, bool>>) : TSource
+    + {static} Last(source:IQueryable<TSource>) : TSource
+    + {static} Last(source:IQueryable<TSource>, predicate:Expression<Func<TSource, bool>>) : TSource
+    + {static} LastOrDefault(source:IQueryable<TSource>) : TSource
+    + {static} LastOrDefault(source:IQueryable<TSource>, predicate:Expression<Func<TSource, bool>>) : TSource
+    + {static} Single(source:IQueryable<TSource>) : TSource
+    + {static} Single(source:IQueryable<TSource>, predicate:Expression<Func<TSource, bool>>) : TSource
+    + {static} SingleOrDefault(source:IQueryable<TSource>) : TSource
+    + {static} SingleOrDefault(source:IQueryable<TSource>, predicate:Expression<Func<TSource, bool>>) : TSource
+    + {static} ElementAt(source:IQueryable<TSource>, index:int) : TSource
+    + {static} ElementAtOrDefault(source:IQueryable<TSource>, index:int) : TSource
+    + {static} DefaultIfEmpty(source:IQueryable<TSource>) : IQueryable<TSource>
+    + {static} DefaultIfEmpty(source:IQueryable<TSource>, defaultValue:TSource) : IQueryable<TSource>
+    + {static} Contains(source:IQueryable<TSource>, item:TSource) : bool
+    + {static} Contains(source:IQueryable<TSource>, item:TSource, comparer:IEqualityComparer<TSource>) : bool
+    + {static} Reverse(source:IQueryable<TSource>) : IQueryable<TSource>
+    + {static} SequenceEqual(source1:IQueryable<TSource>, source2:IEnumerable<TSource>) : bool
+    + {static} SequenceEqual(source1:IQueryable<TSource>, source2:IEnumerable<TSource>, comparer:IEqualityComparer<TSource>) : bool
+    + {static} Any(source:IQueryable<TSource>) : bool
+    + {static} Any(source:IQueryable<TSource>, predicate:Expression<Func<TSource, bool>>) : bool
+    + {static} All(source:IQueryable<TSource>, predicate:Expression<Func<TSource, bool>>) : bool
+    + {static} Count(source:IQueryable<TSource>) : int
+    + {static} Count(source:IQueryable<TSource>, predicate:Expression<Func<TSource, bool>>) : int
+    + {static} LongCount(source:IQueryable<TSource>) : long
+    + {static} LongCount(source:IQueryable<TSource>, predicate:Expression<Func<TSource, bool>>) : long
+    + {static} Min(source:IQueryable<TSource>) : TSource
+    + {static} Min(source:IQueryable<TSource>, selector:Expression<Func<TSource, TResult>>) : TResult
+    + {static} Max(source:IQueryable<TSource>) : TSource
+    + {static} Max(source:IQueryable<TSource>, selector:Expression<Func<TSource, TResult>>) : TResult
+    + {static} Sum(source:IQueryable<int>) : int
+    + {static} Sum(source:IQueryable<int?>) : int?
+    + {static} Sum(source:IQueryable<long>) : long
+    + {static} Sum(source:IQueryable<long?>) : long?
+    + {static} Sum(source:IQueryable<float>) : float
+    + {static} Sum(source:IQueryable<float?>) : float?
+    + {static} Sum(source:IQueryable<double>) : double
+    + {static} Sum(source:IQueryable<double?>) : double?
+    + {static} Sum(source:IQueryable<Decimal>) : Decimal
+    + {static} Sum(source:IQueryable<Decimal?>) : Decimal?
+    + {static} Sum(source:IQueryable<TSource>, selector:Expression<Func<TSource, int>>) : int
+    + {static} Sum(source:IQueryable<TSource>, selector:Expression<Func<TSource, int?>>) : int?
+    + {static} Sum(source:IQueryable<TSource>, selector:Expression<Func<TSource, long>>) : long
+    + {static} Sum(source:IQueryable<TSource>, selector:Expression<Func<TSource, long?>>) : long?
+    + {static} Sum(source:IQueryable<TSource>, selector:Expression<Func<TSource, float>>) : float
+    + {static} Sum(source:IQueryable<TSource>, selector:Expression<Func<TSource, float?>>) : float?
+    + {static} Sum(source:IQueryable<TSource>, selector:Expression<Func<TSource, double>>) : double
+    + {static} Sum(source:IQueryable<TSource>, selector:Expression<Func<TSource, double?>>) : double?
+    + {static} Sum(source:IQueryable<TSource>, selector:Expression<Func<TSource, Decimal>>) : Decimal
+    + {static} Sum(source:IQueryable<TSource>, selector:Expression<Func<TSource, Decimal?>>) : Decimal?
+    + {static} Average(source:IQueryable<int>) : double
+    + {static} Average(source:IQueryable<int?>) : double?
+    + {static} Average(source:IQueryable<long>) : double
+    + {static} Average(source:IQueryable<long?>) : double?
+    + {static} Average(source:IQueryable<float>) : float
+    + {static} Average(source:IQueryable<float?>) : float?
+    + {static} Average(source:IQueryable<double>) : double
+    + {static} Average(source:IQueryable<double?>) : double?
+    + {static} Average(source:IQueryable<Decimal>) : Decimal
+    + {static} Average(source:IQueryable<Decimal?>) : Decimal?
+    + {static} Average(source:IQueryable<TSource>, selector:Expression<Func<TSource, int>>) : double
+    + {static} Average(source:IQueryable<TSource>, selector:Expression<Func<TSource, int?>>) : double?
+    + {static} Average(source:IQueryable<TSource>, selector:Expression<Func<TSource, float>>) : float
+    + {static} Average(source:IQueryable<TSource>, selector:Expression<Func<TSource, float?>>) : float?
+    + {static} Average(source:IQueryable<TSource>, selector:Expression<Func<TSource, long>>) : double
+    + {static} Average(source:IQueryable<TSource>, selector:Expression<Func<TSource, long?>>) : double?
+    + {static} Average(source:IQueryable<TSource>, selector:Expression<Func<TSource, double>>) : double
+    + {static} Average(source:IQueryable<TSource>, selector:Expression<Func<TSource, double?>>) : double?
+    + {static} Average(source:IQueryable<TSource>, selector:Expression<Func<TSource, Decimal>>) : Decimal
+    + {static} Average(source:IQueryable<TSource>, selector:Expression<Func<TSource, Decimal?>>) : Decimal?
+    + {static} Aggregate(source:IQueryable<TSource>, func:Expression<Func<TSource, TSource, TSource>>) : TSource
+    + {static} Aggregate(source:IQueryable<TSource>, seed:TAccumulate, func:Expression<Func<TAccumulate, TSource, TAccumulate>>) : TAccumulate
+    + {static} Aggregate(source:IQueryable<TSource>, seed:TAccumulate, func:Expression<Func<TAccumulate, TSource, TAccumulate>>, selector:Expression<Func<TAccumulate, TResult>>) : TResult
+}
+@enduml

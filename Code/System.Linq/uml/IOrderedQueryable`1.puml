@@ -1,0 +1,9 @@
+@startuml
+interface "IOrderedQueryable`1"<out T> {
+}
+"IQueryable`1" "<T>" <|-- "IOrderedQueryable`1"
+"IEnumerable`1" "<T>" <|-- "IOrderedQueryable`1"
+IEnumerable <|-- "IOrderedQueryable`1"
+IQueryable <|-- "IOrderedQueryable`1"
+IOrderedQueryable <|-- "IOrderedQueryable`1"
+@enduml

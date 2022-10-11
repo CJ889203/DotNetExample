@@ -1,0 +1,40 @@
+@startuml
+class HttpClientHandler {
+    - <<readonly>> _underlyingHandler : SocketsHttpHandler
+    - _clientCertificateOptions : ClientCertificateOption
+    - <<volatile>> _disposed : bool
+    - {static} s_dangerousAcceptAnyServerCertificateValidator : Func<HttpRequestMessage, X509Certificate2, X509Chain, SslPolicyErrors, bool>
+    - Handler : HttpMessageHandler <<get>>
+    + HttpClientHandler()
+    # <<override>> Dispose(disposing:bool) : void
+    + <<virtual>> SupportsAutomaticDecompression : bool <<get>>
+    + <<virtual>> SupportsProxy : bool <<get>>
+    + <<virtual>> SupportsRedirectConfiguration : bool <<get>>
+    + UseCookies : bool <<get>> <<set>>
+    + CookieContainer : CookieContainer <<get>> <<set>>
+    + AutomaticDecompression : DecompressionMethods <<get>> <<set>>
+    + UseProxy : bool <<get>> <<set>>
+    + Proxy : IWebProxy? <<get>> <<set>>
+    + DefaultProxyCredentials : ICredentials? <<get>> <<set>>
+    + PreAuthenticate : bool <<get>> <<set>>
+    + UseDefaultCredentials : bool <<get>> <<set>>
+    + Credentials : ICredentials? <<get>> <<set>>
+    + AllowAutoRedirect : bool <<get>> <<set>>
+    + MaxAutomaticRedirections : int <<get>> <<set>>
+    + MaxConnectionsPerServer : int <<get>> <<set>>
+    + MaxRequestContentBufferSize : long <<get>> <<set>>
+    + MaxResponseHeadersLength : int <<get>> <<set>>
+    + ClientCertificateOptions : ClientCertificateOption <<get>> <<set>>
+    + ClientCertificates : X509CertificateCollection <<get>>
+    + ServerCertificateCustomValidationCallback : Func<HttpRequestMessage, X509Certificate2?, X509Chain?, SslPolicyErrors, bool>? <<get>> <<set>>
+    + CheckCertificateRevocationList : bool <<get>> <<set>>
+    + SslProtocols : SslProtocols <<get>> <<set>>
+    + Properties : IDictionary<string, object?> <<get>>
+    # <<internal>> <<override>> Send(request:HttpRequestMessage, cancellationToken:CancellationToken) : HttpResponseMessage
+    # <<internal>> <<override>> SendAsync(request:HttpRequestMessage, cancellationToken:CancellationToken) : Task<HttpResponseMessage>
+    + {static} DangerousAcceptAnyServerCertificateValidator : Func<HttpRequestMessage, X509Certificate2?, X509Chain?, SslPolicyErrors, bool> <<get>>
+    - ThrowForModifiedManagedSslOptionsIfStarted() : void
+    - CheckDisposed() : void
+}
+HttpMessageHandler <|-- HttpClientHandler
+@enduml

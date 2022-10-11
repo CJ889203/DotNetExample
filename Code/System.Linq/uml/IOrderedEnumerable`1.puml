@@ -1,0 +1,7 @@
+@startuml
+interface "IOrderedEnumerable`1"<TElement> {
+    CreateOrderedEnumerable(keySelector:Func<TElement, TKey>, comparer:IComparer<TKey>, descending:bool) : IOrderedEnumerable<TElement>
+}
+"IEnumerable`1" "<TElement>" <|-- "IOrderedEnumerable`1"
+IEnumerable <|-- "IOrderedEnumerable`1"
+@enduml

@@ -1,0 +1,134 @@
+@startuml
+class Queryable <<static>> {
+    - {static} GetMethodInfo(f:Func<T1, T2>, unused1:T1) : MethodInfo
+    - {static} GetMethodInfo(f:Func<T1, T2, T3>, unused1:T1, unused2:T2) : MethodInfo
+    - {static} GetMethodInfo(f:Func<T1, T2, T3, T4>, unused1:T1, unused2:T2, unused3:T3) : MethodInfo
+    - {static} GetMethodInfo(f:Func<T1, T2, T3, T4, T5>, unused1:T1, unused2:T2, unused3:T3, unused4:T4) : MethodInfo
+    - {static} GetMethodInfo(f:Func<T1, T2, T3, T4, T5, T6>, unused1:T1, unused2:T2, unused3:T3, unused4:T4, unused5:T5) : MethodInfo
+    - {static} GetMethodInfo(f:Func<T1, T2, T3, T4, T5, T6, T7>, unused1:T1, unused2:T2, unused3:T3, unused4:T4, unused5:T5, unused6:T6) : MethodInfo
+    + {static} AsQueryable(source:IEnumerable<TElement>) : IQueryable<TElement>
+    + {static} AsQueryable(source:IEnumerable) : IQueryable
+    + {static} Where(source:IQueryable<TSource>, predicate:Expression<Func<TSource, bool>>) : IQueryable<TSource>
+    + {static} Where(source:IQueryable<TSource>, predicate:Expression<Func<TSource, int, bool>>) : IQueryable<TSource>
+    + {static} OfType(source:IQueryable) : IQueryable<TResult>
+    + {static} Cast(source:IQueryable) : IQueryable<TResult>
+    + {static} Select(source:IQueryable<TSource>, selector:Expression<Func<TSource, TResult>>) : IQueryable<TResult>
+    + {static} Select(source:IQueryable<TSource>, selector:Expression<Func<TSource, int, TResult>>) : IQueryable<TResult>
+    + {static} SelectMany(source:IQueryable<TSource>, selector:Expression<Func<TSource, IEnumerable<TResult>>>) : IQueryable<TResult>
+    + {static} SelectMany(source:IQueryable<TSource>, selector:Expression<Func<TSource, int, IEnumerable<TResult>>>) : IQueryable<TResult>
+    + {static} SelectMany(source:IQueryable<TSource>, collectionSelector:Expression<Func<TSource, int, IEnumerable<TCollection>>>, resultSelector:Expression<Func<TSource, TCollection, TResult>>) : IQueryable<TResult>
+    + {static} SelectMany(source:IQueryable<TSource>, collectionSelector:Expression<Func<TSource, IEnumerable<TCollection>>>, resultSelector:Expression<Func<TSource, TCollection, TResult>>) : IQueryable<TResult>
+    - {static} GetSourceExpression(source:IEnumerable<TSource>) : Expression
+    + {static} Join(outer:IQueryable<TOuter>, inner:IEnumerable<TInner>, outerKeySelector:Expression<Func<TOuter, TKey>>, innerKeySelector:Expression<Func<TInner, TKey>>, resultSelector:Expression<Func<TOuter, TInner, TResult>>) : IQueryable<TResult>
+    + {static} Join(outer:IQueryable<TOuter>, inner:IEnumerable<TInner>, outerKeySelector:Expression<Func<TOuter, TKey>>, innerKeySelector:Expression<Func<TInner, TKey>>, resultSelector:Expression<Func<TOuter, TInner, TResult>>, comparer:IEqualityComparer<TKey>) : IQueryable<TResult>
+    + {static} GroupJoin(outer:IQueryable<TOuter>, inner:IEnumerable<TInner>, outerKeySelector:Expression<Func<TOuter, TKey>>, innerKeySelector:Expression<Func<TInner, TKey>>, resultSelector:Expression<Func<TOuter, IEnumerable<TInner>, TResult>>) : IQueryable<TResult>
+    + {static} GroupJoin(outer:IQueryable<TOuter>, inner:IEnumerable<TInner>, outerKeySelector:Expression<Func<TOuter, TKey>>, innerKeySelector:Expression<Func<TInner, TKey>>, resultSelector:Expression<Func<TOuter, IEnumerable<TInner>, TResult>>, comparer:IEqualityComparer<TKey>) : IQueryable<TResult>
+    + {static} OrderBy(source:IQueryable<TSource>, keySelector:Expression<Func<TSource, TKey>>) : IOrderedQueryable<TSource>
+    + {static} OrderBy(source:IQueryable<TSource>, keySelector:Expression<Func<TSource, TKey>>, comparer:IComparer<TKey>) : IOrderedQueryable<TSource>
+    + {static} OrderByDescending(source:IQueryable<TSource>, keySelector:Expression<Func<TSource, TKey>>) : IOrderedQueryable<TSource>
+    + {static} OrderByDescending(source:IQueryable<TSource>, keySelector:Expression<Func<TSource, TKey>>, comparer:IComparer<TKey>) : IOrderedQueryable<TSource>
+    + {static} ThenBy(source:IOrderedQueryable<TSource>, keySelector:Expression<Func<TSource, TKey>>) : IOrderedQueryable<TSource>
+    + {static} ThenBy(source:IOrderedQueryable<TSource>, keySelector:Expression<Func<TSource, TKey>>, comparer:IComparer<TKey>) : IOrderedQueryable<TSource>
+    + {static} ThenByDescending(source:IOrderedQueryable<TSource>, keySelector:Expression<Func<TSource, TKey>>) : IOrderedQueryable<TSource>
+    + {static} ThenByDescending(source:IOrderedQueryable<TSource>, keySelector:Expression<Func<TSource, TKey>>, comparer:IComparer<TKey>) : IOrderedQueryable<TSource>
+    + {static} Take(source:IQueryable<TSource>, count:int) : IQueryable<TSource>
+    + {static} TakeWhile(source:IQueryable<TSource>, predicate:Expression<Func<TSource, bool>>) : IQueryable<TSource>
+    + {static} TakeWhile(source:IQueryable<TSource>, predicate:Expression<Func<TSource, int, bool>>) : IQueryable<TSource>
+    + {static} Skip(source:IQueryable<TSource>, count:int) : IQueryable<TSource>
+    + {static} SkipWhile(source:IQueryable<TSource>, predicate:Expression<Func<TSource, bool>>) : IQueryable<TSource>
+    + {static} SkipWhile(source:IQueryable<TSource>, predicate:Expression<Func<TSource, int, bool>>) : IQueryable<TSource>
+    + {static} GroupBy(source:IQueryable<TSource>, keySelector:Expression<Func<TSource, TKey>>) : IQueryable<IGrouping<TKey, TSource>>
+    + {static} GroupBy(source:IQueryable<TSource>, keySelector:Expression<Func<TSource, TKey>>, elementSelector:Expression<Func<TSource, TElement>>) : IQueryable<IGrouping<TKey, TElement>>
+    + {static} GroupBy(source:IQueryable<TSource>, keySelector:Expression<Func<TSource, TKey>>, comparer:IEqualityComparer<TKey>) : IQueryable<IGrouping<TKey, TSource>>
+    + {static} GroupBy(source:IQueryable<TSource>, keySelector:Expression<Func<TSource, TKey>>, elementSelector:Expression<Func<TSource, TElement>>, comparer:IEqualityComparer<TKey>) : IQueryable<IGrouping<TKey, TElement>>
+    + {static} GroupBy(source:IQueryable<TSource>, keySelector:Expression<Func<TSource, TKey>>, elementSelector:Expression<Func<TSource, TElement>>, resultSelector:Expression<Func<TKey, IEnumerable<TElement>, TResult>>) : IQueryable<TResult>
+    + {static} GroupBy(source:IQueryable<TSource>, keySelector:Expression<Func<TSource, TKey>>, resultSelector:Expression<Func<TKey, IEnumerable<TSource>, TResult>>) : IQueryable<TResult>
+    + {static} GroupBy(source:IQueryable<TSource>, keySelector:Expression<Func<TSource, TKey>>, resultSelector:Expression<Func<TKey, IEnumerable<TSource>, TResult>>, comparer:IEqualityComparer<TKey>) : IQueryable<TResult>
+    + {static} GroupBy(source:IQueryable<TSource>, keySelector:Expression<Func<TSource, TKey>>, elementSelector:Expression<Func<TSource, TElement>>, resultSelector:Expression<Func<TKey, IEnumerable<TElement>, TResult>>, comparer:IEqualityComparer<TKey>) : IQueryable<TResult>
+    + {static} Distinct(source:IQueryable<TSource>) : IQueryable<TSource>
+    + {static} Distinct(source:IQueryable<TSource>, comparer:IEqualityComparer<TSource>) : IQueryable<TSource>
+    + {static} Concat(source1:IQueryable<TSource>, source2:IEnumerable<TSource>) : IQueryable<TSource>
+    + {static} Zip(source1:IQueryable<TFirst>, source2:IEnumerable<TSecond>, resultSelector:Expression<Func<TFirst, TSecond, TResult>>) : IQueryable<TResult>
+    + {static} Union(source1:IQueryable<TSource>, source2:IEnumerable<TSource>) : IQueryable<TSource>
+    + {static} Union(source1:IQueryable<TSource>, source2:IEnumerable<TSource>, comparer:IEqualityComparer<TSource>) : IQueryable<TSource>
+    + {static} Intersect(source1:IQueryable<TSource>, source2:IEnumerable<TSource>) : IQueryable<TSource>
+    + {static} Intersect(source1:IQueryable<TSource>, source2:IEnumerable<TSource>, comparer:IEqualityComparer<TSource>) : IQueryable<TSource>
+    + {static} Except(source1:IQueryable<TSource>, source2:IEnumerable<TSource>) : IQueryable<TSource>
+    + {static} Except(source1:IQueryable<TSource>, source2:IEnumerable<TSource>, comparer:IEqualityComparer<TSource>) : IQueryable<TSource>
+    + {static} First(source:IQueryable<TSource>) : TSource
+    + {static} First(source:IQueryable<TSource>, predicate:Expression<Func<TSource, bool>>) : TSource
+    + {static} FirstOrDefault(source:IQueryable<TSource>) : TSource
+    + {static} FirstOrDefault(source:IQueryable<TSource>, predicate:Expression<Func<TSource, bool>>) : TSource
+    + {static} Last(source:IQueryable<TSource>) : TSource
+    + {static} Last(source:IQueryable<TSource>, predicate:Expression<Func<TSource, bool>>) : TSource
+    + {static} LastOrDefault(source:IQueryable<TSource>) : TSource
+    + {static} LastOrDefault(source:IQueryable<TSource>, predicate:Expression<Func<TSource, bool>>) : TSource
+    + {static} Single(source:IQueryable<TSource>) : TSource
+    + {static} Single(source:IQueryable<TSource>, predicate:Expression<Func<TSource, bool>>) : TSource
+    + {static} SingleOrDefault(source:IQueryable<TSource>) : TSource
+    + {static} SingleOrDefault(source:IQueryable<TSource>, predicate:Expression<Func<TSource, bool>>) : TSource
+    + {static} ElementAt(source:IQueryable<TSource>, index:int) : TSource
+    + {static} ElementAtOrDefault(source:IQueryable<TSource>, index:int) : TSource
+    + {static} DefaultIfEmpty(source:IQueryable<TSource>) : IQueryable<TSource>
+    + {static} DefaultIfEmpty(source:IQueryable<TSource>, defaultValue:TSource) : IQueryable<TSource>
+    + {static} Contains(source:IQueryable<TSource>, item:TSource) : bool
+    + {static} Contains(source:IQueryable<TSource>, item:TSource, comparer:IEqualityComparer<TSource>) : bool
+    + {static} Reverse(source:IQueryable<TSource>) : IQueryable<TSource>
+    + {static} SequenceEqual(source1:IQueryable<TSource>, source2:IEnumerable<TSource>) : bool
+    + {static} SequenceEqual(source1:IQueryable<TSource>, source2:IEnumerable<TSource>, comparer:IEqualityComparer<TSource>) : bool
+    + {static} Any(source:IQueryable<TSource>) : bool
+    + {static} Any(source:IQueryable<TSource>, predicate:Expression<Func<TSource, bool>>) : bool
+    + {static} All(source:IQueryable<TSource>, predicate:Expression<Func<TSource, bool>>) : bool
+    + {static} Count(source:IQueryable<TSource>) : int
+    + {static} Count(source:IQueryable<TSource>, predicate:Expression<Func<TSource, bool>>) : int
+    + {static} LongCount(source:IQueryable<TSource>) : long
+    + {static} LongCount(source:IQueryable<TSource>, predicate:Expression<Func<TSource, bool>>) : long
+    + {static} Min(source:IQueryable<TSource>) : TSource
+    + {static} Min(source:IQueryable<TSource>, selector:Expression<Func<TSource, TResult>>) : TResult
+    + {static} Max(source:IQueryable<TSource>) : TSource
+    + {static} Max(source:IQueryable<TSource>, selector:Expression<Func<TSource, TResult>>) : TResult
+    + {static} Sum(source:IQueryable<int>) : int
+    + {static} Sum(source:IQueryable<int?>) : int?
+    + {static} Sum(source:IQueryable<long>) : long
+    + {static} Sum(source:IQueryable<long?>) : long?
+    + {static} Sum(source:IQueryable<float>) : float
+    + {static} Sum(source:IQueryable<float?>) : float?
+    + {static} Sum(source:IQueryable<double>) : double
+    + {static} Sum(source:IQueryable<double?>) : double?
+    + {static} Sum(source:IQueryable<Decimal>) : Decimal
+    + {static} Sum(source:IQueryable<Decimal?>) : Decimal?
+    + {static} Sum(source:IQueryable<TSource>, selector:Expression<Func<TSource, int>>) : int
+    + {static} Sum(source:IQueryable<TSource>, selector:Expression<Func<TSource, int?>>) : int?
+    + {static} Sum(source:IQueryable<TSource>, selector:Expression<Func<TSource, long>>) : long
+    + {static} Sum(source:IQueryable<TSource>, selector:Expression<Func<TSource, long?>>) : long?
+    + {static} Sum(source:IQueryable<TSource>, selector:Expression<Func<TSource, float>>) : float
+    + {static} Sum(source:IQueryable<TSource>, selector:Expression<Func<TSource, float?>>) : float?
+    + {static} Sum(source:IQueryable<TSource>, selector:Expression<Func<TSource, double>>) : double
+    + {static} Sum(source:IQueryable<TSource>, selector:Expression<Func<TSource, double?>>) : double?
+    + {static} Sum(source:IQueryable<TSource>, selector:Expression<Func<TSource, Decimal>>) : Decimal
+    + {static} Sum(source:IQueryable<TSource>, selector:Expression<Func<TSource, Decimal?>>) : Decimal?
+    + {static} Average(source:IQueryable<int>) : double
+    + {static} Average(source:IQueryable<int?>) : double?
+    + {static} Average(source:IQueryable<long>) : double
+    + {static} Average(source:IQueryable<long?>) : double?
+    + {static} Average(source:IQueryable<float>) : float
+    + {static} Average(source:IQueryable<float?>) : float?
+    + {static} Average(source:IQueryable<double>) : double
+    + {static} Average(source:IQueryable<double?>) : double?
+    + {static} Average(source:IQueryable<Decimal>) : Decimal
+    + {static} Average(source:IQueryable<Decimal?>) : Decimal?
+    + {static} Average(source:IQueryable<TSource>, selector:Expression<Func<TSource, int>>) : double
+    + {static} Average(source:IQueryable<TSource>, selector:Expression<Func<TSource, int?>>) : double?
+    + {static} Average(source:IQueryable<TSource>, selector:Expression<Func<TSource, float>>) : float
+    + {static} Average(source:IQueryable<TSource>, selector:Expression<Func<TSource, float?>>) : float?
+    + {static} Average(source:IQueryable<TSource>, selector:Expression<Func<TSource, long>>) : double
+    + {static} Average(source:IQueryable<TSource>, selector:Expression<Func<TSource, long?>>) : double?
+    + {static} Average(source:IQueryable<TSource>, selector:Expression<Func<TSource, double>>) : double
+    + {static} Average(source:IQueryable<TSource>, selector:Expression<Func<TSource, double?>>) : double?
+    + {static} Average(source:IQueryable<TSource>, selector:Expression<Func<TSource, Decimal>>) : Decimal
+    + {static} Average(source:IQueryable<TSource>, selector:Expression<Func<TSource, Decimal?>>) : Decimal?
+    + {static} Aggregate(source:IQueryable<TSource>, func:Expression<Func<TSource, TSource, TSource>>) : TSource
+    + {static} Aggregate(source:IQueryable<TSource>, seed:TAccumulate, func:Expression<Func<TAccumulate, TSource, TAccumulate>>) : TAccumulate
+    + {static} Aggregate(source:IQueryable<TSource>, seed:TAccumulate, func:Expression<Func<TAccumulate, TSource, TAccumulate>>, selector:Expression<Func<TAccumulate, TResult>>) : TResult
+}
+@enduml

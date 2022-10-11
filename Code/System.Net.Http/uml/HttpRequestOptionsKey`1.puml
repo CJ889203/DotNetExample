@@ -1,0 +1,6 @@
+@startuml
+class "HttpRequestOptionsKey`1"<TValue> <<struct>> {
+    + Key : string <<get>>
+    + HttpRequestOptionsKey(key:string)
+}
+@enduml

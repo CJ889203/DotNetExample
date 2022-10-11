@@ -1,0 +1,59 @@
+@startuml
+class SemaphoreSlim {
+    - <<volatile>> m_currentCount : int
+    - <<readonly>> m_maxCount : int
+    - m_waitCount : int
+    - m_countOfWaitersPulsedToWake : int
+    - <<readonly>> m_lockObjAndDisposed : StrongBox<bool>
+    - <<volatile>> m_waitHandle : ManualResetEvent
+    - m_asyncHead : SemaphoreSlim.TaskNode
+    - m_asyncTail : SemaphoreSlim.TaskNode
+    - {static} <<readonly>> s_cancellationTokenCanceledEventHandler : Action<object>
+    + CurrentCount : int <<get>>
+    + AvailableWaitHandle : WaitHandle <<get>>
+    + SemaphoreSlim(initialCount:int)
+    + SemaphoreSlim(initialCount:int, maxCount:int)
+    + Wait() : void
+    + Wait(cancellationToken:CancellationToken) : void
+    + Wait(timeout:TimeSpan) : bool
+    + Wait(timeout:TimeSpan, cancellationToken:CancellationToken) : bool
+    + Wait(millisecondsTimeout:int) : bool
+    + Wait(millisecondsTimeout:int, cancellationToken:CancellationToken) : bool
+    - WaitUntilCountOrTimeout(millisecondsTimeout:int, startTime:uint, cancellationToken:CancellationToken) : bool
+    + WaitAsync() : Task
+    + WaitAsync(cancellationToken:CancellationToken) : Task
+    + WaitAsync(millisecondsTimeout:int) : Task<bool>
+    + WaitAsync(timeout:TimeSpan) : Task<bool>
+    + WaitAsync(timeout:TimeSpan, cancellationToken:CancellationToken) : Task<bool>
+    + WaitAsync(millisecondsTimeout:int, cancellationToken:CancellationToken) : Task<bool>
+    - CreateAndAddAsyncWaiter() : SemaphoreSlim.TaskNode
+    - RemoveAsyncWaiter(task:SemaphoreSlim.TaskNode) : bool
+    - <<async>> WaitUntilCountOrTimeoutAsync(asyncWaiter:SemaphoreSlim.TaskNode, millisecondsTimeout:int, cancellationToken:CancellationToken) : Task<bool>
+    + Release() : int
+    + Release(releaseCount:int) : int
+    + Dispose() : void
+    # <<virtual>> Dispose(disposing:bool) : void
+    - {static} CancellationTokenCanceledEventHandler(obj:object) : void
+    - CheckDispose() : void
+}
+class TaskNode <<sealed>> {
+    <<internal>> Prev : SemaphoreSlim.TaskNode
+    <<internal>> Next : SemaphoreSlim.TaskNode
+    <<internal>> TaskNode()
+}
+class "ConfiguredNoThrowAwaiter`1"<T> <<struct>> {
+    - <<readonly>> _task : Task<T>
+    + ConfiguredNoThrowAwaiter(task:Task<T>)
+    + GetAwaiter() : SemaphoreSlim.ConfiguredNoThrowAwaiter<T>
+    + IsCompleted : bool <<get>>
+    + GetResult() : void
+    + UnsafeOnCompleted(continuation:Action) : void
+    + OnCompleted(continuation:Action) : void
+}
+IDisposable <|-- SemaphoreSlim
+SemaphoreSlim +-- TaskNode
+"Task`1" "<bool>" <|-- TaskNode
+SemaphoreSlim +-- "ConfiguredNoThrowAwaiter`1"
+ICriticalNotifyCompletion <|-- "ConfiguredNoThrowAwaiter`1"
+INotifyCompletion <|-- "ConfiguredNoThrowAwaiter`1"
+@enduml

@@ -1,0 +1,9 @@
+@startuml
+abstract class EnumerableQuery {
+    <<internal>> {abstract} Expression : Expression <<get>>
+    <<internal>> {abstract} Enumerable : IEnumerable <<get>>
+    <<internal>> {static} Create(elementType:Type, sequence:IEnumerable) : IQueryable
+    <<internal>> {static} Create(elementType:Type, expression:Expression) : IQueryable
+    # EnumerableQuery()
+}
+@enduml

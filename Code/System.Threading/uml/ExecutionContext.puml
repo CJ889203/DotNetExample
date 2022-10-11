@@ -1,0 +1,37 @@
+@startuml
+class ExecutionContext <<sealed>> {
+    <<internal>> {static} <<readonly>> Default : ExecutionContext
+    - {static} <<volatile>> s_defaultFlowSuppressed : ExecutionContext
+    - <<readonly>> m_localValues : IAsyncLocalValueMap
+    - <<readonly>> m_localChangeNotifications : IAsyncLocal[]
+    - <<readonly>> m_isFlowSuppressed : bool
+    - <<readonly>> m_isDefault : bool
+    - ExecutionContext()
+    - ExecutionContext(localValues:IAsyncLocalValueMap, localChangeNotifications:IAsyncLocal[], isFlowSuppressed:bool)
+    + GetObjectData(info:SerializationInfo, context:StreamingContext) : void
+    + {static} Capture() : ExecutionContext?
+    <<internal>> {static} CaptureForRestore() : ExecutionContext
+    - ShallowClone(isFlowSuppressed:bool) : ExecutionContext
+    + {static} SuppressFlow() : AsyncFlowControl
+    + {static} RestoreFlow() : void
+    + {static} IsFlowSuppressed() : bool
+    <<internal>> HasChangeNotifications : bool <<get>>
+    <<internal>> IsDefault : bool <<get>>
+    + {static} Run(executionContext:ExecutionContext, callback:ContextCallback, state:object?) : void
+    <<internal>> {static} RunInternal(executionContext:ExecutionContext, callback:ContextCallback, state:object) : void
+    + {static} Restore(executionContext:ExecutionContext) : void
+    <<internal>> {static} RestoreInternal(executionContext:ExecutionContext) : void
+    <<internal>> {static} RunFromThreadPoolDispatchLoop(threadPoolThread:Thread, executionContext:ExecutionContext, callback:ContextCallback, state:object) : void
+    <<internal>> {static} RunForThreadPoolUnsafe(executionContext:ExecutionContext, callback:Action<TState>, state:TState) : void
+    <<internal>> {static} RestoreChangedContextToThread(currentThread:Thread, contextToRestore:ExecutionContext, currentContext:ExecutionContext) : void
+    <<internal>> {static} ResetThreadPoolThread(currentThread:Thread) : void
+    <<internal>> {static} OnValuesChanged(previousExecutionCtx:ExecutionContext, nextExecutionCtx:ExecutionContext) : void
+    - {static} ThrowNullContext() : void
+    <<internal>> {static} GetLocalValue(local:IAsyncLocal) : object
+    <<internal>> {static} SetLocalValue(local:IAsyncLocal, newValue:object, needChangeNotifications:bool) : void
+    + CreateCopy() : ExecutionContext
+    + Dispose() : void
+}
+IDisposable <|-- ExecutionContext
+ISerializable <|-- ExecutionContext
+@enduml

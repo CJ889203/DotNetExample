@@ -1,0 +1,10 @@
+@startuml
+class DuplicateKeyException {
+    - duplicate : object
+    + DuplicateKeyException(duplicate:object)
+    + DuplicateKeyException(duplicate:object, message:string)
+    + DuplicateKeyException(duplicate:object, message:string, innerException:Exception)
+    + Object : object <<get>>
+}
+InvalidOperationException <|-- DuplicateKeyException
+@enduml

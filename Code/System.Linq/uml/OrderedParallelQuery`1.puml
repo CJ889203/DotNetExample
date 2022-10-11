@@ -1,0 +1,10 @@
+@startuml
+class "OrderedParallelQuery`1"<TSource> {
+    - m_sortOp : QueryOperator<TSource>
+    <<internal>> OrderedParallelQuery(sortOp:QueryOperator<TSource>)
+    <<internal>> SortOperator : QueryOperator<TSource> <<get>>
+    <<internal>> OrderedEnumerable : IOrderedEnumerable<TSource> <<get>>
+    + <<override>> GetEnumerator() : IEnumerator<TSource>
+}
+"ParallelQuery`1" "<TSource>" <|-- "OrderedParallelQuery`1"
+@enduml

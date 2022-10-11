@@ -1,0 +1,25 @@
+@startuml
+class PeriodicTimer <<sealed>> {
+    - <<readonly>> _timer : TimerQueueTimer
+    - <<readonly>> _state : PeriodicTimer.State
+    + PeriodicTimer(period:TimeSpan)
+    + WaitForNextTickAsync(cancellationToken:CancellationToken) : ValueTask<bool>
+    + Dispose() : void
+}
+class State <<sealed>> {
+    - _owner : PeriodicTimer
+    - _mrvtsc : ManualResetValueTaskSourceCore<bool>
+    - _ctr : CancellationTokenRegistration
+    - _stopped : bool
+    - _signaled : bool
+    - _activeWait : bool
+    + WaitForNextTickAsync(owner:PeriodicTimer, cancellationToken1:CancellationToken) : ValueTask<bool>
+    + Signal(stopping:bool, cancellationToken:CancellationToken) : void
+    GetResult(token:short) : bool
+    GetStatus(token:short) : ValueTaskSourceStatus
+    OnCompleted(continuation:Action<object>, state:object, token:short, flags:ValueTaskSourceOnCompletedFlags) : void
+}
+IDisposable <|-- PeriodicTimer
+PeriodicTimer +-- State
+"IValueTaskSource`1" "<bool>" <|-- State
+@enduml

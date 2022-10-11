@@ -1,0 +1,8 @@
+@startuml
+class "AsyncLocalValueChangedArgs`1"<T> <<struct>> {
+    + PreviousValue : T? <<get>>
+    + CurrentValue : T? <<get>>
+    + ThreadContextChanged : bool <<get>>
+    <<internal>> AsyncLocalValueChangedArgs(previousValue:T, currentValue:T, contextChanged:bool)
+}
+@enduml

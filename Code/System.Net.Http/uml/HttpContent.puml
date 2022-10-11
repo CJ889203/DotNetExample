@@ -1,0 +1,109 @@
+@startuml
+abstract class HttpContent {
+    - _headers : HttpContentHeaders
+    - _bufferedContent : MemoryStream
+    - _contentReadStream : object
+    - _disposed : bool
+    - _canCalculateLength : bool
+    <<internal>> {static} <<readonly>> DefaultStringEncoding : Encoding
+    + Headers : HttpContentHeaders <<get>>
+    - IsBuffered : bool <<get>>
+    <<internal>> TryGetBuffer(buffer:ArraySegment<byte>) : bool
+    # HttpContent()
+    + ReadAsStringAsync() : Task<string>
+    + ReadAsStringAsync(cancellationToken:CancellationToken) : Task<string>
+    - ReadBufferedContentAsString() : string
+    <<internal>> {static} ReadBufferAsString(buffer:ArraySegment<byte>, headers:HttpContentHeaders) : string
+    + ReadAsByteArrayAsync() : Task<byte[]>
+    + ReadAsByteArrayAsync(cancellationToken:CancellationToken) : Task<byte[]>
+    <<internal>> ReadBufferedContentAsByteArray() : byte[]
+    + ReadAsStream() : Stream
+    + ReadAsStream(cancellationToken:CancellationToken) : Stream
+    + ReadAsStreamAsync() : Task<Stream>
+    + ReadAsStreamAsync(cancellationToken:CancellationToken) : Task<Stream>
+    <<internal>> TryReadAsStream() : Stream
+    # {abstract} SerializeToStreamAsync(stream:Stream, context:TransportContext?) : Task
+    # <<virtual>> SerializeToStream(stream:Stream, context:TransportContext?, cancellationToken:CancellationToken) : void
+    # <<virtual>> SerializeToStreamAsync(stream:Stream, context:TransportContext?, cancellationToken:CancellationToken) : Task
+    <<internal>> <<virtual>> AllowDuplex : bool <<get>>
+    + CopyTo(stream:Stream, context:TransportContext?, cancellationToken:CancellationToken) : void
+    + CopyToAsync(stream:Stream) : Task
+    + CopyToAsync(stream:Stream, cancellationToken:CancellationToken) : Task
+    + CopyToAsync(stream:Stream, context:TransportContext?) : Task
+    + CopyToAsync(stream:Stream, context:TransportContext?, cancellationToken:CancellationToken) : Task
+    <<internal>> InternalCopyToAsync(stream:Stream, context:TransportContext, cancellationToken:CancellationToken) : ValueTask
+    <<internal>> LoadIntoBuffer(maxBufferSize:long, cancellationToken:CancellationToken) : void
+    + LoadIntoBufferAsync() : Task
+    + LoadIntoBufferAsync(maxBufferSize:long) : Task
+    <<internal>> LoadIntoBufferAsync(cancellationToken:CancellationToken) : Task
+    <<internal>> LoadIntoBufferAsync(maxBufferSize:long, cancellationToken:CancellationToken) : Task
+    - <<async>> LoadIntoBufferAsyncCore(serializeToStreamTask:Task, tempBuffer:MemoryStream) : Task
+    # <<virtual>> CreateContentReadStream(cancellationToken:CancellationToken) : Stream
+    # <<virtual>> CreateContentReadStreamAsync() : Task<Stream>
+    # <<virtual>> CreateContentReadStreamAsync(cancellationToken:CancellationToken) : Task<Stream>
+    <<internal>> <<virtual>> TryCreateContentReadStream() : Stream
+    # <<internal>> {abstract} TryComputeLength(length:long) : bool
+    <<internal>> GetComputedOrBufferLength() : long?
+    - CreateTemporaryBuffer(maxBufferSize:long, tempBuffer:MemoryStream, error:Exception) : bool
+    - CreateMemoryStream(maxBufferSize:long, error:Exception) : MemoryStream
+    # <<virtual>> Dispose(disposing:bool) : void
+    + Dispose() : void
+    - CheckDisposed() : void
+    - CheckTaskNotNull(task:Task) : void
+    <<internal>> {static} StreamCopyExceptionNeedsWrapping(e:Exception) : bool
+    - {static} GetStreamCopyException(originalException:Exception) : Exception
+    <<internal>> {static} WrapStreamCopyException(e:Exception) : Exception
+    - {static} GetPreambleLength(buffer:ArraySegment<byte>, encoding:Encoding) : int
+    - {static} TryDetectEncoding(buffer:ArraySegment<byte>, encoding:Encoding, preambleLength:int) : bool
+    - {static} BufferHasPrefix(buffer:ArraySegment<byte>, prefix:byte[]) : bool
+    - {static} <<async>> WaitAndReturnAsync(waitTask:Task, state:TState, returnFunc:Func<TState, TResult>) : Task<TResult>
+    - {static} CreateOverCapacityException(maxBufferSize:int) : Exception
+}
+class LimitMemoryStream <<sealed>> {
+    - <<readonly>> _maxSize : int
+    + LimitMemoryStream(maxSize:int, capacity:int)
+    + GetSizedBuffer() : byte[]
+    + <<override>> Write(buffer:byte[], offset:int, count:int) : void
+    + <<override>> WriteByte(value:byte) : void
+    + <<override>> WriteAsync(buffer:byte[], offset:int, count:int, cancellationToken:CancellationToken) : Task
+    + <<override>> WriteAsync(buffer:ReadOnlyMemory<byte>, cancellationToken:CancellationToken) : ValueTask
+    + <<override>> BeginWrite(buffer:byte[], offset:int, count:int, callback:AsyncCallback, state:object) : IAsyncResult
+    + <<override>> EndWrite(asyncResult:IAsyncResult) : void
+    + <<override>> CopyToAsync(destination:Stream, bufferSize:int, cancellationToken:CancellationToken) : Task
+    - CheckSize(countToAdd:int) : void
+}
+class LimitArrayPoolWriteStream <<sealed>> {
+    - <<readonly>> _maxBufferSize : int
+    - _buffer : byte[]
+    - _length : int
+    + LimitArrayPoolWriteStream(maxBufferSize:int)
+    + LimitArrayPoolWriteStream(maxBufferSize:int, capacity:long)
+    # <<override>> Dispose(disposing:bool) : void
+    + GetBuffer() : ArraySegment<byte>
+    + ToArray() : byte[]
+    - EnsureCapacity(value:int) : void
+    - Grow(value:int) : void
+    + <<override>> Write(buffer:byte[], offset:int, count:int) : void
+    + <<override>> Write(buffer:ReadOnlySpan<byte>) : void
+    + <<override>> WriteAsync(buffer:byte[], offset:int, count:int, cancellationToken:CancellationToken) : Task
+    + <<override>> WriteAsync(buffer:ReadOnlyMemory<byte>, cancellationToken:CancellationToken) : ValueTask
+    + <<override>> BeginWrite(buffer:byte[], offset:int, count:int, asyncCallback:AsyncCallback, asyncState:object) : IAsyncResult
+    + <<override>> EndWrite(asyncResult:IAsyncResult) : void
+    + <<override>> WriteByte(value:byte) : void
+    + <<override>> Flush() : void
+    + <<override>> FlushAsync(cancellationToken:CancellationToken) : Task
+    + <<override>> Length : long <<get>>
+    + <<override>> CanWrite : bool <<get>>
+    + <<override>> CanRead : bool <<get>>
+    + <<override>> CanSeek : bool <<get>>
+    + <<override>> Position : long <<get>> <<set>>
+    + <<override>> Read(buffer:byte[], offset:int, count:int) : int
+    + <<override>> Seek(offset:long, origin:SeekOrigin) : long
+    + <<override>> SetLength(value:long) : void
+}
+IDisposable <|-- HttpContent
+HttpContent +-- LimitMemoryStream
+MemoryStream <|-- LimitMemoryStream
+HttpContent +-- LimitArrayPoolWriteStream
+Stream <|-- LimitArrayPoolWriteStream
+@enduml

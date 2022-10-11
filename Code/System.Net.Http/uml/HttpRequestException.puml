@@ -1,0 +1,12 @@
+@startuml
+class HttpRequestException {
+    <<internal>> AllowRetry : RequestRetryType <<get>>
+    + HttpRequestException()
+    + HttpRequestException(message:string?)
+    + HttpRequestException(message:string?, inner:Exception?)
+    + HttpRequestException(message:string?, inner:Exception?, statusCode:HttpStatusCode?)
+    + StatusCode : HttpStatusCode? <<get>>
+    <<internal>> HttpRequestException(message:string, inner:Exception, allowRetry:RequestRetryType)
+}
+Exception <|-- HttpRequestException
+@enduml

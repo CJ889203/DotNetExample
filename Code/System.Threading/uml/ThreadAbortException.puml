@@ -1,0 +1,8 @@
+@startuml
+class ThreadAbortException <<sealed>> {
+    <<internal>> ThreadAbortException()
+    + ExceptionState : object? <<get>>
+    - ThreadAbortException(info:SerializationInfo, context:StreamingContext)
+}
+SystemException <|-- ThreadAbortException
+@enduml

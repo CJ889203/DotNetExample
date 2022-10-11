@@ -1,0 +1,9 @@
+@startuml
+class SynchronizationLockException {
+    + SynchronizationLockException()
+    + SynchronizationLockException(message:string?)
+    + SynchronizationLockException(message:string?, innerException:Exception?)
+    # SynchronizationLockException(info:SerializationInfo, context:StreamingContext)
+}
+SystemException <|-- SynchronizationLockException
+@enduml

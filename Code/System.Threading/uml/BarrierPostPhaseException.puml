@@ -1,0 +1,10 @@
+@startuml
+class BarrierPostPhaseException {
+    + BarrierPostPhaseException()
+    + BarrierPostPhaseException(innerException:Exception?)
+    + BarrierPostPhaseException(message:string?)
+    + BarrierPostPhaseException(message:string?, innerException:Exception?)
+    # BarrierPostPhaseException(info:SerializationInfo, context:StreamingContext)
+}
+Exception <|-- BarrierPostPhaseException
+@enduml

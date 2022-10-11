@@ -1,0 +1,17 @@
+@startuml
+abstract class DelegatingHandler {
+    - _innerHandler : HttpMessageHandler
+    - <<volatile>> _operationStarted : bool
+    - <<volatile>> _disposed : bool
+    + InnerHandler : HttpMessageHandler? <<get>> <<set>>
+    # DelegatingHandler()
+    # DelegatingHandler(innerHandler:HttpMessageHandler)
+    # <<internal>> <<override>> Send(request:HttpRequestMessage, cancellationToken:CancellationToken) : HttpResponseMessage
+    # <<internal>> <<override>> SendAsync(request:HttpRequestMessage, cancellationToken:CancellationToken) : Task<HttpResponseMessage>
+    # <<override>> Dispose(disposing:bool) : void
+    - CheckDisposed() : void
+    - CheckDisposedOrStarted() : void
+    - SetOperationStarted() : void
+}
+HttpMessageHandler <|-- DelegatingHandler
+@enduml

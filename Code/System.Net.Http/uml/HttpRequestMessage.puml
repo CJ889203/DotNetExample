@@ -1,0 +1,36 @@
+@startuml
+class HttpRequestMessage {
+    - _sendStatus : int
+    - _method : HttpMethod
+    - _requestUri : Uri
+    - _headers : HttpRequestHeaders
+    - _version : Version
+    - _versionPolicy : HttpVersionPolicy
+    - _content : HttpContent
+    - _disposed : bool
+    - _options : HttpRequestOptions
+    <<internal>> {static} DefaultRequestVersion : Version <<get>>
+    <<internal>> {static} DefaultVersionPolicy : HttpVersionPolicy <<get>>
+    + Version : Version <<get>> <<set>>
+    + VersionPolicy : HttpVersionPolicy <<get>> <<set>>
+    + Content : HttpContent? <<get>> <<set>>
+    + Method : HttpMethod <<get>> <<set>>
+    + RequestUri : Uri? <<get>> <<set>>
+    + Headers : HttpRequestHeaders <<get>>
+    <<internal>> HasHeaders : bool <<get>>
+    + Properties : IDictionary<string, object?> <<get>>
+    + Options : HttpRequestOptions <<get>>
+    + HttpRequestMessage()
+    + HttpRequestMessage(method:HttpMethod, requestUri:Uri?)
+    + HttpRequestMessage(method:HttpMethod, requestUri:string?)
+    + <<override>> ToString() : string
+    <<internal>> MarkAsSent() : bool
+    <<internal>> WasSentByHttpClient() : bool
+    <<internal>> MarkAsRedirected() : void
+    <<internal>> WasRedirected() : bool
+    # <<virtual>> Dispose(disposing:bool) : void
+    + Dispose() : void
+    - CheckDisposed() : void
+}
+IDisposable <|-- HttpRequestMessage
+@enduml

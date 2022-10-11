@@ -1,0 +1,76 @@
+@startuml
+class Volatile <<static>> {
+    + {static} Read(location:bool) : bool
+    + {static} Write(location:bool, value:bool) : void
+    + {static} Read(location:byte) : byte
+    + {static} Write(location:byte, value:byte) : void
+    + {static} <<unsafe>> Read(location:double) : double
+    + {static} <<unsafe>> Write(location:double, value:double) : void
+    + {static} Read(location:short) : short
+    + {static} Write(location:short, value:short) : void
+    + {static} Read(location:int) : int
+    + {static} Write(location:int, value:int) : void
+    + {static} Read(location:long) : long
+    + {static} Write(location:long, value:long) : void
+    + {static} Read(location:IntPtr) : IntPtr
+    + {static} Write(location:IntPtr, value:IntPtr) : void
+    + {static} Read(location:sbyte) : sbyte
+    + {static} Write(location:sbyte, value:sbyte) : void
+    + {static} Read(location:float) : float
+    + {static} Write(location:float, value:float) : void
+    + {static} Read(location:ushort) : ushort
+    + {static} Write(location:ushort, value:ushort) : void
+    + {static} Read(location:uint) : uint
+    + {static} Write(location:uint, value:uint) : void
+    + {static} Read(location:ulong) : ulong
+    + {static} Write(location:ulong, value:ulong) : void
+    + {static} Read(location:UIntPtr) : UIntPtr
+    + {static} Write(location:UIntPtr, value:UIntPtr) : void
+    + {static} Read(location:T) : T
+    + {static} Write(location:T, value:T) : void
+}
+class VolatileBoolean <<struct>> {
+    + <<volatile>> Value : bool
+}
+class VolatileByte <<struct>> {
+    + <<volatile>> Value : byte
+}
+class VolatileInt16 <<struct>> {
+    + <<volatile>> Value : short
+}
+class VolatileInt32 <<struct>> {
+    + <<volatile>> Value : int
+}
+class VolatileIntPtr <<struct>> {
+    + <<volatile>> Value : IntPtr
+}
+class VolatileSByte <<struct>> {
+    + <<volatile>> Value : sbyte
+}
+class VolatileSingle <<struct>> {
+    + <<volatile>> Value : float
+}
+class VolatileUInt16 <<struct>> {
+    + <<volatile>> Value : ushort
+}
+class VolatileUInt32 <<struct>> {
+    + <<volatile>> Value : uint
+}
+class VolatileUIntPtr <<struct>> {
+    + <<volatile>> Value : UIntPtr
+}
+class VolatileObject <<struct>> {
+    + <<volatile>> Value : object
+}
+Volatile +-- VolatileBoolean
+Volatile +-- VolatileByte
+Volatile +-- VolatileInt16
+Volatile +-- VolatileInt32
+Volatile +-- VolatileIntPtr
+Volatile +-- VolatileSByte
+Volatile +-- VolatileSingle
+Volatile +-- VolatileUInt16
+Volatile +-- VolatileUInt32
+Volatile +-- VolatileUIntPtr
+Volatile +-- VolatileObject
+@enduml

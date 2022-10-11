@@ -1,0 +1,6 @@
+@startuml
+class Timeout <<static>> {
+    + {static} <<readonly>> InfiniteTimeSpan : TimeSpan
+    + <<const>> Infinite : int
+}
+@enduml

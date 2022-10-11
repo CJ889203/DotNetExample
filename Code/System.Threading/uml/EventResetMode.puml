@@ -1,0 +1,6 @@
+@startuml
+enum EventResetMode {
+    AutoReset,
+    ManualReset,
+}
+@enduml

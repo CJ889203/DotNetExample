@@ -1,0 +1,6 @@
+@startuml
+enum ParallelExecutionMode {
+    Default,
+    ForceParallelism,
+}
+@enduml

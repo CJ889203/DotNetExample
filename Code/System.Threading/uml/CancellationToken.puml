@@ -1,0 +1,24 @@
+@startuml
+class CancellationToken <<struct>> {
+    - <<readonly>> _source : CancellationTokenSource
+    + {static} None : CancellationToken <<get>>
+    + IsCancellationRequested : bool <<get>>
+    + CanBeCanceled : bool <<get>>
+    + WaitHandle : WaitHandle <<get>>
+    <<internal>> CancellationToken(source:CancellationTokenSource)
+    + CancellationToken(canceled:bool)
+    + Register(callback:Action) : CancellationTokenRegistration
+    + Register(callback:Action, useSynchronizationContext:bool) : CancellationTokenRegistration
+    + Register(callback:Action<object?>, state:object?) : CancellationTokenRegistration
+    + Register(callback:Action<object?, CancellationToken>, state:object?) : CancellationTokenRegistration
+    + Register(callback:Action<object?>, state:object?, useSynchronizationContext:bool) : CancellationTokenRegistration
+    + UnsafeRegister(callback:Action<object?>, state:object?) : CancellationTokenRegistration
+    + UnsafeRegister(callback:Action<object?, CancellationToken>, state:object?) : CancellationTokenRegistration
+    - Register(callback:Delegate, state:object, useSynchronizationContext:bool, useExecutionContext:bool) : CancellationTokenRegistration
+    + Equals(other:CancellationToken) : bool
+    + <<override>> Equals(other:object?) : bool
+    + <<override>> GetHashCode() : int
+    + ThrowIfCancellationRequested() : void
+    - ThrowOperationCanceledException() : void
+}
+@enduml

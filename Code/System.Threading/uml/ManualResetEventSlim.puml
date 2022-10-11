@@ -1,0 +1,35 @@
+@startuml
+class ManualResetEventSlim {
+    - <<volatile>> m_lock : object
+    - <<volatile>> m_eventObj : ManualResetEvent
+    - <<volatile>> m_combinedState : int
+    - {static} <<readonly>> s_cancellationTokenCallback : Action<object>
+    + WaitHandle : WaitHandle <<get>>
+    + IsSet : bool <<get>>
+    + SpinCount : int <<get>>
+    - Waiters : int <<get>> <<set>>
+    + ManualResetEventSlim()
+    + ManualResetEventSlim(initialState:bool)
+    + ManualResetEventSlim(initialState:bool, spinCount:int)
+    - Initialize(initialState:bool, spinCount:int) : void
+    - EnsureLockObjectCreated() : void
+    - LazyInitializeEvent() : void
+    + Set() : void
+    - Set(duringCancellation:bool) : void
+    + Reset() : void
+    + Wait() : void
+    + Wait(cancellationToken:CancellationToken) : void
+    + Wait(timeout:TimeSpan) : bool
+    + Wait(timeout:TimeSpan, cancellationToken:CancellationToken) : bool
+    + Wait(millisecondsTimeout:int) : bool
+    + Wait(millisecondsTimeout:int, cancellationToken:CancellationToken) : bool
+    + Dispose() : void
+    # <<virtual>> Dispose(disposing:bool) : void
+    - ThrowIfDisposed() : void
+    - {static} CancellationTokenCallback(obj:object) : void
+    - UpdateStateAtomically(newBits:int, updateBitsMask:int) : void
+    - {static} ExtractStatePortionAndShiftRight(state:int, mask:int, rightBitShiftCount:int) : int
+    - {static} ExtractStatePortion(state:int, mask:int) : int
+}
+IDisposable <|-- ManualResetEventSlim
+@enduml

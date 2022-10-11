@@ -1,0 +1,12 @@
+@startuml
+class ChangeSet <<sealed>> {
+    - inserts : ReadOnlyCollection<object>
+    - deletes : ReadOnlyCollection<object>
+    - updates : ReadOnlyCollection<object>
+    <<internal>> ChangeSet(inserts:ReadOnlyCollection<object>, deletes:ReadOnlyCollection<object>, updates:ReadOnlyCollection<object>)
+    + Inserts : IList<object> <<get>>
+    + Deletes : IList<object> <<get>>
+    + Updates : IList<object> <<get>>
+    + <<override>> ToString() : string
+}
+@enduml

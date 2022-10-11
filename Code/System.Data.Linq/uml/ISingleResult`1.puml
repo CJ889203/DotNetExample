@@ -1,0 +1,8 @@
+@startuml
+interface "ISingleResult`1"<T> {
+}
+"IEnumerable`1" "<T>" <|-- "ISingleResult`1"
+IEnumerable <|-- "ISingleResult`1"
+IFunctionResult <|-- "ISingleResult`1"
+IDisposable <|-- "ISingleResult`1"
+@enduml

@@ -1,0 +1,6 @@
+@startuml
+class WaitHandleExtensions <<static>> {
+    + {static} GetSafeWaitHandle(waitHandle:WaitHandle) : SafeWaitHandle
+    + {static} SetSafeWaitHandle(waitHandle:WaitHandle, value:SafeWaitHandle?) : void
+}
+@enduml

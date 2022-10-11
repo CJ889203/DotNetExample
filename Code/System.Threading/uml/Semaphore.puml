@@ -1,0 +1,16 @@
+@startuml
+class Semaphore <<sealed>> {
+    + Semaphore(initialCount:int, maximumCount:int)
+    + Semaphore(initialCount:int, maximumCount:int, name:string?)
+    + Semaphore(initialCount:int, maximumCount:int, name:string?, createdNew:bool)
+    + {static} OpenExisting(name:string) : Semaphore
+    + {static} TryOpenExisting(name:string, result:Semaphore?) : bool
+    + Release() : int
+    + Release(releaseCount:int) : int
+    - Semaphore(handle:SafeWaitHandle)
+    - CreateSemaphoreCore(initialCount:int, maximumCount:int, name:string, createdNew:bool) : void
+    - {static} OpenExistingWorker(name:string, result:Semaphore) : OpenExistingResult
+    - ReleaseCore(releaseCount:int) : int
+}
+WaitHandle <|-- Semaphore
+@enduml

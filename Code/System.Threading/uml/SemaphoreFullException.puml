@@ -1,0 +1,9 @@
+@startuml
+class SemaphoreFullException {
+    + SemaphoreFullException()
+    + SemaphoreFullException(message:string?)
+    + SemaphoreFullException(message:string?, innerException:Exception?)
+    # SemaphoreFullException(info:SerializationInfo, context:StreamingContext)
+}
+SystemException <|-- SemaphoreFullException
+@enduml

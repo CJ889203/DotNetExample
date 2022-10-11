@@ -1,0 +1,5 @@
+@startuml
+interface IFunctionResult {
+    ReturnValue : object <<get>>
+}
+@enduml

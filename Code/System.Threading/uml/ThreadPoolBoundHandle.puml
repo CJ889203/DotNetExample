@@ -1,0 +1,20 @@
+@startuml
+class ThreadPoolBoundHandle <<sealed>> {
+    - <<readonly>> _handle : SafeHandle
+    - _isDisposed : bool
+    - ThreadPoolBoundHandle(handle:SafeHandle)
+    + Handle : SafeHandle <<get>>
+    + {static} BindHandle(handle:SafeHandle) : ThreadPoolBoundHandle
+    + <<unsafe>> AllocateNativeOverlapped(callback:IOCompletionCallback, state:object?, pinData:object?) : NativeOverlapped*
+    + <<unsafe>> UnsafeAllocateNativeOverlapped(callback:IOCompletionCallback, state:object?, pinData:object?) : NativeOverlapped*
+    - <<unsafe>> AllocateNativeOverlapped(callback:IOCompletionCallback, state:object, pinData:object, flowExecutionContext:bool) : NativeOverlapped*
+    + <<unsafe>> AllocateNativeOverlapped(preAllocated:PreAllocatedOverlapped) : NativeOverlapped*
+    + <<unsafe>> FreeNativeOverlapped(overlapped:NativeOverlapped*) : void
+    + {static} <<unsafe>> GetNativeOverlappedState(overlapped:NativeOverlapped*) : object?
+    - {static} <<unsafe>> GetOverlappedWrapper(overlapped:NativeOverlapped*) : ThreadPoolBoundHandleOverlapped
+    + Dispose() : void
+    - EnsureNotDisposed() : void
+    - {static} BindHandleCore(handle:SafeHandle) : ThreadPoolBoundHandle
+}
+IDisposable <|-- ThreadPoolBoundHandle
+@enduml

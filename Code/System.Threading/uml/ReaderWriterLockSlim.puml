@@ -1,0 +1,125 @@
+@startuml
+class ReaderWriterLockSlim {
+    - <<readonly>> _fIsReentrant : bool
+    - _spinLock : ReaderWriterLockSlim.SpinLock
+    - _numWriteWaiters : uint
+    - _numReadWaiters : uint
+    - _numWriteUpgradeWaiters : uint
+    - _numUpgradeWaiters : uint
+    - _waiterStates : ReaderWriterLockSlim.WaiterStates
+    - _upgradeLockOwnerId : int
+    - _writeLockOwnerId : int
+    - _writeEvent : EventWaitHandle
+    - _readEvent : EventWaitHandle
+    - _upgradeEvent : EventWaitHandle
+    - _waitUpgradeEvent : EventWaitHandle
+    - {static} s_nextLockID : long
+    - <<readonly>> _lockID : long
+    - {static} t_rwc : ReaderWriterCount
+    - _fUpgradeThreadHoldingRead : bool
+    - _owners : uint
+    - _fDisposed : bool
+    - InitializeThreadCounts() : void
+    + ReaderWriterLockSlim()
+    + ReaderWriterLockSlim(recursionPolicy:LockRecursionPolicy)
+    - HasNoWaiters : bool <<get>> <<set>>
+    - {static} IsRWEntryEmpty(rwc:ReaderWriterCount) : bool
+    - IsRwHashEntryChanged(lrwc:ReaderWriterCount) : bool
+    - GetThreadRWCount(dontAllocate:bool) : ReaderWriterCount
+    + EnterReadLock() : void
+    + TryEnterReadLock(timeout:TimeSpan) : bool
+    + TryEnterReadLock(millisecondsTimeout:int) : bool
+    - TryEnterReadLock(timeout:ReaderWriterLockSlim.TimeoutTracker) : bool
+    - TryEnterReadLockCore(timeout:ReaderWriterLockSlim.TimeoutTracker) : bool
+    + EnterWriteLock() : void
+    + TryEnterWriteLock(timeout:TimeSpan) : bool
+    + TryEnterWriteLock(millisecondsTimeout:int) : bool
+    - TryEnterWriteLock(timeout:ReaderWriterLockSlim.TimeoutTracker) : bool
+    - TryEnterWriteLockCore(timeout:ReaderWriterLockSlim.TimeoutTracker) : bool
+    + EnterUpgradeableReadLock() : void
+    + TryEnterUpgradeableReadLock(timeout:TimeSpan) : bool
+    + TryEnterUpgradeableReadLock(millisecondsTimeout:int) : bool
+    - TryEnterUpgradeableReadLock(timeout:ReaderWriterLockSlim.TimeoutTracker) : bool
+    - TryEnterUpgradeableReadLockCore(timeout:ReaderWriterLockSlim.TimeoutTracker) : bool
+    + ExitReadLock() : void
+    + ExitWriteLock() : void
+    + ExitUpgradeableReadLock() : void
+    - LazyCreateEvent(waitEvent:EventWaitHandle, enterLockType:ReaderWriterLockSlim.EnterLockType) : void
+    - WaitOnEvent(waitEvent:EventWaitHandle, numWaiters:uint, timeout:ReaderWriterLockSlim.TimeoutTracker, enterLockType:ReaderWriterLockSlim.EnterLockType) : bool
+    - ExitAndWakeUpAppropriateWaiters() : void
+    - ExitAndWakeUpAppropriateWaitersPreferringWriters() : void
+    - ExitAndWakeUpAppropriateReadWaiters() : void
+    - IsWriterAcquired() : bool
+    - SetWriterAcquired() : void
+    - ClearWriterAcquired() : void
+    - SetWritersWaiting() : void
+    - ClearWritersWaiting() : void
+    - SetUpgraderWaiting() : void
+    - ClearUpgraderWaiting() : void
+    - GetNumReaders() : uint
+    - ShouldSpinForEnterAnyRead() : bool
+    - ShouldSpinForEnterAnyWrite(isUpgradeToWrite:bool) : bool
+    - {static} SpinWait(spinCount:int) : void
+    + Dispose() : void
+    - Dispose(disposing:bool) : void
+    + IsReadLockHeld : bool <<get>>
+    + IsUpgradeableReadLockHeld : bool <<get>>
+    + IsWriteLockHeld : bool <<get>>
+    + RecursionPolicy : LockRecursionPolicy <<get>>
+    + CurrentReadCount : int <<get>>
+    + RecursiveReadCount : int <<get>>
+    + RecursiveUpgradeCount : int <<get>>
+    + RecursiveWriteCount : int <<get>>
+    + WaitingReadCount : int <<get>>
+    + WaitingUpgradeCount : int <<get>>
+    + WaitingWriteCount : int <<get>>
+}
+class TimeoutTracker <<struct>> {
+    - <<readonly>> _total : int
+    - <<readonly>> _start : int
+    + TimeoutTracker(timeout:TimeSpan)
+    + TimeoutTracker(millisecondsTimeout:int)
+    + RemainingMilliseconds : int <<get>>
+    + IsExpired : bool <<get>>
+}
+class SpinLock <<struct>> {
+    - _isLocked : int
+    - _enterDeprioritizationState : int
+    - {static} GetEnterDeprioritizationStateChange(reason:ReaderWriterLockSlim.EnterSpinLockReason) : int
+    - EnterForEnterAnyReadDeprioritizedCount : ushort <<get>>
+    - EnterForEnterAnyWriteDeprioritizedCount : ushort <<get>>
+    - IsEnterDeprioritized(reason:ReaderWriterLockSlim.EnterSpinLockReason) : bool
+    - TryEnter() : bool
+    + Enter(reason:ReaderWriterLockSlim.EnterSpinLockReason) : void
+    - EnterSpin(reason:ReaderWriterLockSlim.EnterSpinLockReason) : void
+    + Exit() : void
+}
+enum WaiterStates {
+    None= 0,
+    NoWaiters= 1,
+    WriteWaiterSignaled= 2,
+    UpgradeableReadWaiterSignaled= 4,
+}
+enum EnterSpinLockReason {
+    EnterAnyRead= 0,
+    ExitAnyRead= 1,
+    EnterWrite= 2,
+    UpgradeToWrite= 3,
+    EnterRecursiveWrite= 4,
+    ExitAnyWrite= 5,
+    OperationMask= 7,
+    Wait= 8,
+}
+enum EnterLockType {
+    Read,
+    UpgradeableRead,
+    Write,
+    UpgradeToWrite,
+}
+IDisposable <|-- ReaderWriterLockSlim
+ReaderWriterLockSlim +-- TimeoutTracker
+ReaderWriterLockSlim +-- SpinLock
+ReaderWriterLockSlim +-- WaiterStates
+ReaderWriterLockSlim +-- EnterSpinLockReason
+ReaderWriterLockSlim +-- EnterLockType
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+class HttpRequestOptions <<sealed>> {
+    - Options : Dictionary<string, object?> <<get>>
+    Keys : ICollection<string> <<get>>
+    Values : ICollection<object?> <<get>>
+    Count : int <<get>>
+    IsReadOnly : bool <<get>>
+    Add(key:string, value:object) : void
+    Add(item:KeyValuePair<string, object>) : void
+    Clear() : void
+    Contains(item:KeyValuePair<string, object>) : bool
+    ContainsKey(key:string) : bool
+    CopyTo(array:KeyValuePair<string, object>[], arrayIndex:int) : void
+    GetEnumerator() : IEnumerator<KeyValuePair<string, object>>
+    GetEnumerator() : IEnumerator
+    Remove(key:string) : bool
+    Remove(item:KeyValuePair<string, object>) : bool
+    TryGetValue(key:string, value:object) : bool
+    + TryGetValue(key:HttpRequestOptionsKey<TValue>, value:TValue) : bool
+    + Set(key:HttpRequestOptionsKey<TValue>, value:TValue) : void
+}
+"IDictionary`2" "<string,object?>" <|-- HttpRequestOptions
+"ICollection`1" "<KeyValuePair<string, object?>>" <|-- HttpRequestOptions
+"IEnumerable`1" "<KeyValuePair<string, object?>>" <|-- HttpRequestOptions
+IEnumerable <|-- HttpRequestOptions
+@enduml

@@ -1,0 +1,11 @@
+@startuml
+class SocketsHttpPlaintextStreamFilterContext <<sealed>> {
+    - <<readonly>> _plaintextStream : Stream
+    - <<readonly>> _negotiatedHttpVersion : Version
+    - <<readonly>> _initialRequestMessage : HttpRequestMessage
+    <<internal>> SocketsHttpPlaintextStreamFilterContext(plaintextStream:Stream, negotiatedHttpVersion:Version, initialRequestMessage:HttpRequestMessage)
+    + PlaintextStream : Stream <<get>>
+    + NegotiatedHttpVersion : Version <<get>>
+    + InitialRequestMessage : HttpRequestMessage <<get>>
+}
+@enduml

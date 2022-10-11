@@ -1,0 +1,44 @@
+@startuml
+class RegisteredWaitHandle <<sealed>> {
+    - _nativeRegisteredWaitHandle : IntPtr
+    - _releaseHandle : bool
+    - {static} s_cachedEvent : AutoResetEvent
+    - {static} <<readonly>> s_callbackLock : LowLevelLock
+    - _numRequestedCallbacks : int
+    - _signalAfterCallbacksComplete : bool
+    - _unregisterCalled : bool
+    - _unregistered : bool
+    - _callbacksComplete : AutoResetEvent
+    - _removed : AutoResetEvent
+    - {static} IsValidHandle(handle:IntPtr) : bool
+    <<internal>> SetNativeRegisteredWaitHandle(nativeRegisteredWaitHandle:IntPtr) : void
+    <<internal>> OnBeforeRegister() : void
+    + Unregister(waitObject:WaitHandle) : bool
+    - {static} <<extern>> WaitHandleCleanupNative(handle:IntPtr) : void
+    - {static} <<extern>> UnregisterWaitNative(handle:IntPtr, waitObject:SafeHandle) : bool
+    <<internal>> RegisteredWaitHandle(waitHandle:WaitHandle, callbackHelper:_ThreadPoolWaitOrTimerCallback, millisecondsTimeout:int, repeating:bool)
+    - {static} RentEvent() : AutoResetEvent
+    - {static} ReturnEvent(resetEvent:AutoResetEvent) : void
+    <<internal>> Callback : _ThreadPoolWaitOrTimerCallback <<get>>
+    <<internal>> Handle : SafeWaitHandle <<get>>
+    <<internal>> TimeoutTimeMs : int <<get>>
+    <<internal>> TimeoutDurationMs : int <<get>>
+    <<internal>> IsInfiniteTimeout : bool <<get>>
+    <<internal>> RestartTimeout() : void
+    <<internal>> Repeating : bool <<get>>
+    - UserUnregisterWaitHandle : SafeWaitHandle? <<get>> <<set>>
+    - UserUnregisterWaitHandleValue : IntPtr <<get>> <<set>>
+    - {static} InvalidHandleValue : IntPtr <<get>>
+    <<internal>> IsBlocking : bool <<get>>
+    <<internal>> WaitThread : PortableThreadPool.WaitThread? <<get>> <<set>>
+    - UnregisterPortable(waitObject:WaitHandle) : bool
+    - SignalUserWaitHandle() : void
+    <<internal>> PerformCallback(timedOut:bool) : void
+    <<internal>> RequestCallback() : void
+    <<internal>> OnRemoveWait() : void
+    - CompleteCallbackRequest() : void
+    <<internal>> WaitForCallbacks() : void
+    <<internal>> WaitForRemoval() : void
+}
+MarshalByRefObject <|-- RegisteredWaitHandle
+@enduml

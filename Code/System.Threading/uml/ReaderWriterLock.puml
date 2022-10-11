@@ -1,0 +1,61 @@
+@startuml
+class ReaderWriterLock <<sealed>> {
+    - {static} <<readonly>> DefaultSpinCount : int
+    - {static} s_mostRecentLockID : long
+    - _readerEvent : ManualResetEventSlim
+    - _writerEvent : AutoResetEvent
+    - <<readonly>> _lockID : long
+    - <<volatile>> _state : int
+    - _writerID : int
+    - _writerSeqNum : int = 1
+    - _writerLevel : ushort
+    + ReaderWriterLock()
+    + IsReaderLockHeld : bool <<get>>
+    + IsWriterLockHeld : bool <<get>>
+    + WriterSeqNum : int <<get>>
+    + AnyWritersSince(seqNum:int) : bool
+    + AcquireReaderLock(millisecondsTimeout:int) : void
+    + AcquireReaderLock(timeout:TimeSpan) : void
+    + AcquireWriterLock(millisecondsTimeout:int) : void
+    + AcquireWriterLock(timeout:TimeSpan) : void
+    + ReleaseReaderLock() : void
+    + ReleaseWriterLock() : void
+    + UpgradeToWriterLock(millisecondsTimeout:int) : LockCookie
+    + UpgradeToWriterLock(timeout:TimeSpan) : LockCookie
+    + DowngradeFromWriterLock(lockCookie:LockCookie) : void
+    + ReleaseLock() : LockCookie
+    + RestoreLock(lockCookie:LockCookie) : void
+    - RecoverLock(lockCookie:LockCookie, flags:LockCookieFlags) : void
+    - {static} GetCurrentThreadID() : int
+    - {static} YieldProcessor() : bool
+    - GetOrCreateReaderEvent() : ManualResetEventSlim
+    - GetOrCreateWriterEvent() : AutoResetEvent
+    - TryGetOrCreateReaderEvent() : ManualResetEventSlim
+    - TryGetOrCreateWriterEvent() : AutoResetEvent
+    - ReleaseEvents() : void
+    - {static} GetInvalidTimeoutException(parameterName:string) : ArgumentOutOfRangeException
+    - {static} ToTimeoutMilliseconds(timeout:TimeSpan) : int
+    - {static} GetTimeoutException() : ApplicationException
+    - {static} GetNotOwnerException() : ApplicationException
+    - {static} GetInvalidLockCookieException() : ApplicationException
+}
+class ReaderWriterLockApplicationException <<sealed>> {
+    + ReaderWriterLockApplicationException(errorHResult:int, message:string)
+    + ReaderWriterLockApplicationException(info:SerializationInfo, context:StreamingContext)
+}
+class ThreadLocalLockEntry <<sealed>> {
+    - {static} t_lockEntryHead : ReaderWriterLock.ThreadLocalLockEntry
+    - _lockID : long
+    - _next : ReaderWriterLock.ThreadLocalLockEntry
+    + _readerLevel : ushort
+    - ThreadLocalLockEntry(lockID:long)
+    + IsFree : bool <<get>>
+    + {static} GetCurrent(lockID:long) : ReaderWriterLock.ThreadLocalLockEntry
+    + {static} GetOrCreateCurrent(lockID:long) : ReaderWriterLock.ThreadLocalLockEntry
+    - {static} GetOrCreateCurrentSlow(lockID:long, headEntry:ReaderWriterLock.ThreadLocalLockEntry) : ReaderWriterLock.ThreadLocalLockEntry
+}
+CriticalFinalizerObject <|-- ReaderWriterLock
+ReaderWriterLock +-- ReaderWriterLockApplicationException
+ApplicationException <|-- ReaderWriterLockApplicationException
+ReaderWriterLock +-- ThreadLocalLockEntry
+@enduml

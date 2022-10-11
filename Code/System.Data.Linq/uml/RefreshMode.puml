@@ -1,0 +1,7 @@
+@startuml
+enum RefreshMode {
+    KeepCurrentValues,
+    KeepChanges,
+    OverwriteCurrentValues,
+}
+@enduml

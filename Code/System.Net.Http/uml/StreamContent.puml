@@ -1,0 +1,38 @@
+@startuml
+class StreamContent {
+    - _content : Stream
+    - _bufferSize : int
+    - _contentConsumed : bool
+    - _start : long
+    + StreamContent(content:Stream)
+    + StreamContent(content:Stream, bufferSize:int)
+    - InitializeContent(content:Stream, bufferSize:int) : void
+    # <<override>> SerializeToStream(stream:Stream, context:TransportContext?, cancellationToken:CancellationToken) : void
+    # <<override>> SerializeToStreamAsync(stream:Stream, context:TransportContext?) : Task
+    # <<override>> SerializeToStreamAsync(stream:Stream, context:TransportContext?, cancellationToken:CancellationToken) : Task
+    - SerializeToStreamAsyncCore(stream:Stream, cancellationToken:CancellationToken) : Task
+    # <<internal>> <<override>> TryComputeLength(length:long) : bool
+    # <<override>> Dispose(disposing:bool) : void
+    # <<override>> CreateContentReadStream(cancellationToken:CancellationToken) : Stream
+    # <<override>> CreateContentReadStreamAsync() : Task<Stream>
+    <<internal>> <<override>> TryCreateContentReadStream() : Stream
+    <<internal>> <<override>> AllowDuplex : bool <<get>>
+    - PrepareContent() : void
+}
+class ReadOnlyStream <<sealed>> {
+    + <<override>> CanWrite : bool <<get>>
+    + <<override>> WriteTimeout : int <<get>> <<set>>
+    + ReadOnlyStream(innerStream:Stream)
+    + <<override>> Flush() : void
+    + <<override>> FlushAsync(cancellationToken:CancellationToken) : Task
+    + <<override>> SetLength(value:long) : void
+    + <<override>> Write(buffer:byte[], offset:int, count:int) : void
+    + <<override>> Write(buffer:ReadOnlySpan<byte>) : void
+    + <<override>> WriteByte(value:byte) : void
+    + <<override>> WriteAsync(buffer:byte[], offset:int, count:int, cancellationToken:CancellationToken) : Task
+    + <<override>> WriteAsync(buffer:ReadOnlyMemory<byte>, cancellationToken:CancellationToken) : ValueTask
+}
+HttpContent <|-- StreamContent
+StreamContent +-- ReadOnlyStream
+DelegatingStream <|-- ReadOnlyStream
+@enduml

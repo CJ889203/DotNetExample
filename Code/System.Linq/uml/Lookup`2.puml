@@ -1,0 +1,50 @@
+@startuml
+class "Lookup`2"<TKey,TElement> {
+    - comparer : IEqualityComparer<TKey>
+    - groupings : Lookup<TKey, TElement>.Grouping[]
+    - lastGrouping : Lookup<TKey, TElement>.Grouping
+    - count : int
+    <<internal>> {static} Create(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>, elementSelector:Func<TSource, TElement>, comparer:IEqualityComparer<TKey>) : Lookup<TKey, TElement>
+    <<internal>> {static} CreateForJoin(source:IEnumerable<TElement>, keySelector:Func<TElement, TKey>, comparer:IEqualityComparer<TKey>) : Lookup<TKey, TElement>
+    - Lookup(comparer:IEqualityComparer<TKey>)
+    + Count : int <<get>>
+    + Contains(key:TKey) : bool
+    + GetEnumerator() : IEnumerator<IGrouping<TKey, TElement>>
+    + ApplyResultSelector(resultSelector:Func<TKey, IEnumerable<TElement>, TResult>) : IEnumerable<TResult>
+    GetEnumerator() : IEnumerator
+    <<internal>> InternalGetHashCode(key:TKey) : int
+    <<internal>> GetGrouping(key:TKey, create:bool) : Lookup<TKey, TElement>.Grouping
+    - Resize() : void
+}
+class Grouping {
+    <<internal>> key : TKey
+    <<internal>> hashCode : int
+    <<internal>> elements : TElement[]
+    <<internal>> count : int
+    <<internal>> hashNext : Lookup<TKey, TElement>.Grouping
+    <<internal>> next : Lookup<TKey, TElement>.Grouping
+    <<internal>> Add(element:TElement) : void
+    + GetEnumerator() : IEnumerator<TElement>
+    GetEnumerator() : IEnumerator
+    + Key : TKey <<get>>
+    Count : int <<get>>
+    IsReadOnly : bool <<get>>
+    Add(item:TElement) : void
+    Clear() : void
+    Contains(item:TElement) : bool
+    CopyTo(array:TElement[], arrayIndex:int) : void
+    Remove(item:TElement) : bool
+    IndexOf(item:TElement) : int
+    Insert(index:int, item:TElement) : void
+    RemoveAt(index:int) : void
+}
+"IEnumerable`1" "<IGrouping<TKey, TElement>>" <|-- "Lookup`2"
+IEnumerable <|-- "Lookup`2"
+"ILookup`2" "<TKey,TElement>" <|-- "Lookup`2"
+"Lookup`2" +-- Grouping
+"IGrouping`2" "<TKey,TElement>" <|-- Grouping
+"IEnumerable`1" "<TElement>" <|-- Grouping
+IEnumerable <|-- Grouping
+"IList`1" "<TElement>" <|-- Grouping
+"ICollection`1" "<TElement>" <|-- Grouping
+@enduml

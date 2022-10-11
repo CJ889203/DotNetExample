@@ -1,0 +1,8 @@
+@startuml
+class ThreadStartException <<sealed>> {
+    <<internal>> ThreadStartException()
+    <<internal>> ThreadStartException(reason:Exception)
+    - ThreadStartException(info:SerializationInfo, context:StreamingContext)
+}
+SystemException <|-- ThreadStartException
+@enduml

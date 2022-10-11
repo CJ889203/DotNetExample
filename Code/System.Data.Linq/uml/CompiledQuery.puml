@@ -1,0 +1,43 @@
+@startuml
+class CompiledQuery <<sealed>> {
+    - query : LambdaExpression
+    - compiled : ICompiledQuery
+    - mappingSource : MappingSource
+    - CompiledQuery(query:LambdaExpression)
+    + Expression : LambdaExpression <<get>>
+    + {static} Compile(query:System.Linq.Expressions.Expression<Func<TArg0, TResult>>) : Func<TArg0, TResult>
+    + {static} Compile(query:System.Linq.Expressions.Expression<Func<TArg0, TArg1, TResult>>) : Func<TArg0, TArg1, TResult>
+    + {static} Compile(query:System.Linq.Expressions.Expression<Func<TArg0, TArg1, TArg2, TResult>>) : Func<TArg0, TArg1, TArg2, TResult>
+    + {static} Compile(query:System.Linq.Expressions.Expression<Func<TArg0, TArg1, TArg2, TArg3, TResult>>) : Func<TArg0, TArg1, TArg2, TArg3, TResult>
+    + {static} Compile(query:System.Linq.Expressions.Expression<Func<TArg0, TArg1, TArg2, TArg3, TArg4, TResult>>) : Func<TArg0, TArg1, TArg2, TArg3, TArg4, TResult>
+    + {static} Compile(query:System.Linq.Expressions.Expression<Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TResult>>) : Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TResult>
+    + {static} Compile(query:System.Linq.Expressions.Expression<Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult>>) : Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TResult>
+    + {static} Compile(query:System.Linq.Expressions.Expression<Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TResult>>) : Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TResult>
+    + {static} Compile(query:System.Linq.Expressions.Expression<Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TResult>>) : Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TResult>
+    + {static} Compile(query:System.Linq.Expressions.Expression<Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TResult>>) : Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TResult>
+    + {static} Compile(query:System.Linq.Expressions.Expression<Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TResult>>) : Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TResult>
+    + {static} Compile(query:System.Linq.Expressions.Expression<Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TResult>>) : Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TResult>
+    + {static} Compile(query:System.Linq.Expressions.Expression<Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TResult>>) : Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TResult>
+    + {static} Compile(query:System.Linq.Expressions.Expression<Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TArg13, TResult>>) : Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TArg13, TResult>
+    + {static} Compile(query:System.Linq.Expressions.Expression<Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TArg13, TArg14, TResult>>) : Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TArg13, TArg14, TResult>
+    + {static} Compile(query:System.Linq.Expressions.Expression<Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TArg13, TArg14, TArg15, TResult>>) : Func<TArg0, TArg1, TArg2, TArg3, TArg4, TArg5, TArg6, TArg7, TArg8, TArg9, TArg10, TArg11, TArg12, TArg13, TArg14, TArg15, TResult>
+    - {static} UseExpressionCompile(query:LambdaExpression) : bool
+    - Invoke(arg0:TArg0) : TResult
+    - Invoke(arg0:TArg0, arg1:TArg1) : TResult
+    - Invoke(arg0:TArg0, arg1:TArg1, arg2:TArg2) : TResult
+    - Invoke(arg0:TArg0, arg1:TArg1, arg2:TArg2, arg3:TArg3) : TResult
+    - Invoke(arg0:TArg0, arg1:TArg1, arg2:TArg2, arg3:TArg3, arg4:TArg4) : TResult
+    - Invoke(arg0:TArg0, arg1:TArg1, arg2:TArg2, arg3:TArg3, arg4:TArg4, arg5:TArg5) : TResult
+    - Invoke(arg0:TArg0, arg1:TArg1, arg2:TArg2, arg3:TArg3, arg4:TArg4, arg5:TArg5, arg6:TArg6) : TResult
+    - Invoke(arg0:TArg0, arg1:TArg1, arg2:TArg2, arg3:TArg3, arg4:TArg4, arg5:TArg5, arg6:TArg6, arg7:TArg7) : TResult
+    - Invoke(arg0:TArg0, arg1:TArg1, arg2:TArg2, arg3:TArg3, arg4:TArg4, arg5:TArg5, arg6:TArg6, arg7:TArg7, arg8:TArg8) : TResult
+    - Invoke(arg0:TArg0, arg1:TArg1, arg2:TArg2, arg3:TArg3, arg4:TArg4, arg5:TArg5, arg6:TArg6, arg7:TArg7, arg8:TArg8, arg9:TArg9) : TResult
+    - Invoke(arg0:TArg0, arg1:TArg1, arg2:TArg2, arg3:TArg3, arg4:TArg4, arg5:TArg5, arg6:TArg6, arg7:TArg7, arg8:TArg8, arg9:TArg9, arg10:TArg10) : TResult
+    - Invoke(arg0:TArg0, arg1:TArg1, arg2:TArg2, arg3:TArg3, arg4:TArg4, arg5:TArg5, arg6:TArg6, arg7:TArg7, arg8:TArg8, arg9:TArg9, arg10:TArg10, arg11:TArg11) : TResult
+    - Invoke(arg0:TArg0, arg1:TArg1, arg2:TArg2, arg3:TArg3, arg4:TArg4, arg5:TArg5, arg6:TArg6, arg7:TArg7, arg8:TArg8, arg9:TArg9, arg10:TArg10, arg11:TArg11, arg12:TArg12) : TResult
+    - Invoke(arg0:TArg0, arg1:TArg1, arg2:TArg2, arg3:TArg3, arg4:TArg4, arg5:TArg5, arg6:TArg6, arg7:TArg7, arg8:TArg8, arg9:TArg9, arg10:TArg10, arg11:TArg11, arg12:TArg12, arg13:TArg13) : TResult
+    - Invoke(arg0:TArg0, arg1:TArg1, arg2:TArg2, arg3:TArg3, arg4:TArg4, arg5:TArg5, arg6:TArg6, arg7:TArg7, arg8:TArg8, arg9:TArg9, arg10:TArg10, arg11:TArg11, arg12:TArg12, arg13:TArg13, arg14:TArg14) : TResult
+    - Invoke(arg0:TArg0, arg1:TArg1, arg2:TArg2, arg3:TArg3, arg4:TArg4, arg5:TArg5, arg6:TArg6, arg7:TArg7, arg8:TArg8, arg9:TArg9, arg10:TArg10, arg11:TArg11, arg12:TArg12, arg13:TArg13, arg14:TArg14, arg15:TArg15) : TResult
+    - ExecuteQuery(context:DataContext, args:object[]) : object
+}
+@enduml

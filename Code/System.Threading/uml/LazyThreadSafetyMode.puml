@@ -1,0 +1,7 @@
+@startuml
+enum LazyThreadSafetyMode {
+    None,
+    PublicationOnly,
+    ExecutionAndPublication,
+}
+@enduml

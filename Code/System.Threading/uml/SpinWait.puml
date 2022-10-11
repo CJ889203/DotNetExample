@@ -1,0 +1,15 @@
+@startuml
+class SpinWait <<struct>> {
+    <<internal>> {static} <<readonly>> SpinCountforSpinBeforeWait : int
+    - _count : int
+    + Count : int <<get>> <<internal set>>
+    + NextSpinWillYield : bool <<get>>
+    + SpinOnce() : void
+    + SpinOnce(sleep1Threshold:int) : void
+    - SpinOnceCore(sleep1Threshold:int) : void
+    + Reset() : void
+    + {static} SpinUntil(condition:Func<bool>) : void
+    + {static} SpinUntil(condition:Func<bool>, timeout:TimeSpan) : bool
+    + {static} SpinUntil(condition:Func<bool>, millisecondsTimeout:int) : bool
+}
+@enduml

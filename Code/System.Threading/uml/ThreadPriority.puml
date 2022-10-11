@@ -1,0 +1,9 @@
+@startuml
+enum ThreadPriority {
+    Lowest,
+    BelowNormal,
+    Normal,
+    AboveNormal,
+    Highest,
+}
+@enduml

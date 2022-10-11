@@ -1,0 +1,10 @@
+@startuml
+class "EnumerableExecutor`1"<T> {
+    - expression : Expression
+    - func : Func<T>
+    + EnumerableExecutor(expression:Expression)
+    <<internal>> <<override>> ExecuteBoxed() : object
+    <<internal>> Execute() : T
+}
+EnumerableExecutor <|-- "EnumerableExecutor`1"
+@enduml

@@ -1,0 +1,6 @@
+@startuml
+class AutoResetEvent <<sealed>> {
+    + AutoResetEvent(initialState:bool)
+}
+EventWaitHandle <|-- AutoResetEvent
+@enduml

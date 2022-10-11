@@ -1,0 +1,11 @@
+@startuml
+interface "ITable`1"<TEntity> {
+    InsertOnSubmit(entity:TEntity) : void
+    Attach(entity:TEntity) : void
+    DeleteOnSubmit(entity:TEntity) : void
+}
+"IQueryable`1" "<TEntity>" <|-- "ITable`1"
+"IEnumerable`1" "<TEntity>" <|-- "ITable`1"
+IEnumerable <|-- "ITable`1"
+IQueryable <|-- "ITable`1"
+@enduml

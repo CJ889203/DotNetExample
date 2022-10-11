@@ -1,0 +1,17 @@
+@startuml
+class CancellationTokenRegistration <<struct>> {
+    - <<readonly>> _id : long
+    - <<readonly>> _node : CancellationTokenSource.CallbackNode
+    <<internal>> CancellationTokenRegistration(id:long, node:CancellationTokenSource.CallbackNode)
+    + Dispose() : void
+    + DisposeAsync() : ValueTask
+    + Token : CancellationToken <<get>>
+    + Unregister() : bool
+    + <<override>> Equals(obj:object?) : bool
+    + Equals(other:CancellationTokenRegistration) : bool
+    + <<override>> GetHashCode() : int
+}
+"IEquatable`1" "<CancellationTokenRegistration>" <|-- CancellationTokenRegistration
+IDisposable <|-- CancellationTokenRegistration
+IAsyncDisposable <|-- CancellationTokenRegistration
+@enduml
